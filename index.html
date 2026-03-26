@@ -1,316 +1,988 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Exam Timer</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
-        
-        .container {
-            background: white;
-            padding: 40px;
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            max-width: 500px;
-            width: 100%;
-        }
-        
-        h1 {
-            text-align: center;
-            color: #333;
-            margin-bottom: 30px;
-            font-size: 28px;
-        }
-        
-        .input-group {
-            margin-bottom: 20px;
-        }
-        
-        label {
-            display: block;
-            margin-bottom: 8px;
-            color: #555;
-            font-weight: 500;
-        }
-        
-        input {
-            width: 100%;
-            padding: 12px;
-            border: 2px solid #ddd;
-            border-radius: 8px;
-            font-size: 16px;
-            transition: border-color 0.3s;
-        }
-        
-        input:focus {
-            outline: none;
-            border-color: #667eea;
-        }
-        
-        button {
-            width: 100%;
-            padding: 15px;
-            background: #667eea;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 18px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background 0.3s;
-            margin-top: 10px;
-        }
-        
-        button:hover {
-            background: #5568d3;
-        }
-        
-        button:disabled {
-            background: #ccc;
-            cursor: not-allowed;
-        }
-        
-        .timer-display {
-            font-size: 72px;
-            text-align: center;
-            color: #667eea;
-            font-weight: bold;
-            margin: 30px 0;
-            font-family: 'Courier New', monospace;
-        }
-        
-        .status {
-            text-align: center;
-            font-size: 18px;
-            color: #555;
-            margin: 20px 0;
-            min-height: 30px;
-        }
-        
-        .announcement {
-            background: #f0f4ff;
-            padding: 15px;
-            border-radius: 8px;
-            text-align: center;
-            color: #667eea;
-            font-weight: 500;
-            margin: 20px 0;
-            min-height: 50px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .hidden {
-            display: none;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Revision Squad · Past Paper Tracker</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+:root {
+  --bg: #0b0d10;
+  --s1: #0e1320;
+  --s2: #131d2e;
+  --s3: #1a2840;
+  --border: #1e3050;
+  --border2: #2a3f5a;
+  --text: #d0def0;
+  --muted: #5a7898;
+  --muted2: #8baabf;
+  --de: #4da6ff;
+  --de-dim: rgba(77,166,255,.15);
+  --de-glow: rgba(77,166,255,.25);
+  --bk: #00d38d;
+  --bk-dim: rgba(0,211,141,.15);
+  --bk-glow: rgba(0,211,141,.25);
+  --dy: #ffb830;
+  --dy-dim: rgba(255,184,48,.15);
+  --dy-glow: rgba(255,184,48,.25);
+  --success: #00d38d;
+  --warning: #ffb830;
+  --danger: #ff4565;
+  --r: 10px;
+  --r-lg: 16px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:'DM Sans',system-ui,sans-serif;
+  background: radial-gradient(1200px 600px at 10% -10%, rgba(255,255,255,0.08), transparent 45%), radial-gradient(900px 500px at 110% 120%, rgba(255,255,255,0.06), transparent 45%), var(--bg);
+  color:var(--text);
+  min-height:100vh;
+  overflow-x:hidden;
+}
+/* ── UTILITIES ── */
+.hidden{display:none!important}
+h1,h2,h3{font-family:'Syne',sans-serif}
+.mono{font-family:'JetBrains Mono',monospace}
+.tag{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:600;letter-spacing:.5px;text-transform:uppercase}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:10px 18px;border-radius:var(--r);border:none;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;transition:all .2s}
+.btn-primary{background:var(--user-color,var(--de));color:#000}
+.btn-primary:hover{filter:brightness(1.1);transform:translateY(-1px)}
+.btn-ghost{background:transparent;color:var(--muted2);border:1px solid var(--border2)}
+.btn-ghost:hover{border-color:var(--muted2);color:var(--text)}
+.btn-danger{background:transparent;color:var(--danger);border:1px solid var(--danger)}
+.btn-danger:hover{background:rgba(255,69,101,.1)}
+.btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+input,select,textarea{background:var(--s2);border:1px solid var(--border2);color:var(--text);border-radius:var(--r);padding:10px 14px;font-family:'DM Sans',sans-serif;font-size:14px;width:100%;transition:border-color .2s}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--user-color,var(--de));box-shadow:0 0 0 2px var(--user-glow,var(--de-glow))}
+input[type=radio]{width:auto}
+select option{background:var(--s2)}
+label{font-size:13px;color:var(--muted2);font-weight:500;margin-bottom:4px;display:block}
+.form-group{margin-bottom:16px}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.form-row.three{grid-template-columns:1fr 1fr 1fr}
+.hint{font-size:12px;color:var(--muted);margin-top:4px}
+.card{background:var(--s1);border:1px solid var(--border);border-radius:var(--r-lg);padding:20px}
+.section-title{font-family:'Syne',sans-serif;font-size:16px;font-weight:700;color:var(--muted2);text-transform:uppercase;letter-spacing:1px;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.section-title::before{content:'';display:block;width:3px;height:16px;border-radius:2px;background:var(--user-color,var(--de))}
+
+/* ── LOGIN SCREEN ── */
+#login-screen{position:fixed;inset:0;z-index:100;display:flex;align-items:center;justify-content:center;padding:20px}
+.login-bg{position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 0%, rgba(77,166,255,.06) 0%, transparent 60%)}
+.login-box{position:relative;text-align:center;max-width:560px;width:100%}
+.login-logo{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin-bottom:40px}
+.login-logo span{color:var(--de)}
+.login-title{font-family:'Syne',sans-serif;font-size:38px;font-weight:800;line-height:1.1;margin-bottom:8px}
+.login-title span{color:var(--de)}
+.login-sub{color:var(--muted2);margin-bottom:48px;font-size:15px}
+.user-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:32px}
+.user-card{background:var(--s1);border:1px solid var(--border);border-radius:var(--r-lg);padding:24px 16px;cursor:pointer;transition:all .25s;position:relative;overflow:hidden}
+.user-card::before{content:'';position:absolute;inset:0;opacity:0;transition:opacity .3s}
+.user-card[data-uid=daniel_essam]::before{background:var(--de-dim)}
+.user-card[data-uid=bavly_khalil]::before{background:var(--bk-dim)}
+.user-card[data-uid=daniel_youssef]::before{background:var(--dy-dim)}
+.user-card:hover::before{opacity:1}
+.user-card[data-uid=daniel_essam]:hover{border-color:var(--de);box-shadow:0 0 30px var(--de-glow)}
+.user-card[data-uid=bavly_khalil]:hover{border-color:var(--bk);box-shadow:0 0 30px var(--bk-glow)}
+.user-card[data-uid=daniel_youssef]:hover{border-color:var(--dy);box-shadow:0 0 30px var(--dy-glow)}
+.user-card:hover{transform:translateY(-3px)}
+.user-avatar{width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-size:18px;font-weight:800;margin:0 auto 12px;position:relative;z-index:1}
+.user-card h3{font-family:'Syne',sans-serif;font-size:15px;font-weight:700;position:relative;z-index:1}
+.user-card p{font-size:12px;color:var(--muted2);margin-top:4px;position:relative;z-index:1}
+.login-notice{background:rgba(255,184,48,.08);border:1px solid rgba(255,184,48,.2);border-radius:var(--r);padding:12px 16px;font-size:13px;color:var(--muted2);text-align:left}
+.login-notice strong{color:var(--warning)}
+.login-notice code{font-family:'JetBrains Mono',monospace;font-size:11px;background:rgba(255,255,255,.05);padding:1px 5px;border-radius:4px;color:var(--text)}
+.demo-btn{margin-top:12px;width:100%}
+
+/* ── NAV ── */
+#app{position:relative;z-index:1}
+nav{position:sticky;top:0;z-index:50;background:rgba(7,9,15,.92);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);padding:0 24px}
+.nav-inner{display:flex;align-items:center;height:56px;gap:0}
+.nav-brand{font-family:'Syne',sans-serif;font-size:14px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--user-color,var(--de));margin-right:32px;white-space:nowrap}
+.nav-tabs{display:flex;gap:2px;flex:1}
+.nav-link{padding:6px 14px;border-radius:6px;cursor:pointer;font-size:13px;font-weight:500;color:var(--muted2);transition:all .2s;border:none;background:none;text-decoration:none}
+.nav-link:hover{color:var(--text);background:var(--s2)}
+.nav-link.active{color:var(--user-color,var(--de));background:var(--user-dim,var(--de-dim))}
+.nav-user{display:flex;align-items:center;gap:10px;margin-left:auto;padding-left:16px}
+.nav-avatar{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-size:11px;font-weight:800;cursor:pointer;transition:all .2s}
+.nav-avatar:hover{filter:brightness(1.2)}
+.nav-name{font-size:13px;font-weight:600;cursor:pointer}
+.nav-logout{font-size:12px;color:var(--muted);cursor:pointer;padding:4px 8px;border-radius:6px;border:1px solid var(--border)}
+.nav-logout:hover{color:var(--danger);border-color:var(--danger)}
+
+/* ── MAIN ── */
+main{max-width:1100px;margin:0 auto;padding:28px 24px 60px}
+.tab{display:none}
+.tab.active{display:block;animation:fadeIn .25s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+/* ── DASHBOARD ── */
+.stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:28px}
+.stat-card{background:var(--s1);border:1px solid var(--border);border-radius:var(--r-lg);padding:20px 22px}
+.stat-label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);margin-bottom:8px}
+.stat-value{font-family:'Syne',sans-serif;font-size:32px;font-weight:800;color:var(--user-color,var(--de));line-height:1}
+.stat-sub{font-size:12px;color:var(--muted2);margin-top:4px}
+.charts-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+.chart-card{background:var(--s1);border:1px solid var(--border);border-radius:var(--r-lg);padding:20px;transition:border-color .2s}
+.chart-card:hover{border-color:var(--border2)}
+.chart-card--compare{border-color:rgba(255,255,255,.05)}
+.chart-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:14px;gap:8px;flex-wrap:wrap}
+.chart-title{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.paper-tag{background:var(--user-dim,var(--de-dim));color:var(--user-color,var(--de));padding:3px 10px;border-radius:20px;font-size:12px;font-weight:700;font-family:'Syne',sans-serif}
+.board-tag{font-size:10px;color:var(--muted);border:1px solid var(--border);padding:2px 7px;border-radius:20px}
+.chart-avg{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600;color:var(--muted2);white-space:nowrap}
+.compare-badge{background:rgba(255,255,255,.05);border:1px solid var(--border);padding:2px 8px;border-radius:20px;font-size:11px;color:var(--muted2)}
+.compare-legend{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:600;flex-wrap:wrap}
+.legend-dot{width:8px;height:8px;border-radius:50%;display:inline-block}
+.chart-body{position:relative;height:180px}
+.no-data{display:flex;align-items:center;justify-content:center;height:100%;color:var(--muted);font-size:13px;font-style:italic}
+.section-gap{margin-bottom:32px}
+.firebase-banner{background:rgba(255,69,101,.07);border:1px solid rgba(255,69,101,.2);border-radius:var(--r);padding:14px 18px;font-size:13px;margin-bottom:24px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.firebase-banner strong{color:var(--danger)}
+
+/* ── LOG FORM ── */
+.log-card{background:var(--s1);border:1px solid var(--border);border-radius:var(--r-lg);padding:28px;max-width:680px}
+.radio-group{display:flex;gap:12px;flex-wrap:wrap}
+.radio-option{display:flex;align-items:center;gap:7px;cursor:pointer;padding:8px 12px;border-radius:var(--r);border:1px solid var(--border2);transition:all .2s;font-size:13px}
+.radio-option:has(input:checked){border-color:var(--user-color,var(--de));background:var(--user-dim,var(--de-dim));color:var(--user-color,var(--de))}
+.time-manual-fields{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+.score-display{background:var(--s2);border-radius:var(--r);padding:10px 14px;font-family:'JetBrains Mono',monospace;font-size:14px;color:var(--success);margin-top:4px;min-height:34px}
+
+/* ── HISTORY ── */
+.history-filters{display:flex;gap:12px;margin-bottom:20px;align-items:center;flex-wrap:wrap}
+.history-filters select{width:auto;min-width:160px}
+table{width:100%;border-collapse:collapse}
+thead th{text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.7px;color:var(--muted);padding:10px 14px;border-bottom:1px solid var(--border);font-weight:600;background:var(--s1)}
+tbody td{padding:11px 14px;border-bottom:1px solid var(--border);font-size:13px}
+tbody tr:hover td{background:var(--s2)}
+tbody tr:last-child td{border:none}
+.score-val{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600}
+.pct-badge{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;padding:3px 9px;border-radius:20px}
+.pct-good{background:rgba(0,211,141,.15);color:var(--success)}
+.pct-ok{background:rgba(255,184,48,.15);color:var(--warning)}
+.pct-low{background:rgba(255,69,101,.15);color:var(--danger)}
+.paper-tag-sm{background:var(--s2);border:1px solid var(--border2);padding:2px 8px;border-radius:20px;font-size:11px;font-weight:700;margin-right:4px}
+.board-tag-sm{font-size:10px;color:var(--muted)}
+.no-data-row{text-align:center;color:var(--muted);padding:40px!important;font-style:italic}
+.table-wrap{background:var(--s1);border:1px solid var(--border);border-radius:var(--r-lg);overflow:hidden}
+
+/* ── CONFIG MODAL ── */
+.config-steps{list-style:none;counter-reset:step}
+.config-steps li{counter-increment:step;display:flex;gap:12px;align-items:flex-start;margin-bottom:14px;font-size:13px}
+.config-steps li::before{content:counter(step);min-width:22px;height:22px;border-radius:50%;background:var(--user-dim,var(--de-dim));color:var(--user-color,var(--de));display:flex;align-items:center;justify-content:center;font-weight:700;font-size:11px;margin-top:1px}
+.config-steps a{color:var(--de)}
+.config-steps code{font-family:'JetBrains Mono',monospace;font-size:11px;background:var(--s2);padding:2px 6px;border-radius:4px;color:var(--muted2)}
+
+/* ── TOAST ── */
+#toast{position:fixed;bottom:24px;right:24px;z-index:999;padding:12px 18px;border-radius:var(--r);font-size:13px;font-weight:600;transform:translateY(20px);opacity:0;transition:all .3s;pointer-events:none}
+#toast.toast--visible{transform:none;opacity:1}
+#toast.toast--success{background:#00d38d;color:#000}
+#toast.toast--error{background:#ff4565;color:#fff}
+
+/* ── USER THEMES ── */
+#app[data-user=daniel_essam]{--user-color:var(--de);--user-dim:var(--de-dim);--user-glow:var(--de-glow)}
+#app[data-user=bavly_khalil]{--user-color:var(--bk);--user-dim:var(--bk-dim);--user-glow:var(--bk-glow)}
+#app[data-user=daniel_youssef]{--user-color:var(--dy);--user-dim:var(--dy-dim);--user-glow:var(--dy-glow)}
+
+/* ── RESPONSIVE ── */
+@media(max-width:768px){
+  .user-cards{grid-template-columns:1fr}
+  .nav-tabs{gap:0;overflow-x:auto}
+  .nav-link{font-size:12px;padding:5px 10px}
+  .stats-row{grid-template-columns:1fr 1fr}
+  .charts-grid{grid-template-columns:1fr}
+  .form-row,.form-row.three{grid-template-columns:1fr}
+  main{padding:16px 14px 60px}
+}
+@media(max-width:480px){
+  .stats-row{grid-template-columns:1fr}
+  .login-title{font-size:28px}
+}
+</style>
 </head>
 <body>
-    <div class="container">
-        <h1>Exam Timer</h1>
-        
-        <div id="setup" class="setup">
-            <div class="input-group">
-                <label for="startTime">Start Time:</label>
-                <input type="time" id="startTime" required>
-            </div>
-            
-            <div class="input-group">
-                <label for="duration">Duration (minutes):</label>
-                <input type="number" id="duration" min="1" value="60" required>
-            </div>
-            
-            <button onclick="scheduleTimer()">Schedule Timer</button>
-        </div>
-        
-        <div id="waiting" class="hidden">
-            <div class="status">Waiting for start time...</div>
-            <div class="timer-display" id="countdown">--:--:--</div>
-            <button onclick="cancelTimer()">Cancel</button>
-        </div>
-        
-        <div id="running" class="hidden">
-            <div class="announcement" id="announcement"></div>
-            <div class="timer-display" id="timer">00:00</div>
-            <div class="status" id="status"></div>
-            <button onclick="stopTimer()">Stop Timer</button>
-        </div>
-        
-        <div id="finished" class="hidden">
-            <div class="announcement">Time's up! Pens down.</div>
-            <div class="timer-display">00:00</div>
-            <button onclick="resetTimer()">New Timer</button>
-        </div>
+
+<div id="login-screen">
+  <div class="login-bg"></div>
+  <div class="login-box">
+    <div class="login-logo">Revision <span>Squad</span></div>
+    <h1 class="login-title">Past Paper<br><span>Tracker</span></h1>
+    <p class="login-sub">Track your progress. Beat your friends. Ace the exams.</p>
+    <div class="user-cards">
+      <div class="user-card" data-uid="daniel_essam" onclick="login('daniel_essam')">
+        <div class="user-avatar" style="background:rgba(77,166,255,.2);color:#4da6ff">DE</div>
+        <h3>Daniel Essam</h3>
+        <p>Bio · Physics · CS · M1</p>
+      </div>
+      <div class="user-card" data-uid="bavly_khalil" onclick="login('bavly_khalil')">
+        <div class="user-avatar" style="background:rgba(0,211,141,.2);color:#00d38d">BK</div>
+        <h3>Bavly Khalil</h3>
+        <p>Bio · Physics</p>
+      </div>
+      <div class="user-card" data-uid="daniel_youssef" onclick="login('daniel_youssef')">
+        <div class="user-avatar" style="background:rgba(255,184,48,.2);color:#ffb830">DY</div>
+        <h3>Daniel Youssef</h3>
+        <p>Maths · ICT</p>
+      </div>
     </div>
+  </div>
+</div>
 
-    <script>
-        let scheduledInterval = null;
-        let timerInterval = null;
-        let endTime = null;
-        let durationMinutes = 0;
-        let halfTimeAnnounced = false;
-        let fiveMinAnnounced = false;
+<div id="app" class="hidden">
+  <nav>
+    <div class="nav-inner">
+      <div class="nav-brand">Past papers</div>
+      <div class="nav-tabs">
+        <button class="nav-link active" data-tab="dashboard" onclick="switchTab('dashboard')">Dashboard</button>
+        <button class="nav-link" data-tab="log" onclick="switchTab('log')">Log Grade</button>
+        <a href="NarrativeTimer.html" class="nav-link">Timer</a>
+        <button class="nav-link" data-tab="history" onclick="switchTab('history')">History</button>
+      </div>
+      <div class="nav-user">
+        <div class="nav-avatar" id="user-avatar-nav" title="Click to switch user" onclick="logout()">DE</div>
+        <div>
+          <div class="nav-name" id="user-name-nav">Daniel</div>
+          <div class="nav-logout" onclick="logout()">Switch</div>
+        </div>
+      </div>
+    </div>
+  </nav>
 
-        function speak(text) {
-            const utterance = new SpeechSynthesisUtterance(text);
-            utterance.rate = 0.9;
-            utterance.pitch = 1;
-            utterance.volume = 1;
-            
-            const voices = speechSynthesis.getVoices();
-            const femaleVoice = voices.find(voice => 
-                voice.name.includes('Female') || 
-                voice.name.includes('female') ||
-                voice.name.includes('Samantha') ||
-                voice.name.includes('Victoria') ||
-                voice.name.includes('Karen') ||
-                voice.name.includes('Zira')
-            );
-            
-            if (femaleVoice) {
-                utterance.voice = femaleVoice;
+  <main>
+    <section id="tab-dashboard" class="tab active">
+      <div class="stats-row">
+        <div class="stat-card">
+          <div class="stat-label">Papers Solved</div>
+          <div class="stat-value" id="stat-total">—</div>
+          <div class="stat-sub">total attempts</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Average Score</div>
+          <div class="stat-value" id="stat-avg">—</div>
+          <div class="stat-sub">across all papers</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Best Paper</div>
+          <div class="stat-value" id="stat-best" style="font-size:18px;padding-top:6px">—</div>
+          <div class="stat-sub" id="stat-best-pct"></div>
+        </div>
+      </div>
+
+      <div class="section-gap">
+        <div class="section-title">My Papers</div>
+        <div class="charts-grid" id="my-charts">
+          <div class="chart-card"><div class="no-data">Loading…</div></div>
+        </div>
+      </div>
+
+      <div id="compare-section" class="section-gap">
+        <div class="section-title">Head to Head ⚔️</div>
+        <div class="charts-grid" id="compare-charts"></div>
+      </div>
+    </section>
+
+    <section id="tab-log" class="tab">
+      <div class="log-card">
+        <div class="section-title" style="margin-bottom:24px">Log a Grade</div>
+        <form id="log-form" onsubmit="submitGrade(event)">
+          <div class="form-group">
+            <label>Paper</label>
+            <select id="log-paper"><option value="">Select paper…</option></select>
+          </div>
+          <div class="form-group hidden" id="variant-group">
+            <label>Variant</label>
+            <select id="log-variant">
+              <option value="">Select variant…</option>
+              <option value="1">Variant 1</option>
+              <option value="2">Variant 2</option>
+              <option value="3">Variant 3</option>
+            </select>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Your Score</label>
+              <input type="number" id="log-score" placeholder="e.g. 32" min="0" required oninput="updateLogPct()">
+            </div>
+            <div class="form-group">
+              <label>Out of (Max)</label>
+              <input type="number" id="log-max" placeholder="e.g. 40" min="1" required oninput="updateLogPct()">
+            </div>
+          </div>
+          <div id="log-pct-display" class="score-display" style="margin-top:-8px;margin-bottom:16px">Enter scores above…</div>
+          <div class="form-group">
+            <label>Date Solved</label>
+            <input type="date" id="log-date" required>
+          </div>
+
+          <div class="form-group">
+            <label>Year</label>
+            <input type="number" id="log-year" placeholder="e.g. 2023" min="1990" max="2100" required>
+          </div>
+          
+          <div class="form-group">
+            <label>Exam Session</label>
+            <select id="log-session" required>
+              <option value="">Select session…</option>
+              <option value="May/June">May/June</option>
+              <option value="October/November">October/November</option>
+              <option value="January">January</option>
+              <option value="February/March">February/March</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Time Taken</label>
+            <div class="radio-group" id="time-mode-group">
+              <label class="radio-option">
+                <input type="radio" name="time-mode" value="none" checked onchange="onTimeModeChange()"> Not recorded
+              </label>
+              <label class="radio-option">
+                <input type="radio" name="time-mode" value="manual" onchange="onTimeModeChange()"> Enter manually
+              </label>
+            </div>
+            <div class="time-manual-fields hidden" id="manual-time-fields">
+              <div>
+                <label style="margin-top:10px">Minutes</label>
+                <input type="number" id="log-time-mins" placeholder="e.g. 72" min="0" max="360">
+              </div>
+              <div>
+                <label style="margin-top:10px">Seconds</label>
+                <input type="number" id="log-time-secs" placeholder="0" min="0" max="59">
+              </div>
+            </div>
+            <div class="hint" id="log-duration-hint"></div>
+          </div>
+          <div class="form-group">
+            <label>Notes (optional)</label>
+            <input type="text" id="log-notes" placeholder="e.g. Struggled with Q5, great on genetics">
+          </div>
+          <button type="submit" class="btn btn-primary" id="log-submit-btn" style="width:100%">Save Grade ✓</button>
+        </form>
+      </div>
+    </section>
+
+    <section id="tab-history" class="tab">
+      <div class="history-filters">
+        <div class="section-title" style="margin-bottom:0">Grade History</div>
+        <select id="history-filter" onchange="renderHistory()" style="margin-left:auto">
+          <option value="all">All Papers</option>
+        </select>
+        <select id="history-user-filter" onchange="renderHistory()">
+          <option value="me">My Grades</option>
+          <option value="all">Everyone</option>
+        </select>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Paper</th>
+              <th>Year</th>
+              <th>Session</th> 
+              <th>Score</th>
+              <th>%</th>
+              <th>Time Taken</th>
+              <th>Notes</th>
+            </tr>
+          </thead>
+          <tbody id="history-tbody">
+            <tr><td colspan="8" class="no-data-row">No grades yet.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+</div>
+
+<div id="toast"></div>
+
+<script>
+/* ═══════════════════════════════════════════════
+   🔥 FIREBASE CONFIG — Replace with your own!
+   ═══════════════════════════════════════════════ */
+const FIREBASE_CONFIG = {
+  apiKey:            "AIzaSyCf3Z8aNY9P-5kI_aL9I2o9ulAWLExYjwg",
+  authDomain:        "pastpaperio.firebaseapp.com",
+  projectId:         "pastpaperio",
+  storageBucket:     "pastpaperio.firebasestorage.app",
+  messagingSenderId: "291141137214",
+  appId:             "1:291141137214:web:d1dce73090dfc53f2d326f"
+};
+
+/* ═══════════════════════════════════════════════
+   USER & PAPER DEFINITIONS
+   ═══════════════════════════════════════════════ */
+const USERS = {
+  daniel_essam: {
+    id:'daniel_essam', name:'Daniel Essam', initials:'DE', color:'#4da6ff',
+    papers:[
+      { key:'bio_4_ol', subject:'Biology OL',        paper:'4',  board:'Cambridge', variant:true,  duration:75 },
+      { key:'phys_4', subject:'Physics',           paper:'4',  board:'Cambridge', variant:true,  duration:75 },
+      { key:'phys_6', subject:'Physics',           paper:'6',  board:'Cambridge', variant:true,  duration:60 },
+      { key:'phys_2', subject:'Physics',           paper:'2',  board:'Cambridge', variant:true,  duration:45 },
+      { key:'cs_1',   subject:'Computer Science',  paper:'1',  board:'Cambridge', variant:true,  duration:null },
+      { key:'cs_2',   subject:'Computer Science',  paper:'2',  board:'Cambridge', variant:true,  duration:null },
+      { key:'math_m1',subject:'Maths',             paper:'M1', board:'Edexcel',   variant:false, duration:null },
+    ]
+  },
+  bavly_khalil: {
+    id:'bavly_khalil', name:'Bavly Khalil', initials:'BK', color:'#00d38d',
+    papers:[
+      { key:'phys_4', subject:'Physics', paper:'4', board:'Cambridge', variant:true,  duration:75 },
+      { key:'phys_6', subject:'Physics', paper:'6', board:'Cambridge', variant:true,  duration:60 },
+      { key:'phys_2', subject:'Physics', paper:'2', board:'Cambridge', variant:true,  duration:45 },
+      { key:'bio_4_al',  subject:'Biology AL', paper:'4', board:'Cambridge', variant:true,  duration:75 },
+      { key:'bio_5_al',  subject:'Biology AL', paper:'5', board:'Cambridge', variant:true,  duration:null },
+    ]
+  },
+  daniel_youssef: {
+    id:'daniel_youssef', name:'Daniel Youssef', initials:'DY', color:'#ffb830',
+    papers:[
+      { key:'math_p3', subject:'Maths', paper:'P3', board:'Edexcel',   variant:false, duration:null },
+      { key:'math_p4', subject:'Maths', paper:'P4', board:'Edexcel',   variant:false, duration:null },
+      { key:'math_s1', subject:'Maths', paper:'S1', board:'Edexcel',   variant:false, duration:null },
+      { key:'ict_1',   subject:'ICT',   paper:'1',  board:'Cambridge', variant:true,  duration:null },
+      { key:'ict_2',   subject:'ICT',   paper:'2',  board:'Cambridge', variant:true,  duration:null },
+      { key:'ict_3',   subject:'ICT',   paper:'3',  board:'Cambridge', variant:true,  duration:null },
+    ]
+  }
+};
+
+const SHARED_PAPERS = [
+  { label:'Physics Paper 4',  subject:'Physics', paper:'4', users:['daniel_essam','bavly_khalil'] },
+  { label:'Physics Paper 6',  subject:'Physics', paper:'6', users:['daniel_essam','bavly_khalil'] },
+  { label:'Physics Paper 2',  subject:'Physics', paper:'2', users:['daniel_essam','bavly_khalil'] },
+];
+
+/* ═══════════════════════════════════════════════
+   APP STATE
+   ═══════════════════════════════════════════════ */
+let currentUser = null;
+let db = null;
+let allGrades = [];
+let charts = {};
+let memGrades = [];
+let memIdCtr = 1;
+let isDemo = false;
+
+/* ═══════════════════════════════════════════════
+   INIT
+   ═══════════════════════════════════════════════ */
+function init() {
+  if (FIREBASE_CONFIG.apiKey !== 'YOUR_API_KEY') {
+    try {
+      firebase.initializeApp(FIREBASE_CONFIG);
+      db = firebase.firestore();
+      console.log('✅ Firebase connected');
+    } catch(e) {
+      console.warn('Firebase init failed:', e.message);
+    }
+  }
+
+  const today = new Date().toISOString().split('T')[0];
+  document.getElementById('log-date').value = today;
+  document.getElementById('log-year').value = new Date().getFullYear();
+}
+
+/* ═══════════════════════════════════════════════
+   LOGIN / LOGOUT
+   ═══════════════════════════════════════════════ */
+function login(uid) {
+  currentUser = USERS[uid];
+  document.getElementById('login-screen').classList.add('hidden');
+  document.getElementById('app').classList.remove('hidden');
+  document.getElementById('app').setAttribute('data-user', uid);
+  document.getElementById('user-avatar-nav').textContent = currentUser.initials;
+  document.getElementById('user-avatar-nav').style.background = currentUser.color;
+  document.getElementById('user-name-nav').textContent = currentUser.name.split(' ')[0];
+
+  if (!db) {
+    document.getElementById('firebase-banner')?.classList.remove('hidden');
+    isDemo = true;
+  }
+
+  initLogForm();
+  initHistoryFilter();
+  loadAllGrades().then(() => {
+    renderDashboard();
+    renderHistory();
+  });
+}
+
+function logout() {
+  currentUser = null;
+  allGrades = [];
+  Object.values(charts).forEach(c => { try { c.destroy(); } catch(e){} });
+  charts = {};
+  document.getElementById('app').classList.add('hidden');
+  document.getElementById('login-screen').classList.remove('hidden');
+}
+
+/* ═══════════════════════════════════════════════
+   DATA — FIREBASE + FALLBACK
+   ═══════════════════════════════════════════════ */
+async function loadAllGrades() {
+  try {
+    if (db) {
+      const snap = await db.collection('grades').orderBy('date','asc').get();
+      allGrades = snap.docs.map(d => {
+        const data = d.data();
+        return { id:d.id, ...data, date: data.date?.toDate ? data.date.toDate() : new Date(data.date) };
+      });
+    } else {
+      allGrades = [...memGrades].sort((a,b) => new Date(a.date)-new Date(b.date));
+    }
+  } catch(e) {
+    console.error('Load error:', e);
+    allGrades = [...memGrades];
+  }
+}
+
+async function saveGrade(data) {
+  const grade = {
+    ...data,
+    percentage: Math.round((data.score / data.maxScore) * 100),
+    date: data.date || new Date()
+  };
+  try {
+    if (db) {
+      const ref = await db.collection('grades').add({
+        ...grade, date: firebase.firestore.Timestamp.fromDate(new Date(grade.date))
+      });
+      allGrades.push({ id:ref.id, ...grade, date:new Date(grade.date) });
+      allGrades.sort((a,b) => new Date(a.date)-new Date(b.date));
+    } else {
+      const id = String(memIdCtr++);
+      const g = { id, ...grade, date:new Date(grade.date) };
+      memGrades.push(g);
+      allGrades.push(g);
+      allGrades.sort((a,b) => new Date(a.date)-new Date(b.date));
+    }
+    return true;
+  } catch(e) {
+    console.error('Save error:', e);
+    return false;
+  }
+}
+
+/* ═══════════════════════════════════════════════
+   NAVIGATION
+   ═══════════════════════════════════════════════ */
+function switchTab(tabId) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+  document.getElementById('tab-'+tabId).classList.add('active');
+  document.querySelector(`[data-tab="${tabId}"]`).classList.add('active');
+  if (tabId === 'dashboard') renderDashboard();
+  if (tabId === 'history') renderHistory();
+}
+
+/* ═══════════════════════════════════════════════
+   DASHBOARD
+   ═══════════════════════════════════════════════ */
+function renderDashboard() {
+  if (!currentUser) return;
+  renderStats();
+  renderMyCharts();
+  renderCompareCharts();
+}
+
+function renderStats() {
+  const mine = allGrades.filter(g => g.userId === currentUser.id);
+  const total = mine.length;
+  const avg = total > 0 ? Math.round(mine.reduce((s,g) => s+g.percentage, 0)/total) : null;
+
+  const paperMap = {};
+  mine.forEach(g => {
+    const k = `${g.subject} ${g.paper}`;
+    if (!paperMap[k]) paperMap[k] = { sum:0, cnt:0 };
+    paperMap[k].sum += g.percentage;
+    paperMap[k].cnt++;
+  });
+  let bestPaper = '—', bestAvg = 0, bestSub = '';
+  Object.entries(paperMap).forEach(([k,v]) => {
+    const a = v.sum/v.cnt;
+    if (a > bestAvg) { bestAvg = a; bestPaper = k; bestSub = Math.round(a)+'% avg'; }
+  });
+
+  document.getElementById('stat-total').textContent = total;
+  document.getElementById('stat-avg').textContent = avg !== null ? avg+'%' : '—';
+  document.getElementById('stat-best').textContent = bestPaper;
+  document.getElementById('stat-best-pct').textContent = bestPaper !== '—' ? bestSub : 'no data yet';
+}
+
+function renderMyCharts() {
+  const container = document.getElementById('my-charts');
+  container.innerHTML = '';
+
+  currentUser.papers.forEach(paper => {
+    const paperGrades = allGrades
+      .filter(g => g.userId === currentUser.id && g.subject === paper.subject && g.paper === paper.paper)
+      .sort((a,b) => new Date(a.date)-new Date(b.date));
+
+    const label = getPaperLabel(paper);
+    const canvasId = 'chart_my_' + paper.key;
+    const avg = getAvg(paperGrades);
+
+    const card = document.createElement('div');
+    card.className = 'chart-card';
+    card.innerHTML = `
+      <div class="chart-header">
+        <div class="chart-title">
+          <span class="paper-tag">${label}</span>
+          <span class="board-tag">${paper.board}</span>
+        </div>
+        <span class="chart-avg mono">${avg !== null ? avg+'%' : '—'}</span>
+      </div>
+      <div class="chart-body">
+        ${paperGrades.length === 0
+          ? '<div class="no-data">No attempts yet — log your first! 📝</div>'
+          : `<canvas id="${canvasId}"></canvas>`}
+      </div>`;
+    container.appendChild(card);
+
+    if (paperGrades.length > 0) {
+      createLineChart(canvasId, [{
+        label: currentUser.name,
+        data: paperGrades.map(g => ({ x: fmtDate(g.date), y: g.percentage, rawScore: g.score, max: g.maxScore, time: g.timeTaken })),
+        color: currentUser.color
+      }]);
+    }
+  });
+}
+
+function renderCompareCharts() {
+  const relevant = SHARED_PAPERS.filter(sp => sp.users.includes(currentUser.id));
+  const section = document.getElementById('compare-section');
+  const container = document.getElementById('compare-charts');
+
+  if (relevant.length === 0) { section.classList.add('hidden'); return; }
+  section.classList.remove('hidden');
+  container.innerHTML = '';
+
+  relevant.forEach(sp => {
+    const canvasId = `chart_cmp_${sp.subject.replace(/ /g,'_')}_${sp.paper}`;
+    const datasets = sp.users.map(uid => {
+      const u = USERS[uid];
+      const grades = allGrades
+        .filter(g => g.userId === uid && g.subject === sp.subject && g.paper === sp.paper)
+        .sort((a,b) => new Date(a.date)-new Date(b.date));
+      return {
+        label: u.name,
+        data: grades.map(g => ({ x: fmtDate(g.date), y: g.percentage, rawScore: g.score, max: g.maxScore })),
+        color: u.color
+      };
+    });
+
+    const allHasData = datasets.some(d => d.data.length > 0);
+    const legendHtml = sp.users.map(uid =>
+      `<span class="legend-dot" style="background:${USERS[uid].color}"></span>
+       <span style="color:${USERS[uid].color};font-size:12px;font-weight:600">${USERS[uid].name.split(' ')[0]}</span>`
+    ).join('');
+
+    const card = document.createElement('div');
+    card.className = 'chart-card chart-card--compare';
+    card.innerHTML = `
+      <div class="chart-header">
+        <div class="chart-title">
+          <span class="paper-tag" style="background:rgba(255,255,255,.06);color:var(--text)">${sp.label}</span>
+          <span class="compare-badge">⚔️ vs</span>
+        </div>
+        <div class="compare-legend">${legendHtml}</div>
+      </div>
+      <div class="chart-body">
+        ${!allHasData
+          ? '<div class="no-data">No data yet for this paper</div>'
+          : `<canvas id="${canvasId}"></canvas>`}
+      </div>`;
+    container.appendChild(card);
+    if (allHasData) createLineChart(canvasId, datasets, true);
+  });
+}
+
+function createLineChart(canvasId, datasets, multiLine = false) {
+  if (charts[canvasId]) { try { charts[canvasId].destroy(); } catch(e){} }
+  const canvas = document.getElementById(canvasId);
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+
+  charts[canvasId] = new Chart(ctx, {
+    type: 'line',
+    data: {
+      datasets: datasets.map(ds => ({
+        label: ds.label,
+        data: ds.data,
+        parsing: { xAxisKey: 'x', yAxisKey: 'y' },
+        borderColor: ds.color,
+        backgroundColor: hexAlpha(ds.color, 0.08),
+        borderWidth: 2.5,
+        pointRadius: 5,
+        pointHoverRadius: 7,
+        pointBackgroundColor: ds.color,
+        pointBorderColor: '#07090f',
+        pointBorderWidth: 2,
+        fill: !multiLine,
+        tension: 0.35
+      }))
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      animation: { duration: 600 },
+      plugins: {
+        legend: {
+          display: multiLine,
+          labels: { color:'#8baabf', font:{ family:'DM Sans', size:12 }, boxWidth:8, boxHeight:8, useBorderRadius:true, borderRadius:4 }
+        },
+        tooltip: {
+          backgroundColor:'#0e1320',
+          borderColor:'#1e3050',
+          borderWidth:1,
+          titleColor:'#d0def0',
+          bodyColor:'#8baabf',
+          callbacks: {
+            label: ctx => {
+              const d = ctx.raw;
+              let s = ` ${ctx.dataset.label}: ${d.y}%`;
+              if (d.rawScore !== undefined) s += ` (${d.rawScore}/${d.max})`;
+              if (d.time) s += ` · ${fmtTimeTaken(d.time)}`;
+              return s;
             }
-            
-            speechSynthesis.speak(utterance);
+          }
         }
+      },
+      scales: {
+        x: {
+          type: 'category',
+          ticks: { color:'#5a7898', font:{ family:'DM Sans', size:11 }, maxTicksLimit:8 },
+          grid: { color:'#1e3050' }
+        },
+        y: {
+          min: 0, max: 100,
+          ticks: { color:'#5a7898', font:{ family:'DM Sans', size:11 }, callback: v => v+'%' },
+          grid: { color:'#1e3050' }
+        }
+      }
+    }
+  });
+}
 
-        function scheduleTimer() {
-            const startTime = document.getElementById('startTime').value;
-            const duration = parseInt(document.getElementById('duration').value);
-            
-            if (!startTime || !duration) {
-                alert('Please fill in all fields');
-                return;
-            }
-            
-            durationMinutes = duration;
-            const [hours, minutes] = startTime.split(':');
-            const scheduledTime = new Date();
-            scheduledTime.setHours(parseInt(hours), parseInt(minutes), 0, 0);
-            
-            if (scheduledTime <= new Date()) {
-                scheduledTime.setDate(scheduledTime.getDate() + 1);
-            }
-            
-            document.getElementById('setup').classList.add('hidden');
-            document.getElementById('waiting').classList.remove('hidden');
-            
-            scheduledInterval = setInterval(() => {
-                const now = new Date();
-                const diff = scheduledTime - now;
-                
-                if (diff <= 0) {
-                    clearInterval(scheduledInterval);
-                    startTimer(duration);
-                } else {
-                    const hours = Math.floor(diff / 3600000);
-                    const mins = Math.floor((diff % 3600000) / 60000);
-                    const secs = Math.floor((diff % 60000) / 1000);
-                    document.getElementById('countdown').textContent = 
-                        `${String(hours).padStart(2, '0')}:${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
-                }
-            }, 100);
-        }
+/* ═══════════════════════════════════════════════
+   LOG GRADE
+   ═══════════════════════════════════════════════ */
+function initLogForm() {
+  const sel = document.getElementById('log-paper');
+  sel.innerHTML = '<option value="">Select paper…</option>';
+  currentUser.papers.forEach(p => {
+    const opt = document.createElement('option');
+    opt.value = p.key;
+    opt.textContent = getPaperLabel(p);
+    sel.appendChild(opt);
+  });
 
-        function startTimer(duration) {
-            document.getElementById('waiting').classList.add('hidden');
-            document.getElementById('running').classList.remove('hidden');
-            
-            const announcement = document.getElementById('announcement');
-            announcement.textContent = 'On behalf of the British Council, we wish you all good luck. You may start.';
-            speak('On behalf of the British Council, we wish you all good luck. You may start.');
-            
-            endTime = new Date(Date.now() + duration * 60000);
-            halfTimeAnnounced = false;
-            fiveMinAnnounced = false;
-            
-            updateTimer();
-            timerInterval = setInterval(updateTimer, 100);
-        }
+  sel.onchange = () => {
+    const p = currentUser.papers.find(pp => pp.key === sel.value);
+    const vg = document.getElementById('variant-group');
+    if (p && p.variant) {
+      vg.classList.remove('hidden');
+    } else {
+      vg.classList.add('hidden');
+    }
+    const hint = document.getElementById('log-duration-hint');
+    if (p && p.duration) {
+      const h = Math.floor(p.duration/60), m = p.duration%60;
+      hint.textContent = `Standard duration: ${h > 0 ? h+'h ' : ''}${m > 0 ? m+'min' : ''}`;
+    } else {
+      hint.textContent = '';
+    }
+  };
+}
 
-        function updateTimer() {
-            const now = new Date();
-            const remaining = endTime - now;
-            
-            if (remaining <= 0) {
-                clearInterval(timerInterval);
-                finishTimer();
-                return;
-            }
-            
-            const totalMinutes = Math.floor(remaining / 60000);
-            const seconds = Math.floor((remaining % 60000) / 1000);
-            
-            document.getElementById('timer').textContent = 
-                `${String(totalMinutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
-            
-            const elapsed = durationMinutes * 60000 - remaining;
-            const halfTime = durationMinutes * 30000;
-            
-            const announcement = document.getElementById('announcement');
-            
-            if (!halfTimeAnnounced && elapsed >= halfTime) {
-                halfTimeAnnounced = true;
-                announcement.textContent = 'Half of the time has passed';
-                speak('Half of the time has passed');
-            }
-            
-            if (!fiveMinAnnounced && remaining <= 300000 && remaining > 299000) {
-                fiveMinAnnounced = true;
-                announcement.textContent = '5 minutes remaining';
-                speak('5 minutes remaining');
-            }
-        }
+function onTimeModeChange() {
+  const mode = document.querySelector('input[name="time-mode"]:checked').value;
+  document.getElementById('manual-time-fields').classList.toggle('hidden', mode !== 'manual');
+}
 
-        function finishTimer() {
-            document.getElementById('running').classList.add('hidden');
-            document.getElementById('finished').classList.remove('hidden');
-            speak('Pens down');
-        }
+function updateLogPct() {
+  const score = parseFloat(document.getElementById('log-score').value);
+  const max = parseFloat(document.getElementById('log-max').value);
+  const el = document.getElementById('log-pct-display');
+  if (!isNaN(score) && !isNaN(max) && max > 0) {
+    const pct = Math.round((score/max)*100);
+    const col = pct >= 70 ? '#00d38d' : pct >= 50 ? '#ffb830' : '#ff4565';
+    el.innerHTML = `<span style="color:${col};font-size:20px;font-weight:700">${pct}%</span>  <span style="color:#5a7898">${score} / ${max}</span>`;
+  } else {
+    el.textContent = 'Enter scores above…';
+  }
+}
 
-        function stopTimer() {
-            if (timerInterval) {
-                clearInterval(timerInterval);
-            }
-            resetTimer();
-        }
+async function submitGrade(event) {
+  event.preventDefault();
+  const paperKey = document.getElementById('log-paper').value;
+  if (!paperKey) { showToast('Please select a paper', 'error'); return; }
+  const paper = currentUser.papers.find(p => p.key === paperKey);
+  const variant = paper.variant ? document.getElementById('log-variant').value : '';
+  const yearVal = document.getElementById('log-year').value;
+  const sessionVal = document.getElementById('log-session').value; 
+  const score = parseFloat(document.getElementById('log-score').value);
+  const maxScore = parseFloat(document.getElementById('log-max').value);
+  const dateVal = document.getElementById('log-date').value;
+  const mode = document.querySelector('input[name="time-mode"]:checked').value;
+  const notes = document.getElementById('log-notes').value;
 
-        function cancelTimer() {
-            if (scheduledInterval) {
-                clearInterval(scheduledInterval);
-            }
-            resetTimer();
-        }
+  if (!yearVal) { showToast('Please enter a year', 'error'); return; }
+  if (isNaN(score) || isNaN(maxScore) || maxScore <= 0) { showToast('Invalid score values', 'error'); return; }
+  if (!sessionVal) { showToast('Please select an exam session', 'error'); return; }
 
-        function resetTimer() {
-            if (scheduledInterval) clearInterval(scheduledInterval);
-            if (timerInterval) clearInterval(timerInterval);
-            
-            document.getElementById('setup').classList.remove('hidden');
-            document.getElementById('waiting').classList.add('hidden');
-            document.getElementById('running').classList.add('hidden');
-            document.getElementById('finished').classList.add('hidden');
-            
-            document.getElementById('announcement').textContent = '';
-            halfTimeAnnounced = false;
-            fiveMinAnnounced = false;
-        }
-    </script>
+  let timeTaken = null;
+  if (mode === 'manual') {
+    const mins = parseInt(document.getElementById('log-time-mins').value)||0;
+    const secs = parseInt(document.getElementById('log-time-secs').value)||0;
+    timeTaken = mins*60+secs;
+  }
+
+  const btn = document.getElementById('log-submit-btn');
+  btn.disabled = true;
+  btn.textContent = 'Saving…';
+
+  const ok = await saveGrade({
+    userId: currentUser.id,
+    subject: paper.subject,
+    paper: paper.paper,
+    variant,
+    board: paper.board,
+    year: parseInt(yearVal),
+    session: sessionVal, 
+    score,
+    maxScore,
+    timeTaken,
+    date: dateVal ? new Date(dateVal+'T12:00:00') : new Date(),
+    notes
+  });
+
+  btn.disabled = false;
+  btn.textContent = 'Save Grade ✓';
+
+  if (ok) {
+    showToast('Grade saved! 🎉');
+    event.target.reset();
+    document.getElementById('variant-group').classList.add('hidden');
+    document.getElementById('log-duration-hint').textContent = '';
+    document.getElementById('log-pct-display').textContent = 'Enter scores above…';
+    document.getElementById('log-date').value = new Date().toISOString().split('T')[0];
+    document.getElementById('log-year').value = new Date().getFullYear();
+    document.getElementById('log-session').value = '';
+    renderDashboard();
+    renderHistory();
+  } else {
+    showToast('Failed to save. Check console.', 'error');
+  }
+}
+
+/* ═══════════════════════════════════════════════
+   HISTORY
+   ═══════════════════════════════════════════════ */
+function initHistoryFilter() {
+  const sel = document.getElementById('history-filter');
+  sel.innerHTML = '<option value="all">All Papers</option>';
+  const subjects = [...new Set(currentUser.papers.map(p => p.subject))];
+  subjects.forEach(s => {
+    const opt = document.createElement('option');
+    opt.value = s; opt.textContent = s; sel.appendChild(opt);
+  });
+}
+
+function renderHistory() {
+  if (!currentUser) return;
+  const filter = document.getElementById('history-filter').value;
+  const userFilter = document.getElementById('history-user-filter').value;
+
+  let grades = [...allGrades];
+  if (userFilter === 'me') grades = grades.filter(g => g.userId === currentUser.id);
+  if (filter !== 'all') grades = grades.filter(g => g.subject === filter);
+  grades.sort((a,b) => new Date(b.date)-new Date(a.date));
+
+  const tbody = document.getElementById('history-tbody');
+  if (grades.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="8" class="no-data-row">No grades yet — start logging! 📝</td></tr>';
+    return;
+  }
+
+  tbody.innerHTML = grades.map(g => {
+    const user = USERS[g.userId];
+    const pctCls = g.percentage >= 70 ? 'pct-good' : g.percentage >= 50 ? 'pct-ok' : 'pct-low';
+    const nameTag = userFilter === 'all'
+      ? `<span style="color:${user?.color||'#fff'};font-size:11px;font-weight:700">${user?.initials||'?'}</span> `
+      : '';
+    const paperDisp = g.board === 'Cambridge'
+      ? `${g.subject} ${g.paper}${g.variant||''}`
+      : `${g.subject} ${g.paper}`;
+    return `<tr>
+      <td style="white-space:nowrap">${fmtDateShort(g.date)}</td>
+      <td>${nameTag}<span class="paper-tag-sm">${paperDisp}</span><span class="board-tag-sm">${g.board}</span></td>
+      <td style="white-space:nowrap;font-size:12px;color:var(--text)">${g.year || '—'}</td>
+      <td style="white-space:nowrap;font-size:12px;color:var(--muted2)">${g.session || '—'}</td>
+      <td><span class="score-val mono">${g.score}/${g.maxScore}</span></td>
+      <td><span class="pct-badge ${pctCls}">${g.percentage}%</span></td>
+      <td style="white-space:nowrap">${g.timeTaken ? fmtTimeTaken(g.timeTaken) : '—'}</td>
+      <td style="color:var(--muted2);font-size:12px">${g.notes||'—'}</td>
+    </tr>`;
+  }).join('');
+}
+
+/* ═══════════════════════════════════════════════
+   HELPERS
+   ═══════════════════════════════════════════════ */
+function getPaperLabel(paper) {
+  if (paper.board === 'Cambridge') return `${paper.subject} Paper ${paper.paper}`;
+  return `${paper.subject} ${paper.paper}`;
+}
+
+function getAvg(grades) {
+  if (!grades || grades.length === 0) return null;
+  return Math.round(grades.reduce((s,g) => s+g.percentage, 0)/grades.length);
+}
+
+function fmtDate(date) {
+  if (!date) return '';
+  return new Date(date).toLocaleDateString('en-GB', { day:'2-digit', month:'short' });
+}
+
+function fmtDateShort(date) {
+  if (!date) return '';
+  return new Date(date).toLocaleDateString('en-GB', { day:'2-digit', month:'short', year:'2-digit' });
+}
+
+function fmtTimeTaken(seconds) {
+  if (!seconds) return '—';
+  const h = Math.floor(seconds/3600), m = Math.floor((seconds%3600)/60), s = seconds%60;
+  if (h > 0) return `${h}h ${pad(m)}m`;
+  return `${m}m ${pad(s)}s`;
+}
+
+function pad(n) { return String(n).padStart(2,'0'); }
+
+function hexAlpha(hex, alpha) {
+  const r = parseInt(hex.slice(1,3),16), g = parseInt(hex.slice(3,5),16), b = parseInt(hex.slice(5,7),16);
+  return `rgba(${r},${g},${b},${alpha})`;
+}
+
+function showToast(msg, type='success') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = `toast toast--${type} toast--visible`;
+  setTimeout(() => t.classList.remove('toast--visible'), 3200);
+}
+
+/* ═══════════════════════════════════════════════
+   START
+   ═══════════════════════════════════════════════ */
+init();
+</script>
 </body>
 </html>
