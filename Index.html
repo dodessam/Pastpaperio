@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Revision Squad · Past Paper Tracker</title>
+<title>TGTHR</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
@@ -71,9 +71,9 @@ label{font-size:13px;color:var(--muted2);font-weight:500;margin-bottom:4px;displ
 .section-title::before{content:'';display:block;width:3px;height:16px;border-radius:2px;background:var(--user-color,var(--de))}
 
 /* ── LOGIN SCREEN ── */
-#login-screen{position:fixed;inset:0;z-index:100;display:flex;align-items:center;justify-content:center;padding:20px}
-.login-bg{position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 0%, rgba(77,166,255,.06) 0%, transparent 60%)}
-.login-box{position:relative;text-align:center;max-width:560px;width:100%}
+#login-screen{position:fixed;inset:0;z-index:100;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:40px 24px 60px;overflow-y:auto}
+.login-bg{position:fixed;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 0%, rgba(77,166,255,.06) 0%, transparent 60%);pointer-events:none}
+.login-box{position:relative;text-align:center;max-width:560px;width:100%;flex-shrink:0}
 .login-logo{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin-bottom:40px}
 .login-logo span{color:var(--de)}
 .login-title{font-family:'Syne',sans-serif;font-size:38px;font-weight:800;line-height:1.1;margin-bottom:8px}
@@ -98,13 +98,59 @@ label{font-size:13px;color:var(--muted2);font-weight:500;margin-bottom:4px;displ
 .login-notice code{font-family:'JetBrains Mono',monospace;font-size:11px;background:rgba(255,255,255,.05);padding:1px 5px;border-radius:4px;color:var(--text)}
 .demo-btn{margin-top:12px;width:100%}
 
+/* ── PIN MODAL ── */
+#pin-modal{position:fixed;inset:0;z-index:200;display:flex;align-items:center;justify-content:center;padding:20px;background:rgba(7,9,15,.85);backdrop-filter:blur(12px)}
+.pin-box{background:var(--s1);border:1px solid var(--border);border-radius:var(--r-lg);padding:36px 28px 28px;width:100%;max-width:320px;text-align:center;position:relative}
+.pin-avatar{width:60px;height:60px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-size:20px;font-weight:800;margin:0 auto 14px}
+.pin-name{font-family:'Syne',sans-serif;font-size:18px;font-weight:800;margin-bottom:4px}
+.pin-sub{font-size:13px;color:var(--muted2);margin-bottom:28px}
+.pin-dots{display:flex;justify-content:center;gap:14px;margin-bottom:28px}
+.pin-dot{width:14px;height:14px;border-radius:50%;border:2px solid var(--border2);background:transparent;transition:all .15s}
+.pin-dot.filled{border-color:var(--pin-color);background:var(--pin-color)}
+.pin-dot.error{border-color:var(--danger);background:var(--danger)}
+.pin-keypad{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.pin-key{background:var(--s2);border:1px solid var(--border2);border-radius:var(--r);height:56px;font-family:'Syne',sans-serif;font-size:18px;font-weight:700;color:var(--text);cursor:pointer;transition:all .15s;display:flex;align-items:center;justify-content:center}
+.pin-key:hover{background:var(--s3);border-color:var(--pin-color)}
+.pin-key:active{transform:scale(.94)}
+.pin-key--del{font-size:14px;color:var(--muted2)}
+.pin-key--del:hover{color:var(--danger);border-color:var(--danger)}
+.pin-key--empty{opacity:0;pointer-events:none}
+.pin-error-msg{font-size:12px;color:var(--danger);margin-top:14px;min-height:16px;font-weight:600}
+.pin-cancel{position:absolute;top:14px;right:14px;background:none;border:none;color:var(--muted);cursor:pointer;font-size:12px;padding:4px 8px;border-radius:6px;font-family:'DM Sans',sans-serif}
+.pin-cancel:hover{color:var(--text);background:var(--s2)}
+@keyframes pinShake{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-8px)}40%,80%{transform:translateX(8px)}}
+.pin-shake{animation:pinShake .35s ease}
+
+
+/* ── LOGIN OVERVIEW CHARTS ── */
+.login-overview{position:relative;width:100%;max-width:1100px;margin:40px auto 0;text-align:left;padding:0 4px}
+.login-overview-title{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:16px;display:flex;align-items:center;gap:10px}
+.login-overview-title::before{content:'';display:block;width:3px;height:14px;border-radius:2px;background:var(--de)}
+.login-overview-sub-title{font-family:'Syne',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin:24px 0 14px;display:flex;align-items:center;gap:10px}
+.login-overview-sub-title::before{content:'';display:block;width:3px;height:12px;border-radius:2px;background:var(--border2)}
+.login-overview-wide{margin-bottom:24px}
+.login-overview-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.login-chart-card{background:var(--s1);border:1px solid var(--border);border-radius:var(--r-lg);padding:18px;transition:border-color .2s}
+.login-chart-card:hover{border-color:var(--border2)}
+.login-chart-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;gap:8px;flex-wrap:wrap}
+.login-chart-user{display:flex;align-items:center;gap:10px;min-width:0}
+.login-chart-avatar{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-size:10px;font-weight:800;flex-shrink:0}
+.login-chart-name{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;white-space:nowrap}
+.login-chart-sub{font-size:11px;color:var(--muted2);margin-top:1px}
+.login-chart-avg{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600;color:var(--muted2);white-space:nowrap;flex-shrink:0}
+.login-chart-body{position:relative;height:190px}
+.login-chart-body--tall{position:relative;height:280px}
+.login-overview-loading{display:flex;align-items:center;justify-content:center;height:160px;color:var(--muted);font-size:13px;gap:10px}
+.login-spinner{width:18px;height:18px;border:2px solid var(--border2);border-top-color:var(--de);border-radius:50%;animation:spin .8s linear infinite;flex-shrink:0}
+@keyframes spin{to{transform:rotate(360deg)}}
+
 /* ── NAV ── */
 #app{position:relative;z-index:1}
 nav{position:sticky;top:0;z-index:50;background:rgba(7,9,15,.92);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);padding:0 24px}
 .nav-inner{display:flex;align-items:center;height:56px;gap:0}
 .nav-brand{font-family:'Syne',sans-serif;font-size:14px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--user-color,var(--de));margin-right:32px;white-space:nowrap}
 .nav-tabs{display:flex;gap:2px;flex:1}
-.nav-link{padding:6px 14px;border-radius:6px;cursor:pointer;font-size:13px;font-weight:500;color:var(--muted2);transition:all .2s;border:none;background:none;text-decoration:none}
+.nav-link{padding:6px 14px;border-radius:6px;cursor:pointer;font-size:13px;font-weight:500;color:var(--muted2);transition:all .2s;border:none;background:none;text-decoration:none;white-space:nowrap}
 .nav-link:hover{color:var(--text);background:var(--s2)}
 .nav-link.active{color:var(--user-color,var(--de));background:var(--user-dim,var(--de-dim))}
 .nav-user{display:flex;align-items:center;gap:10px;margin-left:auto;padding-left:16px}
@@ -113,6 +159,35 @@ nav{position:sticky;top:0;z-index:50;background:rgba(7,9,15,.92);backdrop-filter
 .nav-name{font-size:13px;font-weight:600;cursor:pointer}
 .nav-logout{font-size:12px;color:var(--muted);cursor:pointer;padding:4px 8px;border-radius:6px;border:1px solid var(--border)}
 .nav-logout:hover{color:var(--danger);border-color:var(--danger)}
+
+/* ── BOTTOM NAV (mobile) ── */
+.bottom-nav{display:none}
+
+/* ── BOTTOM NAV STYLES ── */
+.bottom-nav{
+  position:fixed;bottom:0;left:0;right:0;z-index:50;
+  background:rgba(7,9,15,.96);backdrop-filter:blur(20px);
+  border-top:1px solid var(--border);
+  display:flex;align-items:stretch;
+  padding-bottom:env(safe-area-inset-bottom);
+  height:calc(60px + env(safe-area-inset-bottom));
+}
+.bottom-nav-item{
+  flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:4px;border:none;background:none;color:var(--muted);
+  font-family:'DM Sans',sans-serif;font-size:10px;font-weight:600;
+  letter-spacing:.3px;cursor:pointer;text-decoration:none;
+  transition:color .2s;padding:0;position:relative;
+}
+.bottom-nav-item svg{width:20px;height:20px;stroke:currentColor;transition:stroke .2s}
+.bottom-nav-item.active{color:var(--user-color,var(--de))}
+.bottom-nav-item.active svg{stroke:var(--user-color,var(--de))}
+.bottom-nav-item.active::before{
+  content:'';position:absolute;top:0;left:20%;right:20%;
+  height:2px;border-radius:0 0 2px 2px;
+  background:var(--user-color,var(--de));
+}
+.bottom-nav-switch{color:var(--muted2)}
 
 /* ── MAIN ── */
 main{max-width:1100px;margin:0 auto;padding:28px 24px 60px}
@@ -189,18 +264,71 @@ tbody tr:last-child td{border:none}
 #app[data-user=daniel_youssef]{--user-color:var(--dy);--user-dim:var(--dy-dim);--user-glow:var(--dy-glow)}
 
 /* ── RESPONSIVE ── */
-@media(max-width:768px){
-  .user-cards{grid-template-columns:1fr}
-  .nav-tabs{gap:0;overflow-x:auto}
-  .nav-link{font-size:12px;padding:5px 10px}
-  .stats-row{grid-template-columns:1fr 1fr}
-  .charts-grid{grid-template-columns:1fr}
-  .form-row,.form-row.three{grid-template-columns:1fr}
-  main{padding:16px 14px 60px}
+
+/* Tablet */
+@media(max-width:900px){
+  .login-overview-grid{grid-template-columns:1fr 1fr}
+  .login-chart-body--tall{height:240px}
 }
-@media(max-width:480px){
+
+/* Large mobile */
+@media(max-width:768px){
+  #login-screen{padding:32px 16px 48px}
+  .login-title{font-size:32px}
+  .login-sub{margin-bottom:32px;font-size:14px}
+  .user-cards{grid-template-columns:repeat(3,1fr);gap:10px}
+  .user-card{padding:16px 10px}
+  .user-avatar{width:44px;height:44px;font-size:15px;margin-bottom:8px}
+  .user-card h3{font-size:13px}
+  .user-card p{font-size:11px}
+  .login-overview{margin-top:28px}
+  .login-chart-body{height:170px}
+  .login-chart-body--tall{height:220px}
+  /* Hide top nav tabs on mobile — replaced by bottom nav */
+  nav{padding:0 16px}
+  .nav-tabs{display:none}
+  .nav-inner{height:52px}
+  .nav-brand{margin-right:0}
+  .nav-name{display:none}
+  .nav-logout{display:none}
+  /* Show bottom nav */
+  .bottom-nav{display:flex}
+  /* Extra bottom padding so content clears the bottom nav */
+  main{padding:16px 14px 80px}
+  .stats-row{grid-template-columns:1fr 1fr;gap:12px}
+  .stat-value{font-size:26px}
+  .charts-grid{grid-template-columns:1fr}
+  .chart-body{height:160px}
+  .log-card{padding:20px 16px}
+  .form-row,.form-row.three{grid-template-columns:1fr}
+  .history-filters{gap:8px}
+  .history-filters select{min-width:120px;font-size:13px}
+  table thead th:nth-child(4),table tbody td:nth-child(4),
+  table thead th:nth-child(7),table tbody td:nth-child(7),
+  table thead th:nth-child(8),table tbody td:nth-child(8){display:none}
+}
+
+/* Small mobile */
+@media(max-width:540px){
+  .login-overview-grid{grid-template-columns:1fr}
+  .user-cards{gap:8px}
+  .compare-legend{gap:6px}
+  .compare-legend span{font-size:11px}
+}
+
+/* XS mobile */
+@media(max-width:400px){
+  #login-screen{padding:24px 12px 40px}
+  .login-title{font-size:26px}
+  .user-cards{grid-template-columns:1fr;gap:8px}
+  .user-card{display:flex;align-items:center;gap:14px;padding:14px 16px;text-align:left}
+  .user-avatar{width:40px;height:40px;font-size:13px;margin:0;flex-shrink:0}
+  .user-card h3{font-size:14px}
   .stats-row{grid-template-columns:1fr}
-  .login-title{font-size:28px}
+  .login-chart-body{height:160px}
+  .login-chart-body--tall{height:200px}
+  .login-chart-header{flex-direction:column;align-items:flex-start;gap:6px}
+  .login-chart-avg{align-self:flex-end}
 }
 </style>
 </head>
@@ -209,24 +337,55 @@ tbody tr:last-child td{border:none}
 <div id="login-screen">
   <div class="login-bg"></div>
   <div class="login-box">
-    <div class="login-logo">Revision <span>Squad</span></div>
-    <h1 class="login-title">Past Paper<br><span>Tracker</span></h1>
-    <p class="login-sub">Track your progress. Beat your friends. Ace the exams.</p>
+    
+    <h1 class="login-title">Together<br><span>Hnng7</span></h1>
     <div class="user-cards">
-      <div class="user-card" data-uid="daniel_essam" onclick="login('daniel_essam')">
+      <div class="user-card" data-uid="daniel_essam" onclick="openPin('daniel_essam')">
         <div class="user-avatar" style="background:rgba(77,166,255,.2);color:#4da6ff">DE</div>
         <h3>Daniel Essam</h3>
         <p>Bio · Physics · CS · M1</p>
       </div>
-      <div class="user-card" data-uid="bavly_khalil" onclick="login('bavly_khalil')">
+      <div class="user-card" data-uid="bavly_khalil" onclick="openPin('bavly_khalil')">
         <div class="user-avatar" style="background:rgba(0,211,141,.2);color:#00d38d">BK</div>
         <h3>Bavly Khalil</h3>
         <p>Bio · Physics</p>
       </div>
-      <div class="user-card" data-uid="daniel_youssef" onclick="login('daniel_youssef')">
+      <div class="user-card" data-uid="daniel_youssef" onclick="openPin('daniel_youssef')">
         <div class="user-avatar" style="background:rgba(255,184,48,.2);color:#ffb830">DY</div>
         <h3>Daniel Youssef</h3>
         <p>Maths · ICT</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── LOGIN OVERVIEW CHARTS ── -->
+  <div class="login-overview" id="login-overview">
+    <!-- All-papers combined bar chart (FIRST) -->
+    <div class="login-overview-wide">
+      <div class="login-chart-card" id="login-allpapers-card">
+        <div class="login-chart-header">
+          <div class="login-chart-user">
+            <div class="login-chart-name" style="font-size:13px;color:var(--muted2)">All Papers · Average % by Paper</div>
+          </div>
+          <div class="compare-legend" id="login-all-legend">
+            <span class="legend-dot" style="background:#4da6ff"></span><span style="color:#4da6ff;font-size:12px;font-weight:600">Daniel E</span>
+            <span class="legend-dot" style="background:#00d38d"></span><span style="color:#00d38d;font-size:12px;font-weight:600">Bavly</span>
+            <span class="legend-dot" style="background:#ffb830"></span><span style="color:#ffb830;font-size:12px;font-weight:600">Daniel Y</span>
+          </div>
+        </div>
+        <div class="login-chart-body login-chart-body--tall">
+          <canvas id="login-chart-allpapers"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- Per-user paper charts (BELOW) -->
+    <div class="login-overview-grid" id="login-user-charts">
+      <div class="login-chart-card" style="grid-column:1/-1">
+        <div class="login-overview-loading">
+          <div class="login-spinner"></div>
+          <span>Loading grades…</span>
+        </div>
       </div>
     </div>
   </div>
@@ -239,7 +398,7 @@ tbody tr:last-child td{border:none}
       <div class="nav-tabs">
         <button class="nav-link active" data-tab="dashboard" onclick="switchTab('dashboard')">Dashboard</button>
         <button class="nav-link" data-tab="log" onclick="switchTab('log')">Log Grade</button>
-        <a href="NarrativeTimer.html" class="nav-link">Timer</a>
+        <button class="nav-link" data-tab="timer" onclick="switchTab('timer')">Timer</button>
         <button class="nav-link" data-tab="history" onclick="switchTab('history')">History</button>
       </div>
       <div class="nav-user">
@@ -273,7 +432,6 @@ tbody tr:last-child td{border:none}
       </div>
 
       <div class="section-gap">
-        <div class="section-title">My Papers</div>
         <div class="charts-grid" id="my-charts">
           <div class="chart-card"><div class="no-data">Loading…</div></div>
         </div>
@@ -360,7 +518,7 @@ tbody tr:last-child td{border:none}
             <label>Notes (optional)</label>
             <input type="text" id="log-notes" placeholder="e.g. Struggled with Q5, great on genetics">
           </div>
-          <button type="submit" class="btn btn-primary" id="log-submit-btn" style="width:100%">Save Grade ✓</button>
+          <button type="submit" class="btn btn-primary" id="log-submit-btn" style="width:100%">Save Grade</button>
         </form>
       </div>
     </section>
@@ -396,7 +554,99 @@ tbody tr:last-child td{border:none}
         </table>
       </div>
     </section>
+
+    <!-- ── TIMER TAB ── -->
+    <section id="tab-timer" class="tab">
+      <div style="max-width:560px;margin:0 auto">
+        <div class="section-title" style="margin-bottom:24px">Exam Timer</div>
+
+        <!-- SETUP -->
+        <div class="card" id="timer-setup">
+          <div class="form-group">
+            <label for="timer-duration">Duration (minutes)</label>
+            <input type="number" id="timer-duration" min="1" value="60">
+          </div>
+          <button class="btn btn-primary" style="width:100%;margin-top:4px" onclick="timerSchedule()">Start At Next Minute</button>
+        </div>
+
+        <!-- WAITING -->
+        <div class="card hidden" id="timer-waiting">
+          <div style="text-align:center;color:var(--muted2);font-size:14px;margin-bottom:16px">Waiting for next minute start…</div>
+          <div id="timer-countdown" style="font-family:'JetBrains Mono',monospace;font-size:64px;font-weight:700;text-align:center;color:#fff;letter-spacing:2px;margin-bottom:20px">--:--:--</div>
+          <button class="btn btn-danger" style="width:100%" onclick="timerCancel()">Cancel</button>
+        </div>
+
+        <!-- RUNNING -->
+        <div class="card hidden" id="timer-running">
+          <div id="timer-announcement" style="background:var(--s2);border:1px solid var(--border2);border-radius:var(--r);padding:14px 16px;text-align:center;color:var(--text);font-weight:600;margin-bottom:20px;min-height:48px;display:flex;align-items:center;justify-content:center;font-size:14px"></div>
+          <div id="timer-display" style="font-family:'JetBrains Mono',monospace;font-size:72px;font-weight:700;text-align:center;color:#fff;letter-spacing:2px;margin-bottom:20px;text-shadow:0 4px 14px rgba(255,255,255,.12)">00:00</div>
+          <button class="btn btn-danger" style="width:100%" onclick="timerStop()">Stop Timer</button>
+        </div>
+
+        <!-- FINISHED -->
+        <div class="card hidden" id="timer-finished">
+          <div style="background:var(--s2);border:1px solid var(--border2);border-radius:var(--r);padding:14px 16px;text-align:center;color:var(--success);font-weight:700;margin-bottom:20px;font-size:15px">Time's up! Pens down.</div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:72px;font-weight:700;text-align:center;color:#fff;letter-spacing:2px;margin-bottom:20px">00:00</div>
+          <button class="btn btn-primary" style="width:100%" onclick="timerReset()">New Timer</button>
+        </div>
+      </div>
+    </section>
   </main>
+
+  <!-- BOTTOM NAV mobile only -->
+  <nav class="bottom-nav" id="bottom-nav">
+    <button class="bottom-nav-item active" data-tab="dashboard" onclick="switchTab('dashboard')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+      <span>Dashboard</span>
+    </button>
+    <button class="bottom-nav-item" data-tab="log" onclick="switchTab('log')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+      <span>Log</span>
+    </button>
+    <button class="bottom-nav-item" data-tab="timer" onclick="switchTab('timer')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      <span>Timer</span>
+    </button>
+    <button class="bottom-nav-item" data-tab="history" onclick="switchTab('history')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+      <span>History</span>
+    </button>
+    <button class="bottom-nav-item bottom-nav-switch" onclick="logout()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      <span id="bottom-nav-initials">—</span>
+    </button>
+  </nav>
+</div>
+
+
+<div id="pin-modal" class="hidden">
+  <div class="pin-box" id="pin-box">
+    <button class="pin-cancel" onclick="closePin()">✕ Cancel</button>
+    <div class="pin-avatar" id="pin-avatar"></div>
+    <div class="pin-name" id="pin-name"></div>
+    <div class="pin-sub">Enter your 4-digit PIN</div>
+    <div class="pin-dots">
+      <div class="pin-dot" id="pd0"></div>
+      <div class="pin-dot" id="pd1"></div>
+      <div class="pin-dot" id="pd2"></div>
+      <div class="pin-dot" id="pd3"></div>
+    </div>
+    <div class="pin-keypad">
+      <button class="pin-key" onclick="pinKey('1')">1</button>
+      <button class="pin-key" onclick="pinKey('2')">2</button>
+      <button class="pin-key" onclick="pinKey('3')">3</button>
+      <button class="pin-key" onclick="pinKey('4')">4</button>
+      <button class="pin-key" onclick="pinKey('5')">5</button>
+      <button class="pin-key" onclick="pinKey('6')">6</button>
+      <button class="pin-key" onclick="pinKey('7')">7</button>
+      <button class="pin-key" onclick="pinKey('8')">8</button>
+      <button class="pin-key" onclick="pinKey('9')">9</button>
+      <button class="pin-key pin-key--empty" disabled></button>
+      <button class="pin-key" onclick="pinKey('0')">0</button>
+      <button class="pin-key pin-key--del" onclick="pinDel()">⌫</button>
+    </div>
+    <div class="pin-error-msg" id="pin-error"></div>
+  </div>
 </div>
 
 <div id="toast"></div>
@@ -478,7 +728,7 @@ function init() {
     try {
       firebase.initializeApp(FIREBASE_CONFIG);
       db = firebase.firestore();
-      console.log('✅ Firebase connected');
+      console.log('Firebase connected');
     } catch(e) {
       console.warn('Firebase init failed:', e.message);
     }
@@ -495,11 +745,14 @@ function init() {
 function login(uid) {
   currentUser = USERS[uid];
   document.getElementById('login-screen').classList.add('hidden');
+  document.getElementById('login-overview').classList.add('hidden');
   document.getElementById('app').classList.remove('hidden');
   document.getElementById('app').setAttribute('data-user', uid);
   document.getElementById('user-avatar-nav').textContent = currentUser.initials;
   document.getElementById('user-avatar-nav').style.background = currentUser.color;
   document.getElementById('user-name-nav').textContent = currentUser.name.split(' ')[0];
+  const bni = document.getElementById('bottom-nav-initials');
+  if (bni) bni.textContent = currentUser.initials;
 
   if (!db) {
     document.getElementById('firebase-banner')?.classList.remove('hidden');
@@ -521,6 +774,8 @@ function logout() {
   charts = {};
   document.getElementById('app').classList.add('hidden');
   document.getElementById('login-screen').classList.remove('hidden');
+  document.getElementById('login-overview').classList.remove('hidden');
+  renderLoginOverview();
 }
 
 /* ═══════════════════════════════════════════════
@@ -576,8 +831,9 @@ async function saveGrade(data) {
 function switchTab(tabId) {
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
   document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+  document.querySelectorAll('.bottom-nav-item[data-tab]').forEach(l => l.classList.remove('active'));
   document.getElementById('tab-'+tabId).classList.add('active');
-  document.querySelector(`[data-tab="${tabId}"]`).classList.add('active');
+  document.querySelectorAll(`[data-tab="${tabId}"]`).forEach(el => el.classList.add('active'));
   if (tabId === 'dashboard') renderDashboard();
   if (tabId === 'history') renderHistory();
 }
@@ -641,7 +897,7 @@ function renderMyCharts() {
       </div>
       <div class="chart-body">
         ${paperGrades.length === 0
-          ? '<div class="no-data">No attempts yet — log your first! 📝</div>'
+          ? '<div class="no-data">No attempts yet — log your first!</div>'
           : `<canvas id="${canvasId}"></canvas>`}
       </div>`;
     container.appendChild(card);
@@ -866,10 +1122,10 @@ async function submitGrade(event) {
   });
 
   btn.disabled = false;
-  btn.textContent = 'Save Grade ✓';
+  btn.textContent = 'Save Grade';
 
   if (ok) {
-    showToast('Grade saved! 🎉');
+    showToast('Grade saved!');
     event.target.reset();
     document.getElementById('variant-group').classList.add('hidden');
     document.getElementById('log-duration-hint').textContent = '';
@@ -980,9 +1236,387 @@ function showToast(msg, type='success') {
 }
 
 /* ═══════════════════════════════════════════════
-   START
+   LOGIN OVERVIEW CHARTS
    ═══════════════════════════════════════════════ */
+let loginCharts = {};
+
+async function renderLoginOverview() {
+  // Load grades from Firebase or show empty state
+  let grades = [];
+  try {
+    if (db) {
+      const snap = await db.collection('grades').orderBy('date','asc').get();
+      grades = snap.docs.map(d => {
+        const data = d.data();
+        return { ...data, date: data.date?.toDate ? data.date.toDate() : new Date(data.date) };
+      });
+    }
+  } catch(e) { /* silent — no data */ }
+
+  // Destroy old charts
+  Object.values(loginCharts).forEach(c => { try { c.destroy(); } catch(e){} });
+  loginCharts = {};
+
+  const userOrder = ['daniel_essam','bavly_khalil','daniel_youssef'];
+  const container = document.getElementById('login-user-charts');
+  container.innerHTML = '';
+
+  userOrder.forEach(uid => {
+    const user = USERS[uid];
+    const userGrades = grades.filter(g => g.userId === uid);
+    const overallAvg = userGrades.length > 0
+      ? Math.round(userGrades.reduce((s,g) => s + (g.percentage||0), 0) / userGrades.length)
+      : null;
+
+    const card = document.createElement('div');
+    card.className = 'login-chart-card';
+
+    // Build per-paper averages for bar chart
+    const paperAvgs = {};
+    user.papers.forEach(p => {
+      const pg = userGrades.filter(g => g.subject === p.subject && g.paper === p.paper);
+      const lbl = p.board === 'Cambridge' ? `${p.subject} P${p.paper}` : `${p.subject} ${p.paper}`;
+      paperAvgs[lbl] = pg.length > 0 ? Math.round(pg.reduce((s,g) => s+(g.percentage||0),0)/pg.length) : null;
+    });
+
+    const canvasId = `login_chart_${uid}`;
+    card.innerHTML = `
+      <div class="login-chart-header">
+        <div class="login-chart-user">
+          <div class="login-chart-avatar" style="background:${hexAlpha(user.color,.2)};color:${user.color}">${user.initials}</div>
+          <div>
+            <div class="login-chart-name" style="color:${user.color}">${user.name}</div>
+            <div class="login-chart-sub">${userGrades.length} attempt${userGrades.length!==1?'s':''}</div>
+          </div>
+        </div>
+        <span class="login-chart-avg">${overallAvg !== null ? overallAvg+'%' : '—'}</span>
+      </div>
+      <div class="login-chart-body">
+        ${userGrades.length === 0
+          ? '<div class="no-data">No attempts logged yet</div>'
+          : `<canvas id="${canvasId}"></canvas>`}
+      </div>`;
+    container.appendChild(card);
+
+    if (userGrades.length > 0) {
+      requestAnimationFrame(() => {
+        const canvas = document.getElementById(canvasId);
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        const labels = Object.keys(paperAvgs);
+        const values = labels.map(l => paperAvgs[l] ?? 0);
+        const colors = values.map(v => v >= 70 ? user.color : v >= 50 ? '#ffb830' : '#ff4565');
+
+        loginCharts[canvasId] = new Chart(ctx, {
+          type: 'bar',
+          data: {
+            labels,
+            datasets: [{
+              label: user.name,
+              data: values,
+              backgroundColor: colors.map(c => hexAlpha(c, 0.3)),
+              borderColor: colors,
+              borderWidth: 2,
+              borderRadius: 6,
+              borderSkipped: false
+            }]
+          },
+          options: {
+            responsive: true, maintainAspectRatio: false, animation: { duration: 700 },
+            plugins: {
+              legend: { display: false },
+              tooltip: {
+                backgroundColor:'#0e1320', borderColor:'#1e3050', borderWidth:1,
+                titleColor:'#d0def0', bodyColor:'#8baabf',
+                callbacks: { label: ctx => ` Avg: ${ctx.raw}%` }
+              }
+            },
+            scales: {
+              x: { ticks: { color:'#5a7898', font:{ family:'DM Sans', size:10 }, maxRotation:30 }, grid: { color:'#1e3050' } },
+              y: { min:0, max:100, ticks: { color:'#5a7898', font:{ family:'DM Sans', size:11 }, callback: v => v+'%' }, grid: { color:'#1e3050' } }
+            }
+          }
+        });
+      });
+    }
+  });
+
+  // ── All-papers combined grouped bar chart ──
+  // Collect all unique paper labels across all users
+  const allPaperKeys = [];
+  const seen = new Set();
+  userOrder.forEach(uid => {
+    USERS[uid].papers.forEach(p => {
+      const lbl = p.board === 'Cambridge' ? `${p.subject} P${p.paper}` : `${p.subject} ${p.paper}`;
+      if (!seen.has(lbl)) { seen.add(lbl); allPaperKeys.push({ lbl, subject:p.subject, paper:p.paper }); }
+    });
+  });
+
+  const combinedDatasets = userOrder.map(uid => {
+    const user = USERS[uid];
+    const userGrades = grades.filter(g => g.userId === uid);
+    return {
+      label: user.name.split(' ')[0],
+      data: allPaperKeys.map(pk => {
+        const pg = userGrades.filter(g => g.subject === pk.subject && g.paper === pk.paper);
+        return pg.length > 0 ? Math.round(pg.reduce((s,g) => s+(g.percentage||0),0)/pg.length) : null;
+      }),
+      backgroundColor: hexAlpha(user.color, 0.28),
+      borderColor: user.color,
+      borderWidth: 2,
+      borderRadius: 5,
+      borderSkipped: false
+    };
+  });
+
+  const hasAnyData = combinedDatasets.some(ds => ds.data.some(v => v !== null));
+  const allCanvas = document.getElementById('login-chart-allpapers');
+  if (allCanvas && hasAnyData) {
+    // Replace nulls with 0 for display
+    combinedDatasets.forEach(ds => { ds.data = ds.data.map(v => v ?? 0); });
+    loginCharts['allpapers'] = new Chart(allCanvas.getContext('2d'), {
+      type: 'bar',
+      data: {
+        labels: allPaperKeys.map(pk => pk.lbl),
+        datasets: combinedDatasets
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false, animation: { duration: 800 },
+        plugins: {
+          legend: { display:true, labels:{ color:'#8baabf', font:{ family:'DM Sans', size:12 }, boxWidth:10, boxHeight:10, useBorderRadius:true, borderRadius:4 } },
+          tooltip: {
+            backgroundColor:'#0e1320', borderColor:'#1e3050', borderWidth:1,
+            titleColor:'#d0def0', bodyColor:'#8baabf',
+            callbacks: { label: ctx => ` ${ctx.dataset.label}: ${ctx.raw}%` }
+          }
+        },
+        scales: {
+          x: { ticks: { color:'#5a7898', font:{ family:'DM Sans', size:10 }, maxRotation:35 }, grid: { color:'#1e3050' } },
+          y: { min:0, max:100, ticks: { color:'#5a7898', font:{ family:'DM Sans', size:11 }, callback: v => v+'%' }, grid: { color:'#1e3050' } }
+        }
+      }
+    });
+  } else if (allCanvas && !hasAnyData) {
+    const body = allCanvas.closest('.login-chart-body');
+    if (body) body.innerHTML = '<div class="no-data">No data yet — start logging!</div>';
+  }
+}
+
+/* ═══════════════════════════════════════════════
+   PIN SYSTEM
+   ═══════════════════════════════════════════════ */
+const PINS = {
+  daniel_essam:  '7342',
+  bavly_khalil:  '5819',
+  daniel_youssef:'2657'
+};
+
+let pinTarget = null;
+let pinEntry  = '';
+
+function openPin(uid) {
+  const user = USERS[uid];
+  pinTarget = uid;
+  pinEntry  = '';
+  updatePinDots();
+  document.getElementById('pin-error').textContent = '';
+
+  const box = document.getElementById('pin-box');
+  box.style.setProperty('--pin-color', user.color);
+
+  const av = document.getElementById('pin-avatar');
+  av.textContent = user.initials;
+  av.style.background = hexAlpha(user.color, .2);
+  av.style.color = user.color;
+
+  document.getElementById('pin-name').textContent = user.name;
+  document.getElementById('pin-modal').classList.remove('hidden');
+
+  document.addEventListener('keydown', pinKeyboard);
+}
+
+function closePin() {
+  document.getElementById('pin-modal').classList.add('hidden');
+  document.removeEventListener('keydown', pinKeyboard);
+  pinTarget = null;
+  pinEntry  = '';
+}
+
+function pinKeyboard(e) {
+  if (e.key >= '0' && e.key <= '9') pinKey(e.key);
+  else if (e.key === 'Backspace')    pinDel();
+  else if (e.key === 'Escape')       closePin();
+}
+
+function pinKey(digit) {
+  if (pinEntry.length >= 4) return;
+  pinEntry += digit;
+  updatePinDots();
+  if (pinEntry.length === 4) setTimeout(checkPin, 120);
+}
+
+function pinDel() {
+  pinEntry = pinEntry.slice(0, -1);
+  updatePinDots();
+  document.getElementById('pin-error').textContent = '';
+  document.querySelectorAll('.pin-dot').forEach(d => d.classList.remove('error'));
+}
+
+function updatePinDots() {
+  for (let i = 0; i < 4; i++) {
+    const dot = document.getElementById('pd' + i);
+    dot.classList.remove('filled', 'error');
+    if (i < pinEntry.length) dot.classList.add('filled');
+  }
+}
+
+function checkPin() {
+  if (pinEntry === PINS[pinTarget]) {
+    closePin();
+    login(pinTarget);
+  } else {
+    const dots = document.querySelectorAll('.pin-dot');
+    dots.forEach(d => { d.classList.remove('filled'); d.classList.add('error'); });
+    const box = document.getElementById('pin-box');
+    box.classList.add('pin-shake');
+    box.addEventListener('animationend', () => box.classList.remove('pin-shake'), { once: true });
+    document.getElementById('pin-error').textContent = 'Wrong PIN — try again';
+    pinEntry = '';
+    setTimeout(() => dots.forEach(d => d.classList.remove('error')), 600);
+  }
+}
+
+/* ═══════════════════════════════════════════════
+   EXAM TIMER (embedded from NarrativeTimer)
+   ═══════════════════════════════════════════════ */
+let _timerScheduledInterval = null;
+let _timerInterval = null;
+let _timerEndTime = null;
+let _timerDurationMinutes = 0;
+let _timerHalfAnnounced = false;
+let _timerFiveAnnounced = false;
+
+function timerSpeak(text) {
+  const utterance = new SpeechSynthesisUtterance(text);
+  utterance.rate = 0.9;
+  utterance.pitch = 1;
+  utterance.volume = 1;
+  const voices = speechSynthesis.getVoices();
+  const femaleVoice = voices.find(v =>
+    v.name.includes('Female') || v.name.includes('female') ||
+    v.name.includes('Samantha') || v.name.includes('Victoria') ||
+    v.name.includes('Karen') || v.name.includes('Zira')
+  );
+  if (femaleVoice) utterance.voice = femaleVoice;
+  speechSynthesis.speak(utterance);
+}
+
+function timerSchedule() {
+  const dur = parseInt(document.getElementById('timer-duration').value);
+  if (!dur) { alert('Please enter a duration'); return; }
+  _timerDurationMinutes = dur;
+
+  const now = new Date();
+  const start = new Date(now);
+  start.setSeconds(0, 0);
+  start.setMinutes(start.getMinutes() + 1);
+
+  document.getElementById('timer-setup').classList.add('hidden');
+  document.getElementById('timer-waiting').classList.remove('hidden');
+
+  _timerScheduledInterval = setInterval(() => {
+    const diff = start - new Date();
+    if (diff <= 0) {
+      clearInterval(_timerScheduledInterval);
+      timerBegin(dur);
+    } else {
+      const h = Math.floor(diff / 3600000);
+      const m = Math.floor((diff % 3600000) / 60000);
+      const s = Math.floor((diff % 60000) / 1000);
+      document.getElementById('timer-countdown').textContent =
+        `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+    }
+  }, 100);
+}
+
+function timerBegin(duration) {
+  document.getElementById('timer-waiting').classList.add('hidden');
+  document.getElementById('timer-running').classList.remove('hidden');
+
+  const ann = document.getElementById('timer-announcement');
+  ann.textContent = 'On behalf of the British Council, we wish you all good luck. You may start.';
+  timerSpeak('On behalf of the British Council, we wish you all good luck. You may start.');
+
+  _timerEndTime = new Date(Date.now() + duration * 60000);
+  _timerHalfAnnounced = false;
+  _timerFiveAnnounced = false;
+
+  timerTick();
+  _timerInterval = setInterval(timerTick, 100);
+}
+
+function timerTick() {
+  const now = new Date();
+  const remaining = _timerEndTime - now;
+
+  if (remaining <= 0) {
+    clearInterval(_timerInterval);
+    timerFinish();
+    return;
+  }
+
+  const mins = Math.floor(remaining / 60000);
+  const secs = Math.floor((remaining % 60000) / 1000);
+  document.getElementById('timer-display').textContent =
+    `${String(mins).padStart(2,'0')}:${String(secs).padStart(2,'0')}`;
+
+  const elapsed = _timerDurationMinutes * 60000 - remaining;
+  const halfTime = _timerDurationMinutes * 30000;
+  const ann = document.getElementById('timer-announcement');
+
+  if (!_timerHalfAnnounced && elapsed >= halfTime) {
+    _timerHalfAnnounced = true;
+    ann.textContent = 'Half of the time has passed';
+    timerSpeak('Half of the time has passed');
+  }
+
+  if (!_timerFiveAnnounced && remaining <= 300000 && remaining > 299000) {
+    _timerFiveAnnounced = true;
+    ann.textContent = '5 minutes remaining';
+    timerSpeak('5 minutes remaining');
+  }
+}
+
+function timerFinish() {
+  document.getElementById('timer-running').classList.add('hidden');
+  document.getElementById('timer-finished').classList.remove('hidden');
+  timerSpeak('Pens down');
+}
+
+function timerStop() {
+  if (_timerInterval) clearInterval(_timerInterval);
+  timerReset();
+}
+
+function timerCancel() {
+  if (_timerScheduledInterval) clearInterval(_timerScheduledInterval);
+  timerReset();
+}
+
+function timerReset() {
+  if (_timerScheduledInterval) clearInterval(_timerScheduledInterval);
+  if (_timerInterval) clearInterval(_timerInterval);
+  document.getElementById('timer-setup').classList.remove('hidden');
+  document.getElementById('timer-waiting').classList.add('hidden');
+  document.getElementById('timer-running').classList.add('hidden');
+  document.getElementById('timer-finished').classList.add('hidden');
+  document.getElementById('timer-announcement').textContent = '';
+  _timerHalfAnnounced = false;
+  _timerFiveAnnounced = false;
+}
+
 init();
+renderLoginOverview();
 </script>
 </body>
 </html>
