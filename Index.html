@@ -234,6 +234,29 @@ tbody tr:last-child td{border:none}
 #toast.toast--success{background:#00d38d;color:#000}
 #toast.toast--error{background:#ff4565;color:#fff}
 
+/* ── PIN MODAL ── */
+#pin-overlay{position:fixed;inset:0;z-index:200;display:flex;align-items:center;justify-content:center;background:rgba(7,9,15,.85);backdrop-filter:blur(14px);padding:24px}
+#pin-overlay.hidden{display:none!important}
+.pin-box{background:var(--s1);border:1px solid var(--border2);border-radius:var(--r-lg);padding:36px 32px 32px;max-width:360px;width:100%;text-align:center;position:relative;box-shadow:0 24px 60px rgba(0,0,0,.5)}
+.pin-avatar{width:64px;height:64px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-size:22px;font-weight:800;margin:0 auto 14px}
+.pin-name{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;margin-bottom:4px}
+.pin-sub{font-size:13px;color:var(--muted2);margin-bottom:28px}
+.pin-dots{display:flex;justify-content:center;gap:14px;margin-bottom:28px}
+.pin-dot{width:16px;height:16px;border-radius:50%;border:2px solid var(--border2);background:transparent;transition:all .2s}
+.pin-dot.filled{background:var(--pin-color,var(--de));border-color:var(--pin-color,var(--de));box-shadow:0 0 10px var(--pin-glow,var(--de-glow))}
+.pin-dot.error{background:var(--danger);border-color:var(--danger);box-shadow:0 0 10px rgba(255,69,101,.4)}
+.pin-keypad{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:18px}
+.pin-key{background:var(--s2);border:1px solid var(--border2);border-radius:var(--r);padding:16px 0;font-family:'Syne',sans-serif;font-size:18px;font-weight:700;color:var(--text);cursor:pointer;transition:all .18s;user-select:none}
+.pin-key:hover{background:var(--s3);border-color:var(--muted);transform:translateY(-1px)}
+.pin-key:active{transform:scale(.96)}
+.pin-key.key-del{font-size:14px;color:var(--muted2)}
+.pin-key.key-0{grid-column:2}
+.pin-err{font-size:13px;color:var(--danger);font-weight:600;min-height:18px;margin-bottom:4px;transition:opacity .2s}
+.pin-back{background:transparent;border:none;color:var(--muted2);font-size:13px;cursor:pointer;padding:6px 12px;border-radius:var(--r);font-family:'DM Sans',sans-serif;transition:color .2s}
+.pin-back:hover{color:var(--text)}
+@keyframes pinShake{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-8px)}40%,80%{transform:translateX(8px)}}
+.pin-dots.shake{animation:pinShake .4s ease}
+
 /* ── USER THEMES ── */
 #app[data-user=daniel_essam]{--user-color:var(--de);--user-dim:var(--de-dim);--user-glow:var(--de-glow)}
 #app[data-user=bavly_khalil]{--user-color:var(--bk);--user-dim:var(--bk-dim);--user-glow:var(--bk-glow)}
@@ -316,17 +339,17 @@ tbody tr:last-child td{border:none}
     
     <h1 class="login-title">Together<br><span>Hnng7</span></h1>
     <div class="user-cards">
-      <div class="user-card" data-uid="daniel_essam" onclick="login('daniel_essam')">
+      <div class="user-card" data-uid="daniel_essam" onclick="promptPin('daniel_essam')">
         <div class="user-avatar" style="background:rgba(77,166,255,.2);color:#4da6ff">DE</div>
         <h3>Daniel Essam</h3>
         <p>Bio · Physics · CS · M1</p>
       </div>
-      <div class="user-card" data-uid="bavly_khalil" onclick="login('bavly_khalil')">
+      <div class="user-card" data-uid="bavly_khalil" onclick="promptPin('bavly_khalil')">
         <div class="user-avatar" style="background:rgba(0,211,141,.2);color:#00d38d">BK</div>
         <h3>Bavly Khalil</h3>
         <p>Bio · Physics</p>
       </div>
-      <div class="user-card" data-uid="daniel_youssef" onclick="login('daniel_youssef')">
+      <div class="user-card" data-uid="daniel_youssef" onclick="promptPin('daniel_youssef')">
         <div class="user-avatar" style="background:rgba(255,184,48,.2);color:#ffb830">DY</div>
         <h3>Daniel Youssef</h3>
         <p>Maths · ICT</p>
@@ -585,6 +608,36 @@ tbody tr:last-child td{border:none}
   </nav>
 </div>
 
+<!-- PIN MODAL -->
+<div id="pin-overlay" class="hidden">
+  <div class="pin-box">
+    <div class="pin-avatar" id="pin-avatar"></div>
+    <div class="pin-name" id="pin-name"></div>
+    <div class="pin-sub">Enter your 4-digit PIN</div>
+    <div class="pin-dots" id="pin-dots">
+      <div class="pin-dot" id="pd0"></div>
+      <div class="pin-dot" id="pd1"></div>
+      <div class="pin-dot" id="pd2"></div>
+      <div class="pin-dot" id="pd3"></div>
+    </div>
+    <div class="pin-err" id="pin-err"></div>
+    <div class="pin-keypad">
+      <button class="pin-key" onclick="pinKey('1')">1</button>
+      <button class="pin-key" onclick="pinKey('2')">2</button>
+      <button class="pin-key" onclick="pinKey('3')">3</button>
+      <button class="pin-key" onclick="pinKey('4')">4</button>
+      <button class="pin-key" onclick="pinKey('5')">5</button>
+      <button class="pin-key" onclick="pinKey('6')">6</button>
+      <button class="pin-key" onclick="pinKey('7')">7</button>
+      <button class="pin-key" onclick="pinKey('8')">8</button>
+      <button class="pin-key" onclick="pinKey('9')">9</button>
+      <button class="pin-key key-del" onclick="pinDel()">⌫</button>
+      <button class="pin-key key-0" onclick="pinKey('0')">0</button>
+    </div>
+    <button class="pin-back" onclick="pinCancel()">← Back</button>
+  </div>
+</div>
+
 <div id="toast"></div>
 
 <script>
@@ -605,7 +658,7 @@ const FIREBASE_CONFIG = {
    ═══════════════════════════════════════════════ */
 const USERS = {
   daniel_essam: {
-    id:'daniel_essam', name:'Daniel Essam', initials:'DE', color:'#4da6ff',
+    id:'daniel_essam', name:'Daniel Essam', initials:'DE', color:'#4da6ff', pin:'7284',
     papers:[
       { key:'bio_4_ol', subject:'Biology OL',        paper:'4',  board:'Cambridge', variant:true,  duration:75 },
       { key:'phys_4', subject:'Physics',           paper:'4',  board:'Cambridge', variant:true,  duration:75 },
@@ -617,7 +670,7 @@ const USERS = {
     ]
   },
   bavly_khalil: {
-    id:'bavly_khalil', name:'Bavly Khalil', initials:'BK', color:'#00d38d',
+    id:'bavly_khalil', name:'Bavly Khalil', initials:'BK', color:'#00d38d', pin:'3951',
     papers:[
       { key:'phys_4', subject:'Physics', paper:'4', board:'Cambridge', variant:true,  duration:75 },
       { key:'phys_6', subject:'Physics', paper:'6', board:'Cambridge', variant:true,  duration:60 },
@@ -627,7 +680,7 @@ const USERS = {
     ]
   },
   daniel_youssef: {
-    id:'daniel_youssef', name:'Daniel Youssef', initials:'DY', color:'#ffb830',
+    id:'daniel_youssef', name:'Daniel Youssef', initials:'DY', color:'#ffb830', pin:'6047',
     papers:[
       { key:'math_p3', subject:'Maths', paper:'P3', board:'Edexcel',   variant:false, duration:null },
       { key:'math_p4', subject:'Maths', paper:'P4', board:'Edexcel',   variant:false, duration:null },
@@ -1452,6 +1505,92 @@ function timerReset() {
   document.getElementById('timer-announcement').textContent = '';
   _timerHalfAnnounced = false;
   _timerFiveAnnounced = false;
+}
+
+/* ═══════════════════════════════════════════════
+   PIN PROTECTION
+   ═══════════════════════════════════════════════ */
+let _pinUid = null;
+let _pinEntered = '';
+
+function promptPin(uid) {
+  const u = USERS[uid];
+  _pinUid = uid;
+  _pinEntered = '';
+  // Set theme colour on pin box
+  const pinBox = document.querySelector('.pin-box');
+  pinBox.style.setProperty('--pin-color', u.color);
+  const alphaHex = '26'; // ~15% opacity
+  pinBox.style.setProperty('--pin-glow', u.color + '40');
+  // Populate header
+  const av = document.getElementById('pin-avatar');
+  av.textContent = u.initials;
+  av.style.background = u.color + '33';
+  av.style.color = u.color;
+  document.getElementById('pin-name').textContent = u.name;
+  document.getElementById('pin-err').textContent = '';
+  pinRenderDots();
+  document.getElementById('pin-overlay').classList.remove('hidden');
+  // Allow keyboard input
+  document.addEventListener('keydown', _pinKeyHandler);
+}
+
+function _pinKeyHandler(e) {
+  if (e.key >= '0' && e.key <= '9') { pinKey(e.key); }
+  else if (e.key === 'Backspace') { pinDel(); }
+  else if (e.key === 'Escape') { pinCancel(); }
+}
+
+function pinKey(digit) {
+  if (_pinEntered.length >= 4) return;
+  _pinEntered += digit;
+  pinRenderDots();
+  if (_pinEntered.length === 4) {
+    setTimeout(pinCheck, 120);
+  }
+}
+
+function pinDel() {
+  if (_pinEntered.length === 0) return;
+  _pinEntered = _pinEntered.slice(0, -1);
+  document.getElementById('pin-err').textContent = '';
+  pinRenderDots();
+}
+
+function pinRenderDots(state) {
+  for (let i = 0; i < 4; i++) {
+    const d = document.getElementById('pd' + i);
+    d.className = 'pin-dot';
+    if (state === 'error') { if (i < _pinEntered.length) d.classList.add('error'); }
+    else { if (i < _pinEntered.length) d.classList.add('filled'); }
+  }
+}
+
+function pinCheck() {
+  const u = USERS[_pinUid];
+  if (_pinEntered === u.pin) {
+    document.removeEventListener('keydown', _pinKeyHandler);
+    document.getElementById('pin-overlay').classList.add('hidden');
+    login(_pinUid);
+  } else {
+    // Wrong PIN — shake and reset
+    pinRenderDots('error');
+    const dots = document.getElementById('pin-dots');
+    dots.classList.add('shake');
+    document.getElementById('pin-err').textContent = 'Incorrect PIN. Try again.';
+    setTimeout(() => {
+      dots.classList.remove('shake');
+      _pinEntered = '';
+      pinRenderDots();
+    }, 500);
+  }
+}
+
+function pinCancel() {
+  document.removeEventListener('keydown', _pinKeyHandler);
+  document.getElementById('pin-overlay').classList.add('hidden');
+  _pinUid = null;
+  _pinEntered = '';
 }
 
 init();
