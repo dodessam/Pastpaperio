@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TGTHR</title>
+<title>TGRTHR</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
@@ -98,30 +98,6 @@ label{font-size:13px;color:var(--muted2);font-weight:500;margin-bottom:4px;displ
 .login-notice code{font-family:'JetBrains Mono',monospace;font-size:11px;background:rgba(255,255,255,.05);padding:1px 5px;border-radius:4px;color:var(--text)}
 .demo-btn{margin-top:12px;width:100%}
 
-/* ── PIN MODAL ── */
-#pin-modal{position:fixed;inset:0;z-index:200;display:flex;align-items:center;justify-content:center;padding:20px;background:rgba(7,9,15,.85);backdrop-filter:blur(12px)}
-.pin-box{background:var(--s1);border:1px solid var(--border);border-radius:var(--r-lg);padding:36px 28px 28px;width:100%;max-width:320px;text-align:center;position:relative}
-.pin-avatar{width:60px;height:60px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-size:20px;font-weight:800;margin:0 auto 14px}
-.pin-name{font-family:'Syne',sans-serif;font-size:18px;font-weight:800;margin-bottom:4px}
-.pin-sub{font-size:13px;color:var(--muted2);margin-bottom:28px}
-.pin-dots{display:flex;justify-content:center;gap:14px;margin-bottom:28px}
-.pin-dot{width:14px;height:14px;border-radius:50%;border:2px solid var(--border2);background:transparent;transition:all .15s}
-.pin-dot.filled{border-color:var(--pin-color);background:var(--pin-color)}
-.pin-dot.error{border-color:var(--danger);background:var(--danger)}
-.pin-keypad{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-.pin-key{background:var(--s2);border:1px solid var(--border2);border-radius:var(--r);height:56px;font-family:'Syne',sans-serif;font-size:18px;font-weight:700;color:var(--text);cursor:pointer;transition:all .15s;display:flex;align-items:center;justify-content:center}
-.pin-key:hover{background:var(--s3);border-color:var(--pin-color)}
-.pin-key:active{transform:scale(.94)}
-.pin-key--del{font-size:14px;color:var(--muted2)}
-.pin-key--del:hover{color:var(--danger);border-color:var(--danger)}
-.pin-key--empty{opacity:0;pointer-events:none}
-.pin-error-msg{font-size:12px;color:var(--danger);margin-top:14px;min-height:16px;font-weight:600}
-.pin-cancel{position:absolute;top:14px;right:14px;background:none;border:none;color:var(--muted);cursor:pointer;font-size:12px;padding:4px 8px;border-radius:6px;font-family:'DM Sans',sans-serif}
-.pin-cancel:hover{color:var(--text);background:var(--s2)}
-@keyframes pinShake{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-8px)}40%,80%{transform:translateX(8px)}}
-.pin-shake{animation:pinShake .35s ease}
-
-
 /* ── LOGIN OVERVIEW CHARTS ── */
 .login-overview{position:relative;width:100%;max-width:1100px;margin:40px auto 0;text-align:left;padding:0 4px}
 .login-overview-title{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:16px;display:flex;align-items:center;gap:10px}
@@ -146,7 +122,7 @@ label{font-size:13px;color:var(--muted2);font-weight:500;margin-bottom:4px;displ
 
 /* ── NAV ── */
 #app{position:relative;z-index:1}
-nav{position:sticky;top:0;z-index:50;background:rgba(7,9,15,.92);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);padding:0 24px}
+nav{position:sticky;top:0;z-index:50;background:rgba(7,9,15,.92);backdrop-filter:blur(16px);border-bottom:0px solid var(--border);padding:0 24px}
 .nav-inner{display:flex;align-items:center;height:56px;gap:0}
 .nav-brand{font-family:'Syne',sans-serif;font-size:14px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--user-color,var(--de));margin-right:32px;white-space:nowrap}
 .nav-tabs{display:flex;gap:2px;flex:1}
@@ -154,10 +130,10 @@ nav{position:sticky;top:0;z-index:50;background:rgba(7,9,15,.92);backdrop-filter
 .nav-link:hover{color:var(--text);background:var(--s2)}
 .nav-link.active{color:var(--user-color,var(--de));background:var(--user-dim,var(--de-dim))}
 .nav-user{display:flex;align-items:center;gap:10px;margin-left:auto;padding-left:16px}
-.nav-avatar{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-size:11px;font-weight:800;cursor:pointer;transition:all .2s}
+.nav-avatar{width:0px;height:0px;border-radius:0%;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-size:11px;font-weight:800;cursor:pointer;transition:all .2s}
 .nav-avatar:hover{filter:brightness(1.2)}
-.nav-name{font-size:13px;font-weight:600;cursor:pointer}
-.nav-logout{font-size:12px;color:var(--muted);cursor:pointer;padding:4px 8px;border-radius:6px;border:1px solid var(--border)}
+.nav-name{font-size:0px;font-weight:600;cursor:pointer}
+.nav-logout{font-size:0x;color:var(--muted);cursor:pointer;padding:4px 8px;border-radius:6px;border:1px solid var(--border)}
 .nav-logout:hover{color:var(--danger);border-color:var(--danger)}
 
 /* ── BOTTOM NAV (mobile) ── */
@@ -220,7 +196,7 @@ main{max-width:1100px;margin:0 auto;padding:28px 24px 60px}
 .firebase-banner strong{color:var(--danger)}
 
 /* ── LOG FORM ── */
-.log-card{background:var(--s1);border:1px solid var(--border);border-radius:var(--r-lg);padding:28px;max-width:680px}
+.log-card{background:var(--s1);border:1px solid var(--border);border-radius:var(--r-lg);padding:28px;max-width:680px;margin:0 auto}
 .radio-group{display:flex;gap:12px;flex-wrap:wrap}
 .radio-option{display:flex;align-items:center;gap:7px;cursor:pointer;padding:8px 12px;border-radius:var(--r);border:1px solid var(--border2);transition:all .2s;font-size:13px}
 .radio-option:has(input:checked){border-color:var(--user-color,var(--de));background:var(--user-dim,var(--de-dim));color:var(--user-color,var(--de))}
@@ -340,17 +316,17 @@ tbody tr:last-child td{border:none}
     
     <h1 class="login-title">Together<br><span>Hnng7</span></h1>
     <div class="user-cards">
-      <div class="user-card" data-uid="daniel_essam" onclick="openPin('daniel_essam')">
+      <div class="user-card" data-uid="daniel_essam" onclick="login('daniel_essam')">
         <div class="user-avatar" style="background:rgba(77,166,255,.2);color:#4da6ff">DE</div>
         <h3>Daniel Essam</h3>
         <p>Bio · Physics · CS · M1</p>
       </div>
-      <div class="user-card" data-uid="bavly_khalil" onclick="openPin('bavly_khalil')">
+      <div class="user-card" data-uid="bavly_khalil" onclick="login('bavly_khalil')">
         <div class="user-avatar" style="background:rgba(0,211,141,.2);color:#00d38d">BK</div>
         <h3>Bavly Khalil</h3>
         <p>Bio · Physics</p>
       </div>
-      <div class="user-card" data-uid="daniel_youssef" onclick="openPin('daniel_youssef')">
+      <div class="user-card" data-uid="daniel_youssef" onclick="login('daniel_youssef')">
         <div class="user-avatar" style="background:rgba(255,184,48,.2);color:#ffb830">DY</div>
         <h3>Daniel Youssef</h3>
         <p>Maths · ICT</p>
@@ -394,18 +370,13 @@ tbody tr:last-child td{border:none}
 <div id="app" class="hidden">
   <nav>
     <div class="nav-inner">
-      <div class="nav-brand">Past papers</div>
-      <div class="nav-tabs">
-        <button class="nav-link active" data-tab="dashboard" onclick="switchTab('dashboard')">Dashboard</button>
-        <button class="nav-link" data-tab="log" onclick="switchTab('log')">Log Grade</button>
-        <button class="nav-link" data-tab="timer" onclick="switchTab('timer')">Timer</button>
-        <button class="nav-link" data-tab="history" onclick="switchTab('history')">History</button>
-      </div>
+      <div class="nav-brand"> </div>
+      
       <div class="nav-user">
-        <div class="nav-avatar" id="user-avatar-nav" title="Click to switch user" onclick="logout()">DE</div>
+        <div class="nav-avatar" id="user-avatar-nav" title="" onclick="logout()"> </div>
         <div>
-          <div class="nav-name" id="user-name-nav">Daniel</div>
-          <div class="nav-logout" onclick="logout()">Switch</div>
+          <div class="nav-name" id="user-name-nav"> </div>
+  
         </div>
       </div>
     </div>
@@ -560,7 +531,6 @@ tbody tr:last-child td{border:none}
       <div style="max-width:560px;margin:0 auto">
         <div class="section-title" style="margin-bottom:24px">Exam Timer</div>
 
-        <!-- SETUP -->
         <div class="card" id="timer-setup">
           <div class="form-group">
             <label for="timer-duration">Duration (minutes)</label>
@@ -569,21 +539,18 @@ tbody tr:last-child td{border:none}
           <button class="btn btn-primary" style="width:100%;margin-top:4px" onclick="timerSchedule()">Start At Next Minute</button>
         </div>
 
-        <!-- WAITING -->
         <div class="card hidden" id="timer-waiting">
           <div style="text-align:center;color:var(--muted2);font-size:14px;margin-bottom:16px">Waiting for next minute start…</div>
           <div id="timer-countdown" style="font-family:'JetBrains Mono',monospace;font-size:64px;font-weight:700;text-align:center;color:#fff;letter-spacing:2px;margin-bottom:20px">--:--:--</div>
           <button class="btn btn-danger" style="width:100%" onclick="timerCancel()">Cancel</button>
         </div>
 
-        <!-- RUNNING -->
         <div class="card hidden" id="timer-running">
           <div id="timer-announcement" style="background:var(--s2);border:1px solid var(--border2);border-radius:var(--r);padding:14px 16px;text-align:center;color:var(--text);font-weight:600;margin-bottom:20px;min-height:48px;display:flex;align-items:center;justify-content:center;font-size:14px"></div>
           <div id="timer-display" style="font-family:'JetBrains Mono',monospace;font-size:72px;font-weight:700;text-align:center;color:#fff;letter-spacing:2px;margin-bottom:20px;text-shadow:0 4px 14px rgba(255,255,255,.12)">00:00</div>
           <button class="btn btn-danger" style="width:100%" onclick="timerStop()">Stop Timer</button>
         </div>
 
-        <!-- FINISHED -->
         <div class="card hidden" id="timer-finished">
           <div style="background:var(--s2);border:1px solid var(--border2);border-radius:var(--r);padding:14px 16px;text-align:center;color:var(--success);font-weight:700;margin-bottom:20px;font-size:15px">Time's up! Pens down.</div>
           <div style="font-family:'JetBrains Mono',monospace;font-size:72px;font-weight:700;text-align:center;color:#fff;letter-spacing:2px;margin-bottom:20px">00:00</div>
@@ -616,37 +583,6 @@ tbody tr:last-child td{border:none}
       <span id="bottom-nav-initials">—</span>
     </button>
   </nav>
-</div>
-
-
-<div id="pin-modal" class="hidden">
-  <div class="pin-box" id="pin-box">
-    <button class="pin-cancel" onclick="closePin()">✕ Cancel</button>
-    <div class="pin-avatar" id="pin-avatar"></div>
-    <div class="pin-name" id="pin-name"></div>
-    <div class="pin-sub">Enter your 4-digit PIN</div>
-    <div class="pin-dots">
-      <div class="pin-dot" id="pd0"></div>
-      <div class="pin-dot" id="pd1"></div>
-      <div class="pin-dot" id="pd2"></div>
-      <div class="pin-dot" id="pd3"></div>
-    </div>
-    <div class="pin-keypad">
-      <button class="pin-key" onclick="pinKey('1')">1</button>
-      <button class="pin-key" onclick="pinKey('2')">2</button>
-      <button class="pin-key" onclick="pinKey('3')">3</button>
-      <button class="pin-key" onclick="pinKey('4')">4</button>
-      <button class="pin-key" onclick="pinKey('5')">5</button>
-      <button class="pin-key" onclick="pinKey('6')">6</button>
-      <button class="pin-key" onclick="pinKey('7')">7</button>
-      <button class="pin-key" onclick="pinKey('8')">8</button>
-      <button class="pin-key" onclick="pinKey('9')">9</button>
-      <button class="pin-key pin-key--empty" disabled></button>
-      <button class="pin-key" onclick="pinKey('0')">0</button>
-      <button class="pin-key pin-key--del" onclick="pinDel()">⌫</button>
-    </div>
-    <div class="pin-error-msg" id="pin-error"></div>
-  </div>
 </div>
 
 <div id="toast"></div>
@@ -1403,90 +1339,6 @@ async function renderLoginOverview() {
 }
 
 /* ═══════════════════════════════════════════════
-   PIN SYSTEM
-   ═══════════════════════════════════════════════ */
-const PINS = {
-  daniel_essam:  '7342',
-  bavly_khalil:  '5819',
-  daniel_youssef:'2657'
-};
-
-let pinTarget = null;
-let pinEntry  = '';
-
-function openPin(uid) {
-  const user = USERS[uid];
-  pinTarget = uid;
-  pinEntry  = '';
-  updatePinDots();
-  document.getElementById('pin-error').textContent = '';
-
-  const box = document.getElementById('pin-box');
-  box.style.setProperty('--pin-color', user.color);
-
-  const av = document.getElementById('pin-avatar');
-  av.textContent = user.initials;
-  av.style.background = hexAlpha(user.color, .2);
-  av.style.color = user.color;
-
-  document.getElementById('pin-name').textContent = user.name;
-  document.getElementById('pin-modal').classList.remove('hidden');
-
-  document.addEventListener('keydown', pinKeyboard);
-}
-
-function closePin() {
-  document.getElementById('pin-modal').classList.add('hidden');
-  document.removeEventListener('keydown', pinKeyboard);
-  pinTarget = null;
-  pinEntry  = '';
-}
-
-function pinKeyboard(e) {
-  if (e.key >= '0' && e.key <= '9') pinKey(e.key);
-  else if (e.key === 'Backspace')    pinDel();
-  else if (e.key === 'Escape')       closePin();
-}
-
-function pinKey(digit) {
-  if (pinEntry.length >= 4) return;
-  pinEntry += digit;
-  updatePinDots();
-  if (pinEntry.length === 4) setTimeout(checkPin, 120);
-}
-
-function pinDel() {
-  pinEntry = pinEntry.slice(0, -1);
-  updatePinDots();
-  document.getElementById('pin-error').textContent = '';
-  document.querySelectorAll('.pin-dot').forEach(d => d.classList.remove('error'));
-}
-
-function updatePinDots() {
-  for (let i = 0; i < 4; i++) {
-    const dot = document.getElementById('pd' + i);
-    dot.classList.remove('filled', 'error');
-    if (i < pinEntry.length) dot.classList.add('filled');
-  }
-}
-
-function checkPin() {
-  if (pinEntry === PINS[pinTarget]) {
-    closePin();
-    login(pinTarget);
-  } else {
-    const dots = document.querySelectorAll('.pin-dot');
-    dots.forEach(d => { d.classList.remove('filled'); d.classList.add('error'); });
-    const box = document.getElementById('pin-box');
-    box.classList.add('pin-shake');
-    box.addEventListener('animationend', () => box.classList.remove('pin-shake'), { once: true });
-    document.getElementById('pin-error').textContent = 'Wrong PIN — try again';
-    pinEntry = '';
-    setTimeout(() => dots.forEach(d => d.classList.remove('error')), 600);
-  }
-}
-
-/* ═══════════════════════════════════════════════
    EXAM TIMER (embedded from NarrativeTimer)
    ═══════════════════════════════════════════════ */
 let _timerScheduledInterval = null;
@@ -1515,15 +1367,12 @@ function timerSchedule() {
   const dur = parseInt(document.getElementById('timer-duration').value);
   if (!dur) { alert('Please enter a duration'); return; }
   _timerDurationMinutes = dur;
-
   const now = new Date();
   const start = new Date(now);
   start.setSeconds(0, 0);
   start.setMinutes(start.getMinutes() + 1);
-
   document.getElementById('timer-setup').classList.add('hidden');
   document.getElementById('timer-waiting').classList.remove('hidden');
-
   _timerScheduledInterval = setInterval(() => {
     const diff = start - new Date();
     if (diff <= 0) {
@@ -1542,44 +1391,34 @@ function timerSchedule() {
 function timerBegin(duration) {
   document.getElementById('timer-waiting').classList.add('hidden');
   document.getElementById('timer-running').classList.remove('hidden');
-
   const ann = document.getElementById('timer-announcement');
   ann.textContent = 'On behalf of the British Council, we wish you all good luck. You may start.';
   timerSpeak('On behalf of the British Council, we wish you all good luck. You may start.');
-
   _timerEndTime = new Date(Date.now() + duration * 60000);
   _timerHalfAnnounced = false;
   _timerFiveAnnounced = false;
-
   timerTick();
   _timerInterval = setInterval(timerTick, 100);
 }
 
 function timerTick() {
-  const now = new Date();
-  const remaining = _timerEndTime - now;
-
+  const remaining = _timerEndTime - new Date();
   if (remaining <= 0) {
     clearInterval(_timerInterval);
     timerFinish();
     return;
   }
-
   const mins = Math.floor(remaining / 60000);
   const secs = Math.floor((remaining % 60000) / 1000);
   document.getElementById('timer-display').textContent =
     `${String(mins).padStart(2,'0')}:${String(secs).padStart(2,'0')}`;
-
   const elapsed = _timerDurationMinutes * 60000 - remaining;
-  const halfTime = _timerDurationMinutes * 30000;
   const ann = document.getElementById('timer-announcement');
-
-  if (!_timerHalfAnnounced && elapsed >= halfTime) {
+  if (!_timerHalfAnnounced && elapsed >= _timerDurationMinutes * 30000) {
     _timerHalfAnnounced = true;
     ann.textContent = 'Half of the time has passed';
     timerSpeak('Half of the time has passed');
   }
-
   if (!_timerFiveAnnounced && remaining <= 300000 && remaining > 299000) {
     _timerFiveAnnounced = true;
     ann.textContent = '5 minutes remaining';
