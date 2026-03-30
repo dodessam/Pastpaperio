@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!-- saved from url=(0039)https://dodessam.github.io/Pastpaperio/ -->
 <html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -75,35 +76,6 @@ label{font-size:13px;color:var(--muted2);font-weight:500;margin-bottom:4px;displ
 .login-title{font-family:'Syne',sans-serif;font-size:38px;font-weight:800;line-height:1.1;margin-bottom:8px}
 .login-title span{color:var(--de)}
 .login-sub{color:var(--muted2);margin-bottom:48px;font-size:15px}
-/* ── Disclaimer ── */
-.login-disclaimer{
-  display:inline-flex;align-items:flex-start;gap:10px;
-  background:rgba(255,184,48,.07);
-  border:1px solid rgba(255,184,48,.2);
-  border-radius:var(--r);
-  padding:10px 14px;
-  font-size:12px;
-  color:var(--muted2);
-  text-align:left;
-  margin-bottom:28px;
-  line-height:1.55;
-}
-.login-disclaimer::before{
-  content:'⚠️';
-  font-size:13px;
-  flex-shrink:0;
-  margin-top:1px;
-}
-.login-disclaimer strong{color:var(--warning)}
-.login-disclaimer a{
-  color:var(--de);
-  text-decoration:none;
-  font-weight:600;
-  border-bottom:1px solid rgba(77,166,255,.3);
-  transition:border-color .2s,color .2s;
-}
-.login-disclaimer a:hover{color:#fff;border-color:rgba(255,255,255,.4)}
-/* ── end disclaimer ── */
 .user-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:32px}
 .user-card{background:var(--s1);border:1px solid var(--border);border-radius:var(--r-lg);padding:24px 16px;cursor:pointer;transition:all .25s;position:relative;overflow:hidden}
 .user-card::before{content:'';position:absolute;inset:0;opacity:0;transition:opacity .3s}
@@ -324,26 +296,19 @@ tbody tr:last-child td{border:none}
   <div class="login-bg"></div>
   <div class="login-box">
     <h1 class="login-title">Together<br><span>Hnng7</span></h1>
-
-    <!-- ── Disclaimer ── -->
-    <p class="login-disclaimer">
-      This version is for <strong>Bavly &amp; Daniel Youssef</strong> — it will not be updated.<br>
-      For the updated version, visit&nbsp;<a href="https://dodessam.github.io/Pastpaperio/" target="_blank" rel="noopener">dodessam.github.io/Pastpaperio</a>
-    </p>
-    <!-- ── end disclaimer ── -->
-
+    <p class="login-sub">this version lel maksofen bavly and daniel youssef, this version will not be updated. <a href="https://dodessam.github.io/Pastpaperio/" style="color: var(--de); text-decoration: underline;">(updated version)</a></p>
     <div class="user-cards">
-      <div class="user-card" data-uid="daniel_essam" onclick="promptPin('daniel_essam')">
+      <div class="user-card" data-uid="daniel_essam" onclick="promptPin(&#39;daniel_essam&#39;)">
         <div class="user-avatar" style="background:rgba(77,166,255,.2);color:#4da6ff">DE</div>
         <h3>Daniel Essam</h3>
         <p>Bio · Physics · CS · M1</p>
       </div>
-      <div class="user-card" data-uid="bavly_khalil" onclick="promptPin('bavly_khalil')">
+      <div class="user-card" data-uid="bavly_khalil" onclick="promptPin(&#39;bavly_khalil&#39;)">
         <div class="user-avatar" style="background:rgba(0,211,141,.2);color:#00d38d">BK</div>
         <h3>Bavly Khalil</h3>
         <p>Bio · Physics</p>
       </div>
-      <div class="user-card" data-uid="daniel_youssef" onclick="promptPin('daniel_youssef')">
+      <div class="user-card" data-uid="daniel_youssef" onclick="promptPin(&#39;daniel_youssef&#39;)">
         <div class="user-avatar" style="background:rgba(255,184,48,.2);color:#ffb830">DY</div>
         <h3>Daniel Youssef</h3>
         <p>Maths · ICT</p>
@@ -364,11 +329,50 @@ tbody tr:last-child td{border:none}
           </div>
         </div>
         <div class="login-chart-body login-chart-body--tall">
-          <canvas id="login-chart-allpapers"></canvas>
+          <canvas id="login-chart-allpapers" style="display: block; box-sizing: border-box; height: 280px; width: 1054px;" width="1318" height="350"></canvas>
         </div>
       </div>
     </div>
-    <div class="login-overview-grid" id="login-user-charts"></div>
+    <div class="login-overview-grid" id="login-user-charts"><div class="login-chart-card">
+      <div class="login-chart-header">
+        <div class="login-chart-user">
+          <div class="login-chart-avatar" style="background:rgba(77,166,255,0.2);color:#4da6ff">DE</div>
+          <div>
+            <div class="login-chart-name" style="color:#4da6ff">Daniel Essam</div>
+            <div class="login-chart-sub">2 attempts</div>
+          </div>
+        </div>
+        <span class="login-chart-avg">80%</span>
+      </div>
+      <div class="login-chart-body">
+        <canvas id="login_chart_daniel_essam" style="display: block; box-sizing: border-box; height: 190px; width: 317px;" width="396" height="237"></canvas>
+      </div></div><div class="login-chart-card">
+      <div class="login-chart-header">
+        <div class="login-chart-user">
+          <div class="login-chart-avatar" style="background:rgba(0,211,141,0.2);color:#00d38d">BK</div>
+          <div>
+            <div class="login-chart-name" style="color:#00d38d">Bavly Khalil</div>
+            <div class="login-chart-sub">4 attempts</div>
+          </div>
+        </div>
+        <span class="login-chart-avg">78%</span>
+      </div>
+      <div class="login-chart-body">
+        <canvas id="login_chart_bavly_khalil" style="display: block; box-sizing: border-box; height: 190px; width: 317px;" width="396" height="237"></canvas>
+      </div></div><div class="login-chart-card">
+      <div class="login-chart-header">
+        <div class="login-chart-user">
+          <div class="login-chart-avatar" style="background:rgba(255,184,48,0.2);color:#ffb830">DY</div>
+          <div>
+            <div class="login-chart-name" style="color:#ffb830">Daniel Youssef</div>
+            <div class="login-chart-sub">1 attempt</div>
+          </div>
+        </div>
+        <span class="login-chart-avg">93%</span>
+      </div>
+      <div class="login-chart-body">
+        <canvas id="login_chart_daniel_youssef" style="display: block; box-sizing: border-box; height: 190px; width: 317px;" width="396" height="237"></canvas>
+      </div></div></div>
   </div>
 </div>
 
@@ -376,10 +380,12 @@ tbody tr:last-child td{border:none}
   <nav>
     <div class="nav-inner">
       <div class="nav-brand"> </div>
+      
       <div class="nav-user">
         <div class="nav-avatar" id="user-avatar-nav" title="" onclick="logout()"> </div>
         <div>
           <div class="nav-name" id="user-name-nav"> </div>
+  
         </div>
       </div>
     </div>
@@ -404,11 +410,13 @@ tbody tr:last-child td{border:none}
           <div class="stat-sub" id="stat-best-pct"></div>
         </div>
       </div>
+
       <div class="section-gap">
         <div class="charts-grid" id="my-charts">
           <div class="chart-card"><div class="no-data">Loading…</div></div>
         </div>
       </div>
+
       <div id="compare-section" class="section-gap">
         <div class="section-title">Head to Head ⚔️</div>
         <div class="charts-grid" id="compare-charts"></div>
@@ -435,25 +443,27 @@ tbody tr:last-child td{border:none}
           <div class="form-row">
             <div class="form-group">
               <label>Your Score</label>
-              <input type="number" id="log-score" placeholder="e.g. 32" min="0" required oninput="updateLogPct()">
+              <input type="number" id="log-score" placeholder="e.g. 32" min="0" required="" oninput="updateLogPct()">
             </div>
             <div class="form-group">
               <label>Out of (Max)</label>
-              <input type="number" id="log-max" placeholder="e.g. 40" min="1" required oninput="updateLogPct()">
+              <input type="number" id="log-max" placeholder="e.g. 40" min="1" required="" oninput="updateLogPct()">
             </div>
           </div>
           <div id="log-pct-display" class="score-display" style="margin-top:-8px;margin-bottom:16px">Enter scores above…</div>
           <div class="form-group">
             <label>Date Solved</label>
-            <input type="date" id="log-date" required>
+            <input type="date" id="log-date" required="">
           </div>
+
           <div class="form-group">
             <label>Year</label>
-            <input type="number" id="log-year" placeholder="e.g. 2023" min="1990" max="2100" required>
+            <input type="number" id="log-year" placeholder="e.g. 2023" min="1990" max="2100" required="">
           </div>
+          
           <div class="form-group">
             <label>Exam Session</label>
-            <select id="log-session" required>
+            <select id="log-session" required="">
               <option value="">Select session…</option>
               <option value="May/June">May/June</option>
               <option value="October/November">October/November</option>
@@ -461,11 +471,12 @@ tbody tr:last-child td{border:none}
               <option value="February/March">February/March</option>
             </select>
           </div>
+
           <div class="form-group">
             <label>Time Taken</label>
             <div class="radio-group" id="time-mode-group">
               <label class="radio-option">
-                <input type="radio" name="time-mode" value="none" checked onchange="onTimeModeChange()"> Not recorded
+                <input type="radio" name="time-mode" value="none" checked="" onchange="onTimeModeChange()"> Not recorded
               </label>
               <label class="radio-option">
                 <input type="radio" name="time-mode" value="manual" onchange="onTimeModeChange()"> Enter manually
@@ -510,7 +521,7 @@ tbody tr:last-child td{border:none}
               <th>Date</th>
               <th>Paper</th>
               <th>Year</th>
-              <th>Session</th>
+              <th>Session</th> 
               <th>Score</th>
               <th>%</th>
               <th>Time Taken</th>
@@ -523,10 +534,10 @@ tbody tr:last-child td{border:none}
         </table>
       </div>
     </section>
-
     <section id="tab-timer" class="tab">
       <div style="max-width:560px;margin:0 auto">
         <div class="section-title" style="margin-bottom:24px">Exam Timer</div>
+
         <div class="card" id="timer-setup">
           <div class="form-group">
             <label for="timer-duration">Duration (minutes)</label>
@@ -534,39 +545,41 @@ tbody tr:last-child td{border:none}
           </div>
           <button class="btn btn-primary" style="width:100%;margin-top:4px" onclick="timerSchedule()">Start At Next Minute</button>
         </div>
+
         <div class="card hidden" id="timer-waiting">
           <div style="text-align:center;color:var(--muted2);font-size:14px;margin-bottom:16px">Waiting for next minute start…</div>
-          <div id="timer-countdown" style="font-family:'JetBrains Mono',monospace;font-size:64px;font-weight:700;text-align:center;color:#fff;letter-spacing:2px;margin-bottom:20px">--:--:--</div>
+          <div id="timer-countdown" style="font-family:&#39;JetBrains Mono&#39;,monospace;font-size:64px;font-weight:700;text-align:center;color:#fff;letter-spacing:2px;margin-bottom:20px">--:--:--</div>
           <button class="btn btn-danger" style="width:100%" onclick="timerCancel()">Cancel</button>
         </div>
+
         <div class="card hidden" id="timer-running">
           <div id="timer-announcement" style="background:var(--s2);border:1px solid var(--border2);border-radius:var(--r);padding:14px 16px;text-align:center;color:var(--text);font-weight:600;margin-bottom:20px;min-height:48px;display:flex;align-items:center;justify-content:center;font-size:14px"></div>
-          <div id="timer-display" style="font-family:'JetBrains Mono',monospace;font-size:72px;font-weight:700;text-align:center;color:#fff;letter-spacing:2px;margin-bottom:20px;text-shadow:0 4px 14px rgba(255,255,255,.12)">00:00</div>
+          <div id="timer-display" style="font-family:&#39;JetBrains Mono&#39;,monospace;font-size:72px;font-weight:700;text-align:center;color:#fff;letter-spacing:2px;margin-bottom:20px;text-shadow:0 4px 14px rgba(255,255,255,.12)">00:00</div>
           <button class="btn btn-danger" style="width:100%" onclick="timerStop()">Stop Timer</button>
         </div>
+
         <div class="card hidden" id="timer-finished">
           <div style="background:var(--s2);border:1px solid var(--border2);border-radius:var(--r);padding:14px 16px;text-align:center;color:var(--success);font-weight:700;margin-bottom:20px;font-size:15px">Time's up! Pens down.</div>
-          <div style="font-family:'JetBrains Mono',monospace;font-size:72px;font-weight:700;text-align:center;color:#fff;letter-spacing:2px;margin-bottom:20px">00:00</div>
+          <div style="font-family:&#39;JetBrains Mono&#39;,monospace;font-size:72px;font-weight:700;text-align:center;color:#fff;letter-spacing:2px;margin-bottom:20px">00:00</div>
           <button class="btn btn-primary" style="width:100%" onclick="timerReset()">New Timer</button>
         </div>
       </div>
     </section>
   </main>
-
   <nav class="bottom-nav" id="bottom-nav">
-    <button class="bottom-nav-item active" data-tab="dashboard" onclick="switchTab('dashboard')">
+    <button class="bottom-nav-item active" data-tab="dashboard" onclick="switchTab(&#39;dashboard&#39;)">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect></svg>
       <span>Dashboard</span>
     </button>
-    <button class="bottom-nav-item" data-tab="log" onclick="switchTab('log')">
+    <button class="bottom-nav-item" data-tab="log" onclick="switchTab(&#39;log&#39;)">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
       <span>Log</span>
     </button>
-    <button class="bottom-nav-item" data-tab="timer" onclick="switchTab('timer')">
+    <button class="bottom-nav-item" data-tab="timer" onclick="switchTab(&#39;timer&#39;)">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
       <span>Timer</span>
     </button>
-    <button class="bottom-nav-item" data-tab="history" onclick="switchTab('history')">
+    <button class="bottom-nav-item" data-tab="history" onclick="switchTab(&#39;history&#39;)">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
       <span>History</span>
     </button>
@@ -576,7 +589,6 @@ tbody tr:last-child td{border:none}
     </button>
   </nav>
 </div>
-
 <div id="pin-overlay" class="hidden">
   <div class="pin-box">
     <div class="pin-avatar" id="pin-avatar"></div>
@@ -590,17 +602,17 @@ tbody tr:last-child td{border:none}
     </div>
     <div class="pin-err" id="pin-err"></div>
     <div class="pin-keypad">
-      <button class="pin-key" onclick="pinKey('1')">1</button>
-      <button class="pin-key" onclick="pinKey('2')">2</button>
-      <button class="pin-key" onclick="pinKey('3')">3</button>
-      <button class="pin-key" onclick="pinKey('4')">4</button>
-      <button class="pin-key" onclick="pinKey('5')">5</button>
-      <button class="pin-key" onclick="pinKey('6')">6</button>
-      <button class="pin-key" onclick="pinKey('7')">7</button>
-      <button class="pin-key" onclick="pinKey('8')">8</button>
-      <button class="pin-key" onclick="pinKey('9')">9</button>
+      <button class="pin-key" onclick="pinKey(&#39;1&#39;)">1</button>
+      <button class="pin-key" onclick="pinKey(&#39;2&#39;)">2</button>
+      <button class="pin-key" onclick="pinKey(&#39;3&#39;)">3</button>
+      <button class="pin-key" onclick="pinKey(&#39;4&#39;)">4</button>
+      <button class="pin-key" onclick="pinKey(&#39;5&#39;)">5</button>
+      <button class="pin-key" onclick="pinKey(&#39;6&#39;)">6</button>
+      <button class="pin-key" onclick="pinKey(&#39;7&#39;)">7</button>
+      <button class="pin-key" onclick="pinKey(&#39;8&#39;)">8</button>
+      <button class="pin-key" onclick="pinKey(&#39;9&#39;)">9</button>
       <button class="pin-key key-del" onclick="pinDel()">⌫</button>
-      <button class="pin-key key-0" onclick="pinKey('0')">0</button>
+      <button class="pin-key key-0" onclick="pinKey(&#39;0&#39;)">0</button>
     </div>
     <button class="pin-back" onclick="pinCancel()">← Back</button>
   </div>
@@ -618,6 +630,7 @@ const FIREBASE_CONFIG = {
   appId:             "1:291141137214:web:d1dce73090dfc53f2d326f"
 };
 
+// PINs removed from USERS configuration
 const USERS = {
   daniel_essam: {
     id:'daniel_essam', name:'Daniel Essam', initials:'DE', color:'#4da6ff',
@@ -677,6 +690,7 @@ function init() {
       console.warn('Firebase init failed:', e.message);
     }
   }
+
   const today = new Date().toISOString().split('T')[0];
   document.getElementById('log-date').value = today;
   document.getElementById('log-year').value = new Date().getFullYear();
@@ -693,10 +707,12 @@ function login(uid) {
   document.getElementById('user-name-nav').textContent = currentUser.name.split(' ')[0];
   const bni = document.getElementById('bottom-nav-initials');
   if (bni) bni.textContent = currentUser.initials;
+
   if (!db) {
     document.getElementById('firebase-banner')?.classList.remove('hidden');
     isDemo = true;
   }
+
   initLogForm();
   initHistoryFilter();
   loadAllGrades().then(() => {
@@ -781,6 +797,7 @@ function renderStats() {
   const mine = allGrades.filter(g => g.userId === currentUser.id);
   const total = mine.length;
   const avg = total > 0 ? Math.round(mine.reduce((s,g) => s+g.percentage, 0)/total) : null;
+
   const paperMap = {};
   mine.forEach(g => {
     const k = `${g.subject} ${g.paper}`;
@@ -793,6 +810,7 @@ function renderStats() {
     const a = v.sum/v.cnt;
     if (a > bestAvg) { bestAvg = a; bestPaper = k; bestSub = Math.round(a)+'% avg'; }
   });
+
   document.getElementById('stat-total').textContent = total;
   document.getElementById('stat-avg').textContent = avg !== null ? avg+'%' : '—';
   document.getElementById('stat-best').textContent = bestPaper;
@@ -802,13 +820,16 @@ function renderStats() {
 function renderMyCharts() {
   const container = document.getElementById('my-charts');
   container.innerHTML = '';
+
   currentUser.papers.forEach(paper => {
     const paperGrades = allGrades
       .filter(g => g.userId === currentUser.id && g.subject === paper.subject && g.paper === paper.paper)
       .sort((a,b) => new Date(a.date)-new Date(b.date));
+
     const label = getPaperLabel(paper);
     const canvasId = 'chart_my_' + paper.key;
     const avg = getAvg(paperGrades);
+
     const card = document.createElement('div');
     card.className = 'chart-card';
     card.innerHTML = `
@@ -825,6 +846,7 @@ function renderMyCharts() {
           : `<canvas id="${canvasId}"></canvas>`}
       </div>`;
     container.appendChild(card);
+
     if (paperGrades.length > 0) {
       createLineChart(canvasId, [{
         label: currentUser.name,
@@ -839,9 +861,11 @@ function renderCompareCharts() {
   const relevant = SHARED_PAPERS.filter(sp => sp.users.includes(currentUser.id));
   const section = document.getElementById('compare-section');
   const container = document.getElementById('compare-charts');
+
   if (relevant.length === 0) { section.classList.add('hidden'); return; }
   section.classList.remove('hidden');
   container.innerHTML = '';
+
   relevant.forEach(sp => {
     const canvasId = `chart_cmp_${sp.subject.replace(/ /g,'_')}_${sp.paper}`;
     const datasets = sp.users.map(uid => {
@@ -855,11 +879,13 @@ function renderCompareCharts() {
         color: u.color
       };
     });
+
     const allHasData = datasets.some(d => d.data.length > 0);
     const legendHtml = sp.users.map(uid =>
       `<span class="legend-dot" style="background:${USERS[uid].color}"></span>
        <span style="color:${USERS[uid].color};font-size:12px;font-weight:600">${USERS[uid].name.split(' ')[0]}</span>`
     ).join('');
+
     const card = document.createElement('div');
     card.className = 'chart-card chart-card--compare';
     card.innerHTML = `
@@ -885,6 +911,7 @@ function createLineChart(canvasId, datasets, multiLine = false) {
   const canvas = document.getElementById(canvasId);
   if (!canvas) return;
   const ctx = canvas.getContext('2d');
+
   charts[canvasId] = new Chart(ctx, {
     type: 'line',
     data: {
@@ -955,15 +982,22 @@ function initLogForm() {
     opt.textContent = getPaperLabel(p);
     sel.appendChild(opt);
   });
+
   sel.onchange = () => {
     const p = currentUser.papers.find(pp => pp.key === sel.value);
     const vg = document.getElementById('variant-group');
-    if (p && p.variant) { vg.classList.remove('hidden'); } else { vg.classList.add('hidden'); }
+    if (p && p.variant) {
+      vg.classList.remove('hidden');
+    } else {
+      vg.classList.add('hidden');
+    }
     const hint = document.getElementById('log-duration-hint');
     if (p && p.duration) {
       const h = Math.floor(p.duration/60), m = p.duration%60;
       hint.textContent = `Standard duration: ${h > 0 ? h+'h ' : ''}${m > 0 ? m+'min' : ''}`;
-    } else { hint.textContent = ''; }
+    } else {
+      hint.textContent = '';
+    }
   };
 }
 
@@ -980,7 +1014,9 @@ function updateLogPct() {
     const pct = Math.round((score/max)*100);
     const col = pct >= 70 ? '#00d38d' : pct >= 50 ? '#ffb830' : '#ff4565';
     el.innerHTML = `<span style="color:${col};font-size:20px;font-weight:700">${pct}%</span>  <span style="color:#5a7898">${score} / ${max}</span>`;
-  } else { el.textContent = 'Enter scores above…'; }
+  } else {
+    el.textContent = 'Enter scores above…';
+  }
 }
 
 async function submitGrade(event) {
@@ -990,30 +1026,46 @@ async function submitGrade(event) {
   const paper = currentUser.papers.find(p => p.key === paperKey);
   const variant = paper.variant ? document.getElementById('log-variant').value : '';
   const yearVal = document.getElementById('log-year').value;
-  const sessionVal = document.getElementById('log-session').value;
+  const sessionVal = document.getElementById('log-session').value; 
   const score = parseFloat(document.getElementById('log-score').value);
   const maxScore = parseFloat(document.getElementById('log-max').value);
   const dateVal = document.getElementById('log-date').value;
   const mode = document.querySelector('input[name="time-mode"]:checked').value;
   const notes = document.getElementById('log-notes').value;
+
   if (!yearVal) { showToast('Please enter a year', 'error'); return; }
   if (isNaN(score) || isNaN(maxScore) || maxScore <= 0) { showToast('Invalid score values', 'error'); return; }
   if (!sessionVal) { showToast('Please select an exam session', 'error'); return; }
+
   let timeTaken = null;
   if (mode === 'manual') {
     const mins = parseInt(document.getElementById('log-time-mins').value)||0;
     const secs = parseInt(document.getElementById('log-time-secs').value)||0;
     timeTaken = mins*60+secs;
   }
+
   const btn = document.getElementById('log-submit-btn');
-  btn.disabled = true; btn.textContent = 'Saving…';
+  btn.disabled = true;
+  btn.textContent = 'Saving…';
+
   const ok = await saveGrade({
-    userId: currentUser.id, subject: paper.subject, paper: paper.paper,
-    variant, board: paper.board, year: parseInt(yearVal), session: sessionVal,
-    score, maxScore, timeTaken,
-    date: dateVal ? new Date(dateVal+'T12:00:00') : new Date(), notes
+    userId: currentUser.id,
+    subject: paper.subject,
+    paper: paper.paper,
+    variant,
+    board: paper.board,
+    year: parseInt(yearVal),
+    session: sessionVal, 
+    score,
+    maxScore,
+    timeTaken,
+    date: dateVal ? new Date(dateVal+'T12:00:00') : new Date(),
+    notes
   });
-  btn.disabled = false; btn.textContent = 'Save Grade';
+
+  btn.disabled = false;
+  btn.textContent = 'Save Grade';
+
   if (ok) {
     showToast('Grade saved!');
     event.target.reset();
@@ -1023,8 +1075,11 @@ async function submitGrade(event) {
     document.getElementById('log-date').value = new Date().toISOString().split('T')[0];
     document.getElementById('log-year').value = new Date().getFullYear();
     document.getElementById('log-session').value = '';
-    renderDashboard(); renderHistory();
-  } else { showToast('Failed to save. Check console.', 'error'); }
+    renderDashboard();
+    renderHistory();
+  } else {
+    showToast('Failed to save. Check console.', 'error');
+  }
 }
 
 function initHistoryFilter() {
@@ -1041,22 +1096,27 @@ function renderHistory() {
   if (!currentUser) return;
   const filter = document.getElementById('history-filter').value;
   const userFilter = document.getElementById('history-user-filter').value;
+
   let grades = [...allGrades];
   if (userFilter === 'me') grades = grades.filter(g => g.userId === currentUser.id);
   if (filter !== 'all') grades = grades.filter(g => g.subject === filter);
   grades.sort((a,b) => new Date(b.date)-new Date(a.date));
+
   const tbody = document.getElementById('history-tbody');
   if (grades.length === 0) {
     tbody.innerHTML = '<tr><td colspan="8" class="no-data-row">No grades yet — start logging! 📝</td></tr>';
     return;
   }
+
   tbody.innerHTML = grades.map(g => {
     const user = USERS[g.userId];
     const pctCls = g.percentage >= 70 ? 'pct-good' : g.percentage >= 50 ? 'pct-ok' : 'pct-low';
     const nameTag = userFilter === 'all'
-      ? `<span style="color:${user?.color||'#fff'};font-size:11px;font-weight:700">${user?.initials||'?'}</span> ` : '';
+      ? `<span style="color:${user?.color||'#fff'};font-size:11px;font-weight:700">${user?.initials||'?'}</span> `
+      : '';
     const paperDisp = g.board === 'Cambridge'
-      ? `${g.subject} ${g.paper}${g.variant||''}` : `${g.subject} ${g.paper}`;
+      ? `${g.subject} ${g.paper}${g.variant||''}`
+      : `${g.subject} ${g.paper}`;
     return `<tr>
       <td style="white-space:nowrap">${fmtDateShort(g.date)}</td>
       <td>${nameTag}<span class="paper-tag-sm">${paperDisp}</span><span class="board-tag-sm">${g.board}</span></td>
@@ -1074,29 +1134,36 @@ function getPaperLabel(paper) {
   if (paper.board === 'Cambridge') return `${paper.subject} Paper ${paper.paper}`;
   return `${paper.subject} ${paper.paper}`;
 }
+
 function getAvg(grades) {
   if (!grades || grades.length === 0) return null;
   return Math.round(grades.reduce((s,g) => s+g.percentage, 0)/grades.length);
 }
+
 function fmtDate(date) {
   if (!date) return '';
   return new Date(date).toLocaleDateString('en-GB', { day:'2-digit', month:'short' });
 }
+
 function fmtDateShort(date) {
   if (!date) return '';
   return new Date(date).toLocaleDateString('en-GB', { day:'2-digit', month:'short', year:'2-digit' });
 }
+
 function fmtTimeTaken(seconds) {
   if (!seconds) return '—';
   const h = Math.floor(seconds/3600), m = Math.floor((seconds%3600)/60), s = seconds%60;
   if (h > 0) return `${h}h ${pad(m)}m`;
   return `${m}m ${pad(s)}s`;
 }
+
 function pad(n) { return String(n).padStart(2,'0'); }
+
 function hexAlpha(hex, alpha) {
   const r = parseInt(hex.slice(1,3),16), g = parseInt(hex.slice(3,5),16), b = parseInt(hex.slice(5,7),16);
   return `rgba(${r},${g},${b},${alpha})`;
 }
+
 function showToast(msg, type='success') {
   const t = document.getElementById('toast');
   t.textContent = msg;
@@ -1107,6 +1174,7 @@ function showToast(msg, type='success') {
 let loginCharts = {};
 
 async function renderLoginOverview() {
+  // Load grades from Firebase or show empty state
   let grades = [];
   try {
     if (db) {
@@ -1116,8 +1184,9 @@ async function renderLoginOverview() {
         return { ...data, date: data.date?.toDate ? data.date.toDate() : new Date(data.date) };
       });
     }
-  } catch(e) { /* silent */ }
+  } catch(e) { /* silent — no data */ }
 
+  // Destroy old charts
   Object.values(loginCharts).forEach(c => { try { c.destroy(); } catch(e){} });
   loginCharts = {};
 
@@ -1129,15 +1198,20 @@ async function renderLoginOverview() {
     const user = USERS[uid];
     const userGrades = grades.filter(g => g.userId === uid);
     const overallAvg = userGrades.length > 0
-      ? Math.round(userGrades.reduce((s,g) => s + (g.percentage||0), 0) / userGrades.length) : null;
+      ? Math.round(userGrades.reduce((s,g) => s + (g.percentage||0), 0) / userGrades.length)
+      : null;
+
     const card = document.createElement('div');
     card.className = 'login-chart-card';
+
+    // Build per-paper averages for bar chart
     const paperAvgs = {};
     user.papers.forEach(p => {
       const pg = userGrades.filter(g => g.subject === p.subject && g.paper === p.paper);
       const lbl = p.board === 'Cambridge' ? `${p.subject} P${p.paper}` : `${p.subject} ${p.paper}`;
       paperAvgs[lbl] = pg.length > 0 ? Math.round(pg.reduce((s,g) => s+(g.percentage||0),0)/pg.length) : null;
     });
+
     const canvasId = `login_chart_${uid}`;
     card.innerHTML = `
       <div class="login-chart-header">
@@ -1165,6 +1239,7 @@ async function renderLoginOverview() {
         const labels = Object.keys(paperAvgs);
         const values = labels.map(l => paperAvgs[l] ?? 0);
         const colors = values.map(v => v >= 70 ? user.color : v >= 50 ? '#ffb830' : '#ff4565');
+
         loginCharts[canvasId] = new Chart(ctx, {
           type: 'bar',
           data: {
@@ -1199,6 +1274,7 @@ async function renderLoginOverview() {
     }
   });
 
+  // ── All-papers combined grouped bar chart ──
   const allPaperKeys = [];
   const seen = new Set();
   userOrder.forEach(uid => {
@@ -1231,7 +1307,10 @@ async function renderLoginOverview() {
     combinedDatasets.forEach(ds => { ds.data = ds.data.map(v => v ?? 0); });
     loginCharts['allpapers'] = new Chart(allCanvas.getContext('2d'), {
       type: 'bar',
-      data: { labels: allPaperKeys.map(pk => pk.lbl), datasets: combinedDatasets },
+      data: {
+        labels: allPaperKeys.map(pk => pk.lbl),
+        datasets: combinedDatasets
+      },
       options: {
         responsive: true, maintainAspectRatio: false, animation: { duration: 800 },
         plugins: {
@@ -1263,7 +1342,9 @@ let _timerFiveAnnounced = false;
 
 function timerSpeak(text) {
   const utterance = new SpeechSynthesisUtterance(text);
-  utterance.rate = 0.9; utterance.pitch = 1; utterance.volume = 1;
+  utterance.rate = 0.9;
+  utterance.pitch = 1;
+  utterance.volume = 1;
   const voices = speechSynthesis.getVoices();
   const femaleVoice = voices.find(v =>
     v.name.includes('Female') || v.name.includes('female') ||
@@ -1286,8 +1367,10 @@ function timerSchedule() {
   document.getElementById('timer-waiting').classList.remove('hidden');
   _timerScheduledInterval = setInterval(() => {
     const diff = start - new Date();
-    if (diff <= 0) { clearInterval(_timerScheduledInterval); timerBegin(dur); }
-    else {
+    if (diff <= 0) {
+      clearInterval(_timerScheduledInterval);
+      timerBegin(dur);
+    } else {
       const h = Math.floor(diff / 3600000);
       const m = Math.floor((diff % 3600000) / 60000);
       const s = Math.floor((diff % 60000) / 1000);
@@ -1304,14 +1387,19 @@ function timerBegin(duration) {
   ann.textContent = 'On behalf of the British Council, we wish you all good luck. You may start.';
   timerSpeak('On behalf of the British Council, we wish you all good luck. You may start.');
   _timerEndTime = new Date(Date.now() + duration * 60000);
-  _timerHalfAnnounced = false; _timerFiveAnnounced = false;
+  _timerHalfAnnounced = false;
+  _timerFiveAnnounced = false;
   timerTick();
   _timerInterval = setInterval(timerTick, 100);
 }
 
 function timerTick() {
   const remaining = _timerEndTime - new Date();
-  if (remaining <= 0) { clearInterval(_timerInterval); timerFinish(); return; }
+  if (remaining <= 0) {
+    clearInterval(_timerInterval);
+    timerFinish();
+    return;
+  }
   const mins = Math.floor(remaining / 60000);
   const secs = Math.floor((remaining % 60000) / 1000);
   document.getElementById('timer-display').textContent =
@@ -1335,8 +1423,17 @@ function timerFinish() {
   document.getElementById('timer-finished').classList.remove('hidden');
   timerSpeak('Pens down');
 }
-function timerStop() { if (_timerInterval) clearInterval(_timerInterval); timerReset(); }
-function timerCancel() { if (_timerScheduledInterval) clearInterval(_timerScheduledInterval); timerReset(); }
+
+function timerStop() {
+  if (_timerInterval) clearInterval(_timerInterval);
+  timerReset();
+}
+
+function timerCancel() {
+  if (_timerScheduledInterval) clearInterval(_timerScheduledInterval);
+  timerReset();
+}
+
 function timerReset() {
   if (_timerScheduledInterval) clearInterval(_timerScheduledInterval);
   if (_timerInterval) clearInterval(_timerInterval);
@@ -1345,7 +1442,8 @@ function timerReset() {
   document.getElementById('timer-running').classList.add('hidden');
   document.getElementById('timer-finished').classList.add('hidden');
   document.getElementById('timer-announcement').textContent = '';
-  _timerHalfAnnounced = false; _timerFiveAnnounced = false;
+  _timerHalfAnnounced = false;
+  _timerFiveAnnounced = false;
 }
 
 let _pinUid = null;
@@ -1358,6 +1456,7 @@ function promptPin(uid) {
   const pinBox = document.querySelector('.pin-box');
   pinBox.style.setProperty('--pin-color', u.color);
   pinBox.style.setProperty('--pin-glow', u.color + '40');
+  
   const av = document.getElementById('pin-avatar');
   av.textContent = u.initials;
   av.style.background = u.color + '33';
@@ -1379,7 +1478,9 @@ function pinKey(digit) {
   if (_pinEntered.length >= 4) return;
   _pinEntered += digit;
   pinRenderDots();
-  if (_pinEntered.length === 4) { setTimeout(pinCheck, 120); }
+  if (_pinEntered.length === 4) {
+    setTimeout(pinCheck, 120);
+  }
 }
 
 function pinDel() {
@@ -1398,17 +1499,27 @@ function pinRenderDots(state) {
   }
 }
 
+// Rewritten PIN check to fetch from Firestore
 async function pinCheck() {
   let isValid = false;
+
   if (db) {
     try {
       const docRef = await db.collection('users').doc(_pinUid).get();
-      if (docRef.exists && docRef.data().pin === _pinEntered) { isValid = true; }
-    } catch (e) { console.error("Error verifying PIN in Firestore:", e); }
+      if (docRef.exists && docRef.data().pin === _pinEntered) {
+        isValid = true;
+      }
+    } catch (e) {
+      console.error("Error verifying PIN in Firestore:", e);
+    }
   } else {
+    // Demo fallback for when Firebase is not connected
     const demoPins = { daniel_essam: '1478', bavly_khalil: '2589', daniel_youssef: '3690' };
-    if (_pinEntered === demoPins[_pinUid]) { isValid = true; }
+    if (_pinEntered === demoPins[_pinUid]) {
+      isValid = true;
+    }
   }
+
   if (isValid) {
     document.removeEventListener('keydown', _pinKeyHandler);
     document.getElementById('pin-overlay').classList.add('hidden');
@@ -1418,17 +1529,24 @@ async function pinCheck() {
     const dots = document.getElementById('pin-dots');
     dots.classList.add('shake');
     document.getElementById('pin-err').textContent = 'Incorrect PIN. Try again.';
-    setTimeout(() => { dots.classList.remove('shake'); _pinEntered = ''; pinRenderDots(); }, 500);
+    setTimeout(() => {
+      dots.classList.remove('shake');
+      _pinEntered = '';
+      pinRenderDots();
+    }, 500);
   }
 }
 
 function pinCancel() {
   document.removeEventListener('keydown', _pinKeyHandler);
   document.getElementById('pin-overlay').classList.add('hidden');
-  _pinUid = null; _pinEntered = '';
+  _pinUid = null;
+  _pinEntered = '';
 }
 
 init();
 renderLoginOverview();
 </script>
+
+
 </body></html>
