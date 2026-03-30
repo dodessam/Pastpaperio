@@ -1,14 +1,15 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
+<!-- saved from url=(0039)https://dodessam.github.io/Pastpaperio/ -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>TGRTHR</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Syne:wght@700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+<script src="./TGRTHR_files/firebase-app-compat.js"></script>
+<script src="./TGRTHR_files/firebase-firestore-compat.js"></script>
+<script src="./TGRTHR_files/chart.umd.min.js"></script>
 <style>
 :root {
   --bg: #0b0d10;
@@ -29,6 +30,9 @@
   --dy: #ffb830;
   --dy-dim: rgba(255,184,48,.15);
   --dy-glow: rgba(255,184,48,.25);
+  --ea: #c084fc;
+  --ea-dim: rgba(192,132,252,.15);
+  --ea-glow: rgba(192,132,252,.25);
   --success: #00d38d;
   --warning: #ffb830;
   --danger: #ff4565;
@@ -76,16 +80,18 @@ label{font-size:13px;color:var(--muted2);font-weight:500;margin-bottom:4px;displ
 .login-title{font-family:'Syne',sans-serif;font-size:38px;font-weight:800;line-height:1.1;margin-bottom:8px}
 .login-title span{color:var(--de)}
 .login-sub{color:var(--muted2);margin-bottom:48px;font-size:15px}
-.user-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:32px}
+.user-cards{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:32px}
 .user-card{background:var(--s1);border:1px solid var(--border);border-radius:var(--r-lg);padding:24px 16px;cursor:pointer;transition:all .25s;position:relative;overflow:hidden}
 .user-card::before{content:'';position:absolute;inset:0;opacity:0;transition:opacity .3s}
 .user-card[data-uid=daniel_essam]::before{background:var(--de-dim)}
 .user-card[data-uid=bavly_khalil]::before{background:var(--bk-dim)}
 .user-card[data-uid=daniel_youssef]::before{background:var(--dy-dim)}
+.user-card[data-uid=elo_ashraf]::before{background:var(--ea-dim)}
 .user-card:hover::before{opacity:1}
 .user-card[data-uid=daniel_essam]:hover{border-color:var(--de);box-shadow:0 0 30px var(--de-glow)}
 .user-card[data-uid=bavly_khalil]:hover{border-color:var(--bk);box-shadow:0 0 30px var(--bk-glow)}
 .user-card[data-uid=daniel_youssef]:hover{border-color:var(--dy);box-shadow:0 0 30px var(--dy-glow)}
+.user-card[data-uid=elo_ashraf]:hover{border-color:var(--ea);box-shadow:0 0 30px var(--ea-glow)}
 .user-card:hover{transform:translateY(-3px)}
 .user-avatar{width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-size:18px;font-weight:800;margin:0 auto 12px;position:relative;z-index:1}
 .user-card h3{font-family:'Syne',sans-serif;font-size:15px;font-weight:700;position:relative;z-index:1}
@@ -101,6 +107,7 @@ label{font-size:13px;color:var(--muted2);font-weight:500;margin-bottom:4px;displ
 .login-overview-sub-title::before{content:'';display:block;width:3px;height:12px;border-radius:2px;background:var(--border2)}
 .login-overview-wide{margin-bottom:24px}
 .login-overview-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.login-overview-grid>*:nth-child(4){grid-column:2}
 .login-chart-card{background:var(--s1);border:1px solid var(--border);border-radius:var(--r-lg);padding:18px;transition:border-color .2s}
 .login-chart-card:hover{border-color:var(--border2)}
 .login-chart-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;gap:8px;flex-wrap:wrap}
@@ -233,15 +240,17 @@ tbody tr:last-child td{border:none}
 #app[data-user=daniel_essam]{--user-color:var(--de);--user-dim:var(--de-dim);--user-glow:var(--de-glow)}
 #app[data-user=bavly_khalil]{--user-color:var(--bk);--user-dim:var(--bk-dim);--user-glow:var(--bk-glow)}
 #app[data-user=daniel_youssef]{--user-color:var(--dy);--user-dim:var(--dy-dim);--user-glow:var(--dy-glow)}
+#app[data-user=elo_ashraf]{--user-color:var(--ea);--user-dim:var(--ea-dim);--user-glow:var(--ea-glow)}
 @media(max-width:900px){
-  .login-overview-grid{grid-template-columns:1fr 1fr}
+  .login-overview-grid{grid-template-columns:repeat(2,1fr)}
+  .login-overview-grid>*:nth-child(4){grid-column:auto}
   .login-chart-body--tall{height:240px}
 }
 @media(max-width:768px){
   #login-screen{padding:32px 16px 48px}
   .login-title{font-size:32px}
   .login-sub{margin-bottom:32px;font-size:14px}
-  .user-cards{grid-template-columns:repeat(3,1fr);gap:10px}
+  .user-cards{grid-template-columns:repeat(2,1fr);gap:10px}
   .user-card{padding:16px 10px}
   .user-avatar{width:44px;height:44px;font-size:15px;margin-bottom:8px}
   .user-card h3{font-size:13px}
@@ -297,20 +306,25 @@ tbody tr:last-child td{border:none}
   <div class="login-box">
     <h1 class="login-title">Together<br><span>Hnng7</span></h1>
     <div class="user-cards">
-      <div class="user-card" data-uid="daniel_essam" onclick="promptPin('daniel_essam')">
+      <div class="user-card" data-uid="daniel_essam" onclick="promptPin(&#39;daniel_essam&#39;)">
         <div class="user-avatar" style="background:rgba(77,166,255,.2);color:#4da6ff">DE</div>
         <h3>Daniel Essam</h3>
         <p>Bio · Physics · CS · M1</p>
       </div>
-      <div class="user-card" data-uid="bavly_khalil" onclick="promptPin('bavly_khalil')">
+      <div class="user-card" data-uid="bavly_khalil" onclick="promptPin(&#39;bavly_khalil&#39;)">
         <div class="user-avatar" style="background:rgba(0,211,141,.2);color:#00d38d">BK</div>
         <h3>Bavly Khalil</h3>
         <p>Bio · Physics</p>
       </div>
-      <div class="user-card" data-uid="daniel_youssef" onclick="promptPin('daniel_youssef')">
+      <div class="user-card" data-uid="daniel_youssef" onclick="promptPin(&#39;daniel_youssef&#39;)">
         <div class="user-avatar" style="background:rgba(255,184,48,.2);color:#ffb830">DY</div>
         <h3>Daniel Youssef</h3>
         <p>Maths · ICT</p>
+      </div>
+      <div class="user-card" data-uid="elo_ashraf" onclick="promptPin(&#39;elo_ashraf&#39;)">
+        <div class="user-avatar" style="background:rgba(192,132,252,.2);color:#c084fc">EA</div>
+        <h3>Elo Ashraf</h3>
+        <p>Business · Psych · Physics</p>
       </div>
     </div>
   </div>
@@ -325,21 +339,54 @@ tbody tr:last-child td{border:none}
             <span class="legend-dot" style="background:#4da6ff"></span><span style="color:#4da6ff;font-size:12px;font-weight:600">Daniel E</span>
             <span class="legend-dot" style="background:#00d38d"></span><span style="color:#00d38d;font-size:12px;font-weight:600">Bavly</span>
             <span class="legend-dot" style="background:#ffb830"></span><span style="color:#ffb830;font-size:12px;font-weight:600">Daniel Y</span>
+            <span class="legend-dot" style="background:#c084fc"></span><span style="color:#c084fc;font-size:12px;font-weight:600">Elo</span>
           </div>
         </div>
         <div class="login-chart-body login-chart-body--tall">
-          <canvas id="login-chart-allpapers"></canvas>
+          <canvas id="login-chart-allpapers" style="display: block; box-sizing: border-box; height: 280px; width: 1054px;" width="1318" height="350"></canvas>
         </div>
       </div>
     </div>
-    <div class="login-overview-grid" id="login-user-charts">
-      <div class="login-chart-card" style="grid-column:1/-1">
-        <div class="login-overview-loading">
-          <div class="login-spinner"></div>
-          <span>Loading grades…</span>
+    <div class="login-overview-grid" id="login-user-charts"><div class="login-chart-card">
+      <div class="login-chart-header">
+        <div class="login-chart-user">
+          <div class="login-chart-avatar" style="background:rgba(77,166,255,0.2);color:#4da6ff">DE</div>
+          <div>
+            <div class="login-chart-name" style="color:#4da6ff">Daniel Essam</div>
+            <div class="login-chart-sub">2 attempts</div>
+          </div>
         </div>
+        <span class="login-chart-avg">80%</span>
       </div>
-    </div>
+      <div class="login-chart-body">
+        <canvas id="login_chart_daniel_essam" style="display: block; box-sizing: border-box; height: 190px; width: 317px;" width="396" height="237"></canvas>
+      </div></div><div class="login-chart-card">
+      <div class="login-chart-header">
+        <div class="login-chart-user">
+          <div class="login-chart-avatar" style="background:rgba(0,211,141,0.2);color:#00d38d">BK</div>
+          <div>
+            <div class="login-chart-name" style="color:#00d38d">Bavly Khalil</div>
+            <div class="login-chart-sub">4 attempts</div>
+          </div>
+        </div>
+        <span class="login-chart-avg">78%</span>
+      </div>
+      <div class="login-chart-body">
+        <canvas id="login_chart_bavly_khalil" style="display: block; box-sizing: border-box; height: 190px; width: 317px;" width="396" height="237"></canvas>
+      </div></div><div class="login-chart-card">
+      <div class="login-chart-header">
+        <div class="login-chart-user">
+          <div class="login-chart-avatar" style="background:rgba(255,184,48,0.2);color:#ffb830">DY</div>
+          <div>
+            <div class="login-chart-name" style="color:#ffb830">Daniel Youssef</div>
+            <div class="login-chart-sub">1 attempt</div>
+          </div>
+        </div>
+        <span class="login-chart-avg">93%</span>
+      </div>
+      <div class="login-chart-body">
+        <canvas id="login_chart_daniel_youssef" style="display: block; box-sizing: border-box; height: 190px; width: 317px;" width="396" height="237"></canvas>
+      </div></div></div>
   </div>
 </div>
 
@@ -410,27 +457,27 @@ tbody tr:last-child td{border:none}
           <div class="form-row">
             <div class="form-group">
               <label>Your Score</label>
-              <input type="number" id="log-score" placeholder="e.g. 32" min="0" required oninput="updateLogPct()">
+              <input type="number" id="log-score" placeholder="e.g. 32" min="0" required="" oninput="updateLogPct()">
             </div>
             <div class="form-group">
               <label>Out of (Max)</label>
-              <input type="number" id="log-max" placeholder="e.g. 40" min="1" required oninput="updateLogPct()">
+              <input type="number" id="log-max" placeholder="e.g. 40" min="1" required="" oninput="updateLogPct()">
             </div>
           </div>
           <div id="log-pct-display" class="score-display" style="margin-top:-8px;margin-bottom:16px">Enter scores above…</div>
           <div class="form-group">
             <label>Date Solved</label>
-            <input type="date" id="log-date" required>
+            <input type="date" id="log-date" required="">
           </div>
 
           <div class="form-group">
             <label>Year</label>
-            <input type="number" id="log-year" placeholder="e.g. 2023" min="1990" max="2100" required>
+            <input type="number" id="log-year" placeholder="e.g. 2023" min="1990" max="2100" required="">
           </div>
           
           <div class="form-group">
             <label>Exam Session</label>
-            <select id="log-session" required>
+            <select id="log-session" required="">
               <option value="">Select session…</option>
               <option value="May/June">May/June</option>
               <option value="October/November">October/November</option>
@@ -443,7 +490,7 @@ tbody tr:last-child td{border:none}
             <label>Time Taken</label>
             <div class="radio-group" id="time-mode-group">
               <label class="radio-option">
-                <input type="radio" name="time-mode" value="none" checked onchange="onTimeModeChange()"> Not recorded
+                <input type="radio" name="time-mode" value="none" checked="" onchange="onTimeModeChange()"> Not recorded
               </label>
               <label class="radio-option">
                 <input type="radio" name="time-mode" value="manual" onchange="onTimeModeChange()"> Enter manually
@@ -515,43 +562,43 @@ tbody tr:last-child td{border:none}
 
         <div class="card hidden" id="timer-waiting">
           <div style="text-align:center;color:var(--muted2);font-size:14px;margin-bottom:16px">Waiting for next minute start…</div>
-          <div id="timer-countdown" style="font-family:'JetBrains Mono',monospace;font-size:64px;font-weight:700;text-align:center;color:#fff;letter-spacing:2px;margin-bottom:20px">--:--:--</div>
+          <div id="timer-countdown" style="font-family:&#39;JetBrains Mono&#39;,monospace;font-size:64px;font-weight:700;text-align:center;color:#fff;letter-spacing:2px;margin-bottom:20px">--:--:--</div>
           <button class="btn btn-danger" style="width:100%" onclick="timerCancel()">Cancel</button>
         </div>
 
         <div class="card hidden" id="timer-running">
           <div id="timer-announcement" style="background:var(--s2);border:1px solid var(--border2);border-radius:var(--r);padding:14px 16px;text-align:center;color:var(--text);font-weight:600;margin-bottom:20px;min-height:48px;display:flex;align-items:center;justify-content:center;font-size:14px"></div>
-          <div id="timer-display" style="font-family:'JetBrains Mono',monospace;font-size:72px;font-weight:700;text-align:center;color:#fff;letter-spacing:2px;margin-bottom:20px;text-shadow:0 4px 14px rgba(255,255,255,.12)">00:00</div>
+          <div id="timer-display" style="font-family:&#39;JetBrains Mono&#39;,monospace;font-size:72px;font-weight:700;text-align:center;color:#fff;letter-spacing:2px;margin-bottom:20px;text-shadow:0 4px 14px rgba(255,255,255,.12)">00:00</div>
           <button class="btn btn-danger" style="width:100%" onclick="timerStop()">Stop Timer</button>
         </div>
 
         <div class="card hidden" id="timer-finished">
           <div style="background:var(--s2);border:1px solid var(--border2);border-radius:var(--r);padding:14px 16px;text-align:center;color:var(--success);font-weight:700;margin-bottom:20px;font-size:15px">Time's up! Pens down.</div>
-          <div style="font-family:'JetBrains Mono',monospace;font-size:72px;font-weight:700;text-align:center;color:#fff;letter-spacing:2px;margin-bottom:20px">00:00</div>
+          <div style="font-family:&#39;JetBrains Mono&#39;,monospace;font-size:72px;font-weight:700;text-align:center;color:#fff;letter-spacing:2px;margin-bottom:20px">00:00</div>
           <button class="btn btn-primary" style="width:100%" onclick="timerReset()">New Timer</button>
         </div>
       </div>
     </section>
   </main>
   <nav class="bottom-nav" id="bottom-nav">
-    <button class="bottom-nav-item active" data-tab="dashboard" onclick="switchTab('dashboard')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+    <button class="bottom-nav-item active" data-tab="dashboard" onclick="switchTab(&#39;dashboard&#39;)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect></svg>
       <span>Dashboard</span>
     </button>
-    <button class="bottom-nav-item" data-tab="log" onclick="switchTab('log')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+    <button class="bottom-nav-item" data-tab="log" onclick="switchTab(&#39;log&#39;)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
       <span>Log</span>
     </button>
-    <button class="bottom-nav-item" data-tab="timer" onclick="switchTab('timer')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+    <button class="bottom-nav-item" data-tab="timer" onclick="switchTab(&#39;timer&#39;)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
       <span>Timer</span>
     </button>
-    <button class="bottom-nav-item" data-tab="history" onclick="switchTab('history')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+    <button class="bottom-nav-item" data-tab="history" onclick="switchTab(&#39;history&#39;)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
       <span>History</span>
     </button>
     <button class="bottom-nav-item bottom-nav-switch" onclick="logout()">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
       <span id="bottom-nav-initials">—</span>
     </button>
   </nav>
@@ -569,17 +616,17 @@ tbody tr:last-child td{border:none}
     </div>
     <div class="pin-err" id="pin-err"></div>
     <div class="pin-keypad">
-      <button class="pin-key" onclick="pinKey('1')">1</button>
-      <button class="pin-key" onclick="pinKey('2')">2</button>
-      <button class="pin-key" onclick="pinKey('3')">3</button>
-      <button class="pin-key" onclick="pinKey('4')">4</button>
-      <button class="pin-key" onclick="pinKey('5')">5</button>
-      <button class="pin-key" onclick="pinKey('6')">6</button>
-      <button class="pin-key" onclick="pinKey('7')">7</button>
-      <button class="pin-key" onclick="pinKey('8')">8</button>
-      <button class="pin-key" onclick="pinKey('9')">9</button>
+      <button class="pin-key" onclick="pinKey(&#39;1&#39;)">1</button>
+      <button class="pin-key" onclick="pinKey(&#39;2&#39;)">2</button>
+      <button class="pin-key" onclick="pinKey(&#39;3&#39;)">3</button>
+      <button class="pin-key" onclick="pinKey(&#39;4&#39;)">4</button>
+      <button class="pin-key" onclick="pinKey(&#39;5&#39;)">5</button>
+      <button class="pin-key" onclick="pinKey(&#39;6&#39;)">6</button>
+      <button class="pin-key" onclick="pinKey(&#39;7&#39;)">7</button>
+      <button class="pin-key" onclick="pinKey(&#39;8&#39;)">8</button>
+      <button class="pin-key" onclick="pinKey(&#39;9&#39;)">9</button>
       <button class="pin-key key-del" onclick="pinDel()">⌫</button>
-      <button class="pin-key key-0" onclick="pinKey('0')">0</button>
+      <button class="pin-key key-0" onclick="pinKey(&#39;0&#39;)">0</button>
     </div>
     <button class="pin-back" onclick="pinCancel()">← Back</button>
   </div>
@@ -631,13 +678,25 @@ const USERS = {
       { key:'ict_2',   subject:'ICT',   paper:'2',  board:'Cambridge', variant:true,  duration:null },
       { key:'ict_3',   subject:'ICT',   paper:'3',  board:'Cambridge', variant:true,  duration:null },
     ]
+  },
+  elo_ashraf: {
+    id:'elo_ashraf', name:'Elo Ashraf', initials:'EA', color:'#c084fc',
+    papers:[
+      { key:'biz_1',    subject:'Business',    paper:'1',  board:'Edexcel',   variant:false, duration:null },
+      { key:'biz_2',    subject:'Business',    paper:'2',  board:'Edexcel',   variant:false, duration:null },
+      { key:'psych_1',  subject:'Psychology',  paper:'1',  board:'Edexcel',   variant:false, duration:null },
+      { key:'psych_2',  subject:'Psychology',  paper:'2',  board:'Edexcel',   variant:false, duration:null },
+      { key:'phys_4',   subject:'Physics',     paper:'4',  board:'Cambridge', variant:true,  duration:75 },
+      { key:'phys_6',   subject:'Physics',     paper:'6',  board:'Cambridge', variant:true,  duration:60 },
+      { key:'phys_2',   subject:'Physics',     paper:'2',  board:'Cambridge', variant:true,  duration:45 },
+    ]
   }
 };
 
 const SHARED_PAPERS = [
-  { label:'Physics Paper 4',  subject:'Physics', paper:'4', users:['daniel_essam','bavly_khalil'] },
-  { label:'Physics Paper 6',  subject:'Physics', paper:'6', users:['daniel_essam','bavly_khalil'] },
-  { label:'Physics Paper 2',  subject:'Physics', paper:'2', users:['daniel_essam','bavly_khalil'] },
+  { label:'Physics Paper 4',  subject:'Physics', paper:'4', users:['daniel_essam','bavly_khalil','elo_ashraf'] },
+  { label:'Physics Paper 6',  subject:'Physics', paper:'6', users:['daniel_essam','bavly_khalil','elo_ashraf'] },
+  { label:'Physics Paper 2',  subject:'Physics', paper:'2', users:['daniel_essam','bavly_khalil','elo_ashraf'] },
 ];
 let currentUser = null;
 let db = null;
@@ -1157,7 +1216,7 @@ async function renderLoginOverview() {
   Object.values(loginCharts).forEach(c => { try { c.destroy(); } catch(e){} });
   loginCharts = {};
 
-  const userOrder = ['daniel_essam','bavly_khalil','daniel_youssef'];
+  const userOrder = ['daniel_essam','bavly_khalil','daniel_youssef','elo_ashraf'];
   const container = document.getElementById('login-user-charts');
   container.innerHTML = '';
 
@@ -1479,12 +1538,6 @@ async function pinCheck() {
     } catch (e) {
       console.error("Error verifying PIN in Firestore:", e);
     }
-  } else {
-    // Demo fallback for when Firebase is not connected
-    const demoPins = { daniel_essam: '1478', bavly_khalil: '2589', daniel_youssef: '3690' };
-    if (_pinEntered === demoPins[_pinUid]) {
-      isValid = true;
-    }
   }
 
   if (isValid) {
@@ -1514,5 +1567,6 @@ function pinCancel() {
 init();
 renderLoginOverview();
 </script>
-</body>
-</html>
+
+
+</body></html>
