@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<!-- saved from url=(0039)https://dodessam.github.io/Pastpaperio/ -->
+<!-- saved from url=(0050)file:///C:/Users/eawad/Downloads/TGRTHR%20(3).html -->
 <html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>TGRTHR</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Syne:wght@700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com/">
+<link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="">
+<link href="./TGRTHR_files/css2" rel="stylesheet">
 <script src="./TGRTHR_files/firebase-app-compat.js"></script>
 <script src="./TGRTHR_files/firebase-firestore-compat.js"></script>
 <script src="./TGRTHR_files/chart.umd.min.js"></script>
@@ -301,7 +301,7 @@ tbody tr:last-child td{border:none}
 </head>
 <body>
 
-<div id="login-screen">
+<div id="login-screen" class="">
   <div class="login-bg"></div>
   <div class="login-box">
     <h1 class="login-title">Together<br><span>Hnng7</span></h1>
@@ -359,7 +359,7 @@ tbody tr:last-child td{border:none}
         <span class="login-chart-avg">80%</span>
       </div>
       <div class="login-chart-body">
-        <canvas id="login_chart_daniel_essam" style="display: block; box-sizing: border-box; height: 190px; width: 317px;" width="396" height="237"></canvas>
+        <canvas id="login_chart_daniel_essam" width="396" height="237" style="display: block; box-sizing: border-box; height: 190px; width: 317px;"></canvas>
       </div></div><div class="login-chart-card">
       <div class="login-chart-header">
         <div class="login-chart-user">
@@ -372,7 +372,7 @@ tbody tr:last-child td{border:none}
         <span class="login-chart-avg">78%</span>
       </div>
       <div class="login-chart-body">
-        <canvas id="login_chart_bavly_khalil" style="display: block; box-sizing: border-box; height: 190px; width: 317px;" width="396" height="237"></canvas>
+        <canvas id="login_chart_bavly_khalil" width="396" height="237" style="display: block; box-sizing: border-box; height: 190px; width: 317px;"></canvas>
       </div></div><div class="login-chart-card">
       <div class="login-chart-header">
         <div class="login-chart-user">
@@ -385,20 +385,33 @@ tbody tr:last-child td{border:none}
         <span class="login-chart-avg">93%</span>
       </div>
       <div class="login-chart-body">
-        <canvas id="login_chart_daniel_youssef" style="display: block; box-sizing: border-box; height: 190px; width: 317px;" width="396" height="237"></canvas>
+        <canvas id="login_chart_daniel_youssef" width="396" height="237" style="display: block; box-sizing: border-box; height: 190px; width: 317px;"></canvas>
+      </div></div><div class="login-chart-card">
+      <div class="login-chart-header">
+        <div class="login-chart-user">
+          <div class="login-chart-avatar" style="background:rgba(192,132,252,0.2);color:#c084fc">EA</div>
+          <div>
+            <div class="login-chart-name" style="color:#c084fc">Elo Ashraf</div>
+            <div class="login-chart-sub">0 attempts</div>
+          </div>
+        </div>
+        <span class="login-chart-avg">—</span>
+      </div>
+      <div class="login-chart-body">
+        <div class="no-data">No attempts logged yet</div>
       </div></div></div>
   </div>
 </div>
 
-<div id="app" class="hidden">
+<div id="app" class="hidden" data-user="daniel_essam">
   <nav>
     <div class="nav-inner">
       <div class="nav-brand"> </div>
       
       <div class="nav-user">
-        <div class="nav-avatar" id="user-avatar-nav" title="" onclick="logout()"> </div>
+        <div class="nav-avatar" id="user-avatar-nav" title="" onclick="logout()" style="background: rgb(77, 166, 255);">DE</div>
         <div>
-          <div class="nav-name" id="user-name-nav"> </div>
+          <div class="nav-name" id="user-name-nav">Daniel</div>
   
         </div>
       </div>
@@ -410,30 +423,137 @@ tbody tr:last-child td{border:none}
       <div class="stats-row">
         <div class="stat-card">
           <div class="stat-label">Papers Solved</div>
-          <div class="stat-value" id="stat-total">—</div>
+          <div class="stat-value" id="stat-total">2</div>
           <div class="stat-sub">total attempts</div>
         </div>
         <div class="stat-card">
           <div class="stat-label">Average Score</div>
-          <div class="stat-value" id="stat-avg">—</div>
+          <div class="stat-value" id="stat-avg">80%</div>
           <div class="stat-sub">across all papers</div>
         </div>
         <div class="stat-card">
           <div class="stat-label">Best Paper</div>
-          <div class="stat-value" id="stat-best" style="font-size:18px;padding-top:6px">—</div>
-          <div class="stat-sub" id="stat-best-pct"></div>
+          <div class="stat-value" id="stat-best" style="font-size:18px;padding-top:6px">Physics 6</div>
+          <div class="stat-sub" id="stat-best-pct">83% avg</div>
         </div>
       </div>
 
       <div class="section-gap">
-        <div class="charts-grid" id="my-charts">
-          <div class="chart-card"><div class="no-data">Loading…</div></div>
+        <div class="charts-grid" id="my-charts"><div class="chart-card">
+      <div class="chart-header">
+        <div class="chart-title">
+          <span class="paper-tag">Biology OL Paper 4</span>
+          <span class="board-tag">Cambridge</span>
         </div>
+        <span class="chart-avg mono">76%</span>
+      </div>
+      <div class="chart-body">
+        <canvas id="chart_my_bio_4_ol" style="box-sizing: border-box;" width="300"></canvas>
+      </div></div><div class="chart-card">
+      <div class="chart-header">
+        <div class="chart-title">
+          <span class="paper-tag">Physics Paper 4</span>
+          <span class="board-tag">Cambridge</span>
+        </div>
+        <span class="chart-avg mono">—</span>
+      </div>
+      <div class="chart-body">
+        <div class="no-data">No attempts yet — log your first!</div>
+      </div></div><div class="chart-card">
+      <div class="chart-header">
+        <div class="chart-title">
+          <span class="paper-tag">Physics Paper 6</span>
+          <span class="board-tag">Cambridge</span>
+        </div>
+        <span class="chart-avg mono">83%</span>
+      </div>
+      <div class="chart-body">
+        <canvas id="chart_my_phys_6" style="box-sizing: border-box;" width="300"></canvas>
+      </div></div><div class="chart-card">
+      <div class="chart-header">
+        <div class="chart-title">
+          <span class="paper-tag">Physics Paper 2</span>
+          <span class="board-tag">Cambridge</span>
+        </div>
+        <span class="chart-avg mono">—</span>
+      </div>
+      <div class="chart-body">
+        <div class="no-data">No attempts yet — log your first!</div>
+      </div></div><div class="chart-card">
+      <div class="chart-header">
+        <div class="chart-title">
+          <span class="paper-tag">Computer Science Paper 1</span>
+          <span class="board-tag">Cambridge</span>
+        </div>
+        <span class="chart-avg mono">—</span>
+      </div>
+      <div class="chart-body">
+        <div class="no-data">No attempts yet — log your first!</div>
+      </div></div><div class="chart-card">
+      <div class="chart-header">
+        <div class="chart-title">
+          <span class="paper-tag">Computer Science Paper 2</span>
+          <span class="board-tag">Cambridge</span>
+        </div>
+        <span class="chart-avg mono">—</span>
+      </div>
+      <div class="chart-body">
+        <div class="no-data">No attempts yet — log your first!</div>
+      </div></div><div class="chart-card">
+      <div class="chart-header">
+        <div class="chart-title">
+          <span class="paper-tag">Maths M1</span>
+          <span class="board-tag">Edexcel</span>
+        </div>
+        <span class="chart-avg mono">—</span>
+      </div>
+      <div class="chart-body">
+        <div class="no-data">No attempts yet — log your first!</div>
+      </div></div></div>
       </div>
 
       <div id="compare-section" class="section-gap">
         <div class="section-title">Head to Head ⚔️</div>
-        <div class="charts-grid" id="compare-charts"></div>
+        <div class="charts-grid" id="compare-charts"><div class="chart-card chart-card--compare">
+      <div class="chart-header">
+        <div class="chart-title">
+          <span class="paper-tag" style="background:rgba(255,255,255,.06);color:var(--text)">Physics Paper 4</span>
+          <span class="compare-badge">⚔️ vs</span>
+        </div>
+        <div class="compare-legend"><span class="legend-dot" style="background:#4da6ff"></span>
+       <span style="color:#4da6ff;font-size:12px;font-weight:600">Daniel</span><span class="legend-dot" style="background:#00d38d"></span>
+       <span style="color:#00d38d;font-size:12px;font-weight:600">Bavly</span><span class="legend-dot" style="background:#c084fc"></span>
+       <span style="color:#c084fc;font-size:12px;font-weight:600">Elo</span></div>
+      </div>
+      <div class="chart-body">
+        <div class="no-data">No data yet for this paper</div>
+      </div></div><div class="chart-card chart-card--compare">
+      <div class="chart-header">
+        <div class="chart-title">
+          <span class="paper-tag" style="background:rgba(255,255,255,.06);color:var(--text)">Physics Paper 6</span>
+          <span class="compare-badge">⚔️ vs</span>
+        </div>
+        <div class="compare-legend"><span class="legend-dot" style="background:#4da6ff"></span>
+       <span style="color:#4da6ff;font-size:12px;font-weight:600">Daniel</span><span class="legend-dot" style="background:#00d38d"></span>
+       <span style="color:#00d38d;font-size:12px;font-weight:600">Bavly</span><span class="legend-dot" style="background:#c084fc"></span>
+       <span style="color:#c084fc;font-size:12px;font-weight:600">Elo</span></div>
+      </div>
+      <div class="chart-body">
+        <canvas id="chart_cmp_Physics_6" style="box-sizing: border-box;" width="300"></canvas>
+      </div></div><div class="chart-card chart-card--compare">
+      <div class="chart-header">
+        <div class="chart-title">
+          <span class="paper-tag" style="background:rgba(255,255,255,.06);color:var(--text)">Physics Paper 2</span>
+          <span class="compare-badge">⚔️ vs</span>
+        </div>
+        <div class="compare-legend"><span class="legend-dot" style="background:#4da6ff"></span>
+       <span style="color:#4da6ff;font-size:12px;font-weight:600">Daniel</span><span class="legend-dot" style="background:#00d38d"></span>
+       <span style="color:#00d38d;font-size:12px;font-weight:600">Bavly</span><span class="legend-dot" style="background:#c084fc"></span>
+       <span style="color:#c084fc;font-size:12px;font-weight:600">Elo</span></div>
+      </div>
+      <div class="chart-body">
+        <div class="no-data">No data yet for this paper</div>
+      </div></div></div>
       </div>
     </section>
 
@@ -443,7 +563,7 @@ tbody tr:last-child td{border:none}
         <form id="log-form" onsubmit="submitGrade(event)">
           <div class="form-group">
             <label>Paper</label>
-            <select id="log-paper"><option value="">Select paper…</option></select>
+            <select id="log-paper"><option value="">Select paper…</option><option value="bio_4_ol">Biology OL Paper 4</option><option value="phys_4">Physics Paper 4</option><option value="phys_6">Physics Paper 6</option><option value="phys_2">Physics Paper 2</option><option value="cs_1">Computer Science Paper 1</option><option value="cs_2">Computer Science Paper 2</option><option value="math_m1">Maths M1</option></select>
           </div>
           <div class="form-group hidden" id="variant-group">
             <label>Variant</label>
@@ -520,9 +640,7 @@ tbody tr:last-child td{border:none}
     <section id="tab-history" class="tab">
       <div class="history-filters">
         <div class="section-title" style="margin-bottom:0">Grade History</div>
-        <select id="history-filter" onchange="renderHistory()" style="margin-left:auto">
-          <option value="all">All Papers</option>
-        </select>
+        <select id="history-filter" onchange="renderHistory()" style="margin-left:auto"><option value="all">All Papers</option><option value="Biology OL">Biology OL</option><option value="Physics">Physics</option><option value="Computer Science">Computer Science</option><option value="Maths">Maths</option></select>
         <select id="history-user-filter" onchange="renderHistory()">
           <option value="me">My Grades</option>
           <option value="all">Everyone</option>
@@ -542,9 +660,25 @@ tbody tr:last-child td{border:none}
               <th>Notes</th>
             </tr>
           </thead>
-          <tbody id="history-tbody">
-            <tr><td colspan="8" class="no-data-row">No grades yet.</td></tr>
-          </tbody>
+          <tbody id="history-tbody"><tr>
+      <td style="white-space:nowrap">26 Mar 26</td>
+      <td><span class="paper-tag-sm">Biology OL 41</span><span class="board-tag-sm">Cambridge</span></td>
+      <td style="white-space:nowrap;font-size:12px;color:var(--text)">2024</td>
+      <td style="white-space:nowrap;font-size:12px;color:var(--muted2)">May/June</td>
+      <td><span class="score-val mono">61/80</span></td>
+      <td><span class="pct-badge pct-good">76%</span></td>
+      <td style="white-space:nowrap">1h 20m</td>
+      <td style="color:var(--muted2);font-size:12px">need to focus on plant nutrition and plant toppics</td>
+    </tr><tr>
+      <td style="white-space:nowrap">26 Mar 26</td>
+      <td><span class="paper-tag-sm">Physics 61</span><span class="board-tag-sm">Cambridge</span></td>
+      <td style="white-space:nowrap;font-size:12px;color:var(--text)">2022</td>
+      <td style="white-space:nowrap;font-size:12px;color:var(--muted2)">May/June</td>
+      <td><span class="score-val mono">33/40</span></td>
+      <td><span class="pct-badge pct-good">83%</span></td>
+      <td style="white-space:nowrap">1h 23m</td>
+      <td style="color:var(--muted2);font-size:12px">—</td>
+    </tr></tbody>
         </table>
       </div>
     </section>
@@ -599,20 +733,20 @@ tbody tr:last-child td{border:none}
     </button>
     <button class="bottom-nav-item bottom-nav-switch" onclick="logout()">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-      <span id="bottom-nav-initials">—</span>
+      <span id="bottom-nav-initials">DE</span>
     </button>
   </nav>
 </div>
 <div id="pin-overlay" class="hidden">
-  <div class="pin-box">
-    <div class="pin-avatar" id="pin-avatar"></div>
-    <div class="pin-name" id="pin-name"></div>
+  <div class="pin-box" style="--pin-color: #4da6ff; --pin-glow: #4da6ff40;">
+    <div class="pin-avatar" id="pin-avatar" style="background: rgba(77, 166, 255, 0.2); color: rgb(77, 166, 255);">DE</div>
+    <div class="pin-name" id="pin-name">Daniel Essam</div>
     <div class="pin-sub">Enter your 4-digit PIN</div>
     <div class="pin-dots" id="pin-dots">
-      <div class="pin-dot" id="pd0"></div>
-      <div class="pin-dot" id="pd1"></div>
-      <div class="pin-dot" id="pd2"></div>
-      <div class="pin-dot" id="pd3"></div>
+      <div class="pin-dot filled" id="pd0"></div>
+      <div class="pin-dot filled" id="pd1"></div>
+      <div class="pin-dot filled" id="pd2"></div>
+      <div class="pin-dot filled" id="pd3"></div>
     </div>
     <div class="pin-err" id="pin-err"></div>
     <div class="pin-keypad">
