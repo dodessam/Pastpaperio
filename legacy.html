@@ -1,14 +1,18 @@
 <!DOCTYPE html>
-<!-- saved from url=(0039)https://dodessam.github.io/Pastpaperio/ -->
-<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>TGRTHR</title>
-<link rel="preconnect" href="https://fonts.googleapis.com/">
-<link href="./TGRTHR_files/css2" rel="stylesheet">
-<script src="./TGRTHR_files/firebase-app-compat.js"></script>
-<script src="./TGRTHR_files/firebase-firestore-compat.js"></script>
-<script src="./TGRTHR_files/chart.umd.min.js"></script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600;700&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
+
+<script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore-compat.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+
 <style>
 :root {
   --bg: #0b0d10;
@@ -298,17 +302,17 @@ tbody tr:last-child td{border:none}
     <h1 class="login-title">Together<br><span>Hnng7</span></h1>
     <p class="login-sub">this version lel maksofen bavly and daniel youssef, this version will not be updated. <a href="https://dodessam.github.io/Pastpaperio/" style="color: var(--de); text-decoration: underline;">(updated version)</a></p>
     <div class="user-cards">
-      <div class="user-card" data-uid="daniel_essam" onclick="promptPin(&#39;daniel_essam&#39;)">
+      <div class="user-card" data-uid="daniel_essam" onclick="promptPin('daniel_essam')">
         <div class="user-avatar" style="background:rgba(77,166,255,.2);color:#4da6ff">DE</div>
         <h3>Daniel Essam</h3>
         <p>Bio · Physics · CS · M1</p>
       </div>
-      <div class="user-card" data-uid="bavly_khalil" onclick="promptPin(&#39;bavly_khalil&#39;)">
+      <div class="user-card" data-uid="bavly_khalil" onclick="promptPin('bavly_khalil')">
         <div class="user-avatar" style="background:rgba(0,211,141,.2);color:#00d38d">BK</div>
         <h3>Bavly Khalil</h3>
         <p>Bio · Physics</p>
       </div>
-      <div class="user-card" data-uid="daniel_youssef" onclick="promptPin(&#39;daniel_youssef&#39;)">
+      <div class="user-card" data-uid="daniel_youssef" onclick="promptPin('daniel_youssef')">
         <div class="user-avatar" style="background:rgba(255,184,48,.2);color:#ffb830">DY</div>
         <h3>Daniel Youssef</h3>
         <p>Maths · ICT</p>
@@ -548,38 +552,38 @@ tbody tr:last-child td{border:none}
 
         <div class="card hidden" id="timer-waiting">
           <div style="text-align:center;color:var(--muted2);font-size:14px;margin-bottom:16px">Waiting for next minute start…</div>
-          <div id="timer-countdown" style="font-family:&#39;JetBrains Mono&#39;,monospace;font-size:64px;font-weight:700;text-align:center;color:#fff;letter-spacing:2px;margin-bottom:20px">--:--:--</div>
+          <div id="timer-countdown" style="font-family:'JetBrains Mono',monospace;font-size:64px;font-weight:700;text-align:center;color:#fff;letter-spacing:2px;margin-bottom:20px">--:--:--</div>
           <button class="btn btn-danger" style="width:100%" onclick="timerCancel()">Cancel</button>
         </div>
 
         <div class="card hidden" id="timer-running">
           <div id="timer-announcement" style="background:var(--s2);border:1px solid var(--border2);border-radius:var(--r);padding:14px 16px;text-align:center;color:var(--text);font-weight:600;margin-bottom:20px;min-height:48px;display:flex;align-items:center;justify-content:center;font-size:14px"></div>
-          <div id="timer-display" style="font-family:&#39;JetBrains Mono&#39;,monospace;font-size:72px;font-weight:700;text-align:center;color:#fff;letter-spacing:2px;margin-bottom:20px;text-shadow:0 4px 14px rgba(255,255,255,.12)">00:00</div>
+          <div id="timer-display" style="font-family:'JetBrains Mono',monospace;font-size:72px;font-weight:700;text-align:center;color:#fff;letter-spacing:2px;margin-bottom:20px;text-shadow:0 4px 14px rgba(255,255,255,.12)">00:00</div>
           <button class="btn btn-danger" style="width:100%" onclick="timerStop()">Stop Timer</button>
         </div>
 
         <div class="card hidden" id="timer-finished">
           <div style="background:var(--s2);border:1px solid var(--border2);border-radius:var(--r);padding:14px 16px;text-align:center;color:var(--success);font-weight:700;margin-bottom:20px;font-size:15px">Time's up! Pens down.</div>
-          <div style="font-family:&#39;JetBrains Mono&#39;,monospace;font-size:72px;font-weight:700;text-align:center;color:#fff;letter-spacing:2px;margin-bottom:20px">00:00</div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:72px;font-weight:700;text-align:center;color:#fff;letter-spacing:2px;margin-bottom:20px">00:00</div>
           <button class="btn btn-primary" style="width:100%" onclick="timerReset()">New Timer</button>
         </div>
       </div>
     </section>
   </main>
   <nav class="bottom-nav" id="bottom-nav">
-    <button class="bottom-nav-item active" data-tab="dashboard" onclick="switchTab(&#39;dashboard&#39;)">
+    <button class="bottom-nav-item active" data-tab="dashboard" onclick="switchTab('dashboard')">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect></svg>
       <span>Dashboard</span>
     </button>
-    <button class="bottom-nav-item" data-tab="log" onclick="switchTab(&#39;log&#39;)">
+    <button class="bottom-nav-item" data-tab="log" onclick="switchTab('log')">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
       <span>Log</span>
     </button>
-    <button class="bottom-nav-item" data-tab="timer" onclick="switchTab(&#39;timer&#39;)">
+    <button class="bottom-nav-item" data-tab="timer" onclick="switchTab('timer')">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
       <span>Timer</span>
     </button>
-    <button class="bottom-nav-item" data-tab="history" onclick="switchTab(&#39;history&#39;)">
+    <button class="bottom-nav-item" data-tab="history" onclick="switchTab('history')">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
       <span>History</span>
     </button>
@@ -602,17 +606,17 @@ tbody tr:last-child td{border:none}
     </div>
     <div class="pin-err" id="pin-err"></div>
     <div class="pin-keypad">
-      <button class="pin-key" onclick="pinKey(&#39;1&#39;)">1</button>
-      <button class="pin-key" onclick="pinKey(&#39;2&#39;)">2</button>
-      <button class="pin-key" onclick="pinKey(&#39;3&#39;)">3</button>
-      <button class="pin-key" onclick="pinKey(&#39;4&#39;)">4</button>
-      <button class="pin-key" onclick="pinKey(&#39;5&#39;)">5</button>
-      <button class="pin-key" onclick="pinKey(&#39;6&#39;)">6</button>
-      <button class="pin-key" onclick="pinKey(&#39;7&#39;)">7</button>
-      <button class="pin-key" onclick="pinKey(&#39;8&#39;)">8</button>
-      <button class="pin-key" onclick="pinKey(&#39;9&#39;)">9</button>
+      <button class="pin-key" onclick="pinKey('1')">1</button>
+      <button class="pin-key" onclick="pinKey('2')">2</button>
+      <button class="pin-key" onclick="pinKey('3')">3</button>
+      <button class="pin-key" onclick="pinKey('4')">4</button>
+      <button class="pin-key" onclick="pinKey('5')">5</button>
+      <button class="pin-key" onclick="pinKey('6')">6</button>
+      <button class="pin-key" onclick="pinKey('7')">7</button>
+      <button class="pin-key" onclick="pinKey('8')">8</button>
+      <button class="pin-key" onclick="pinKey('9')">9</button>
       <button class="pin-key key-del" onclick="pinDel()">⌫</button>
-      <button class="pin-key key-0" onclick="pinKey(&#39;0&#39;)">0</button>
+      <button class="pin-key key-0" onclick="pinKey('0')">0</button>
     </div>
     <button class="pin-back" onclick="pinCancel()">← Back</button>
   </div>
@@ -1548,5 +1552,5 @@ init();
 renderLoginOverview();
 </script>
 
-
-</body></html>
+</body>
+</html>
