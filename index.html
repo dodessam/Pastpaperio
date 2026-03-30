@@ -33,6 +33,12 @@
   --ea: #c084fc;
   --ea-dim: rgba(192,132,252,.15);
   --ea-glow: rgba(192,132,252,.25);
+  --sh: #f97316;
+  --sh-dim: rgba(249,115,22,.15);
+  --sh-glow: rgba(249,115,22,.25);
+  --pm: #22d3ee;
+  --pm-dim: rgba(34,211,238,.15);
+  --pm-glow: rgba(34,211,238,.25);
   --success: #00d38d;
   --warning: #ffb830;
   --danger: #ff4565;
@@ -80,18 +86,22 @@ label{font-size:13px;color:var(--muted2);font-weight:500;margin-bottom:4px;displ
 .login-title{font-family:'Syne',sans-serif;font-size:38px;font-weight:800;line-height:1.1;margin-bottom:8px}
 .login-title span{color:var(--de)}
 .login-sub{color:var(--muted2);margin-bottom:48px;font-size:15px}
-.user-cards{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:32px}
+.user-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:32px}
 .user-card{background:var(--s1);border:1px solid var(--border);border-radius:var(--r-lg);padding:24px 16px;cursor:pointer;transition:all .25s;position:relative;overflow:hidden}
 .user-card::before{content:'';position:absolute;inset:0;opacity:0;transition:opacity .3s}
 .user-card[data-uid=daniel_essam]::before{background:var(--de-dim)}
 .user-card[data-uid=bavly_khalil]::before{background:var(--bk-dim)}
 .user-card[data-uid=daniel_youssef]::before{background:var(--dy-dim)}
 .user-card[data-uid=elo_ashraf]::before{background:var(--ea-dim)}
+.user-card[data-uid=steven_henry]::before{background:var(--sh-dim)}
+.user-card[data-uid=philo_malak]::before{background:var(--pm-dim)}
 .user-card:hover::before{opacity:1}
 .user-card[data-uid=daniel_essam]:hover{border-color:var(--de);box-shadow:0 0 30px var(--de-glow)}
 .user-card[data-uid=bavly_khalil]:hover{border-color:var(--bk);box-shadow:0 0 30px var(--bk-glow)}
 .user-card[data-uid=daniel_youssef]:hover{border-color:var(--dy);box-shadow:0 0 30px var(--dy-glow)}
 .user-card[data-uid=elo_ashraf]:hover{border-color:var(--ea);box-shadow:0 0 30px var(--ea-glow)}
+.user-card[data-uid=steven_henry]:hover{border-color:var(--sh);box-shadow:0 0 30px var(--sh-glow)}
+.user-card[data-uid=philo_malak]:hover{border-color:var(--pm);box-shadow:0 0 30px var(--pm-glow)}
 .user-card:hover{transform:translateY(-3px)}
 .user-avatar{width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-size:18px;font-weight:800;margin:0 auto 12px;position:relative;z-index:1}
 .user-card h3{font-family:'Syne',sans-serif;font-size:15px;font-weight:700;position:relative;z-index:1}
@@ -107,7 +117,6 @@ label{font-size:13px;color:var(--muted2);font-weight:500;margin-bottom:4px;displ
 .login-overview-sub-title::before{content:'';display:block;width:3px;height:12px;border-radius:2px;background:var(--border2)}
 .login-overview-wide{margin-bottom:24px}
 .login-overview-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
-.login-overview-grid>*:nth-child(4){grid-column:2}
 .login-chart-card{background:var(--s1);border:1px solid var(--border);border-radius:var(--r-lg);padding:18px;transition:border-color .2s}
 .login-chart-card:hover{border-color:var(--border2)}
 .login-chart-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;gap:8px;flex-wrap:wrap}
@@ -241,9 +250,10 @@ tbody tr:last-child td{border:none}
 #app[data-user=bavly_khalil]{--user-color:var(--bk);--user-dim:var(--bk-dim);--user-glow:var(--bk-glow)}
 #app[data-user=daniel_youssef]{--user-color:var(--dy);--user-dim:var(--dy-dim);--user-glow:var(--dy-glow)}
 #app[data-user=elo_ashraf]{--user-color:var(--ea);--user-dim:var(--ea-dim);--user-glow:var(--ea-glow)}
+#app[data-user=steven_henry]{--user-color:var(--sh);--user-dim:var(--sh-dim);--user-glow:var(--sh-glow)}
+#app[data-user=philo_malak]{--user-color:var(--pm);--user-dim:var(--pm-dim);--user-glow:var(--pm-glow)}
 @media(max-width:900px){
   .login-overview-grid{grid-template-columns:repeat(2,1fr)}
-  .login-overview-grid>*:nth-child(4){grid-column:auto}
   .login-chart-body--tall{height:240px}
 }
 @media(max-width:768px){
@@ -326,6 +336,16 @@ tbody tr:last-child td{border:none}
         <h3>Elo Ashraf</h3>
         <p>Business · Psych · Physics</p>
       </div>
+      <div class="user-card" data-uid="steven_henry" onclick="promptPin(&#39;steven_henry&#39;)">
+        <div class="user-avatar" style="background:rgba(249,115,22,.2);color:#f97316">SH</div>
+        <h3>Steven Henry</h3>
+        <p>Physics OL · CS · Business</p>
+      </div>
+      <div class="user-card" data-uid="philo_malak" onclick="promptPin(&#39;philo_malak&#39;)">
+        <div class="user-avatar" style="background:rgba(34,211,238,.2);color:#22d3ee">PM</div>
+        <h3>Philo Malak</h3>
+        <p>Chemistry · Maths · Physics</p>
+      </div>
     </div>
   </div>
   <div class="login-overview" id="login-overview">
@@ -340,6 +360,8 @@ tbody tr:last-child td{border:none}
             <span class="legend-dot" style="background:#00d38d"></span><span style="color:#00d38d;font-size:12px;font-weight:600">Bavly</span>
             <span class="legend-dot" style="background:#ffb830"></span><span style="color:#ffb830;font-size:12px;font-weight:600">Daniel Y</span>
             <span class="legend-dot" style="background:#c084fc"></span><span style="color:#c084fc;font-size:12px;font-weight:600">Elo</span>
+            <span class="legend-dot" style="background:#f97316"></span><span style="color:#f97316;font-size:12px;font-weight:600">Steven</span>
+            <span class="legend-dot" style="background:#22d3ee"></span><span style="color:#22d3ee;font-size:12px;font-weight:600">Philo</span>
           </div>
         </div>
         <div class="login-chart-body login-chart-body--tall">
@@ -690,13 +712,38 @@ const USERS = {
       { key:'phys_6',   subject:'Physics',     paper:'6',  board:'Cambridge', variant:true,  duration:60 },
       { key:'phys_2',   subject:'Physics',     paper:'2',  board:'Cambridge', variant:true,  duration:45 },
     ]
+  },
+  steven_henry: {
+    id:'steven_henry', name:'Steven Henry', initials:'SH', color:'#f97316',
+    papers:[
+      { key:'phys_ol_1c', subject:'Physics OL', paper:'1C', board:'Edexcel', variant:false, duration:null },
+      { key:'phys_ol_2c', subject:'Physics OL', paper:'2C', board:'Edexcel', variant:false, duration:null },
+      { key:'cs_1',       subject:'Computer Science', paper:'1', board:'Cambridge', variant:true,  duration:null },
+      { key:'cs_2',       subject:'Computer Science', paper:'2', board:'Cambridge', variant:true,  duration:null },
+      { key:'biz_1',      subject:'Business',  paper:'1',  board:'Edexcel',   variant:false, duration:null },
+      { key:'biz_2',      subject:'Business',  paper:'2',  board:'Edexcel',   variant:false, duration:null },
+    ]
+  },
+  philo_malak: {
+    id:'philo_malak', name:'Philo Malak', initials:'PM', color:'#22d3ee',
+    papers:[
+      { key:'chem_1',  subject:'Chemistry AL', paper:'1',  board:'Cambridge', variant:true,  duration:null },
+      { key:'chem_2',  subject:'Chemistry AL', paper:'2',  board:'Cambridge', variant:true,  duration:null },
+      { key:'chem_3',  subject:'Chemistry AL', paper:'3',  board:'Cambridge', variant:true,  duration:null },
+      { key:'math_p3', subject:'Maths',        paper:'P3', board:'Edexcel',   variant:false, duration:null },
+      { key:'math_p4', subject:'Maths',        paper:'P4', board:'Edexcel',   variant:false, duration:null },
+      { key:'math_s1', subject:'Maths',        paper:'S1', board:'Edexcel',   variant:false, duration:null },
+      { key:'phys_4',  subject:'Physics',      paper:'4',  board:'Cambridge', variant:true,  duration:75 },
+      { key:'phys_6',  subject:'Physics',      paper:'6',  board:'Cambridge', variant:true,  duration:60 },
+      { key:'phys_2',  subject:'Physics',      paper:'2',  board:'Cambridge', variant:true,  duration:45 },
+    ]
   }
 };
 
 const SHARED_PAPERS = [
-  { label:'Physics Paper 4',  subject:'Physics', paper:'4', users:['daniel_essam','bavly_khalil','elo_ashraf'] },
-  { label:'Physics Paper 6',  subject:'Physics', paper:'6', users:['daniel_essam','bavly_khalil','elo_ashraf'] },
-  { label:'Physics Paper 2',  subject:'Physics', paper:'2', users:['daniel_essam','bavly_khalil','elo_ashraf'] },
+  { label:'Physics Paper 4', subject:'Physics', paper:'4', users:['daniel_essam','bavly_khalil','elo_ashraf','philo_malak'] },
+  { label:'Physics Paper 6', subject:'Physics', paper:'6', users:['daniel_essam','bavly_khalil','elo_ashraf','philo_malak'] },
+  { label:'Physics Paper 2', subject:'Physics', paper:'2', users:['daniel_essam','bavly_khalil','elo_ashraf','philo_malak'] },
 ];
 let currentUser = null;
 let db = null;
@@ -1216,7 +1263,7 @@ async function renderLoginOverview() {
   Object.values(loginCharts).forEach(c => { try { c.destroy(); } catch(e){} });
   loginCharts = {};
 
-  const userOrder = ['daniel_essam','bavly_khalil','daniel_youssef','elo_ashraf'];
+  const userOrder = ['daniel_essam','bavly_khalil','daniel_youssef','elo_ashraf','steven_henry','philo_malak'];
   const container = document.getElementById('login-user-charts');
   container.innerHTML = '';
 
