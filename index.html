@@ -638,11 +638,18 @@ tbody tr:last-child td{border:none}
         <div class="section-title" style="margin-bottom:24px">Exam Timer</div>
 
         <div class="card" id="timer-setup">
-          <div class="form-group">
-            <label for="timer-duration">Duration (minutes)</label>
-            <input type="number" id="timer-duration" min="1" value="60">
+          <div class="form-row" style="gap:12px;margin-bottom:16px">
+            <div class="form-group" style="margin-bottom:0">
+              <label for="timer-hours">Hours</label>
+              <input type="number" id="timer-hours" min="0" max="9" value="1" placeholder="0">
+            </div>
+            <div class="form-group" style="margin-bottom:0">
+              <label for="timer-mins">Minutes</label>
+              <input type="number" id="timer-mins" min="0" max="59" value="15" placeholder="0">
+            </div>
           </div>
-          <button class="btn btn-primary" style="width:100%;margin-top:4px" onclick="timerSchedule()">Start At Next Minute</button>
+          <div id="timer-duration-preview" style="text-align:center;font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--muted2);margin-bottom:16px">1h 15min total</div>
+          <button class="btn btn-primary" style="width:100%" onclick="timerSchedule()">Start At Next Minute</button>
         </div>
 
         <div class="card hidden" id="timer-waiting">
@@ -834,6 +841,38 @@ function init() {
   const today = new Date().toISOString().split('T')[0];
   document.getElementById('log-date').value = today;
   document.getElementById('log-year').value = new Date().getFullYear();
+
+  // Timer preview update
+  const updatePreview = () => {
+    const h = parseInt(document.getElementById('timer-hours').value) || 0;
+    const m = parseInt(document.getElementById('timer-mins').value) || 0;
+    const total = h * 60 + m;
+    const el = document.getElementById('timer-duration-preview');
+    if (total <= 0) { el.textContent = 'Enter a duration above'; return; }
+    el.textContent = (h > 0 ? h + 'h ' : '') + (m > 0 ? m + 'min' : '') + ' total';
+  };
+  document.getElementById('timer-hours').addEventListener('input', updatePreview);
+  document.getElementById('timer-mins').addEventListener('input', updatePreview);
+
+  // Auto-login via session token
+  tryAutoLogin();
+}
+
+async function tryAutoLogin() {
+  if (!db) return;
+  try {
+    const saved = JSON.parse(localStorage.getItem('tgrthr_session') || 'null');
+    if (!saved || !saved.uid || !saved.token) return;
+    if (!USERS[saved.uid]) return;
+    const doc = await db.collection('users').doc(saved.uid).get();
+    if (doc.exists && doc.data().sessionToken === saved.token) {
+      login(saved.uid);
+    } else {
+      localStorage.removeItem('tgrthr_session');
+    }
+  } catch(e) {
+    console.warn('Auto-login check failed:', e.message);
+  }
 }
 
 function login(uid) {
@@ -847,6 +886,13 @@ function login(uid) {
   document.getElementById('user-name-nav').textContent = currentUser.name.split(' ')[0];
   const bni = document.getElementById('bottom-nav-initials');
   if (bni) bni.textContent = currentUser.initials;
+
+  // Save session token
+  if (db) {
+    const token = crypto.randomUUID();
+    localStorage.setItem('tgrthr_session', JSON.stringify({ uid, token }));
+    db.collection('users').doc(uid).set({ sessionToken: token }, { merge: true }).catch(() => {});
+  }
 
   if (!db) {
     document.getElementById('firebase-banner')?.classList.remove('hidden');
@@ -864,6 +910,7 @@ function login(uid) {
 function logout() {
   currentUser = null;
   allGrades = [];
+  localStorage.removeItem('tgrthr_session');
   Object.values(charts).forEach(c => { try { c.destroy(); } catch(e){} });
   charts = {};
   document.getElementById('app').classList.add('hidden');
@@ -1633,7 +1680,9 @@ function timerSpeak(text) {
 }
 
 function timerSchedule() {
-  const dur = parseInt(document.getElementById('timer-duration').value);
+  const h = parseInt(document.getElementById('timer-hours').value) || 0;
+  const m = parseInt(document.getElementById('timer-mins').value) || 0;
+  const dur = h * 60 + m;
   if (!dur) { alert('Enta aked msh 8abi 3la el daraga'); return; }
   _timerDurationMinutes = dur;
   const now = new Date();
@@ -1677,10 +1726,13 @@ function timerTick() {
     timerFinish();
     return;
   }
-  const mins = Math.floor(remaining / 60000);
-  const secs = Math.floor((remaining % 60000) / 1000);
-  document.getElementById('timer-display').textContent =
-    `${String(mins).padStart(2,'0')}:${String(secs).padStart(2,'0')}`;
+  const totalSecs = Math.floor(remaining / 1000);
+  const h = Math.floor(totalSecs / 3600);
+  const mins = Math.floor((totalSecs % 3600) / 60);
+  const secs = totalSecs % 60;
+  document.getElementById('timer-display').textContent = h > 0
+    ? `${String(h).padStart(2,'0')}:${String(mins).padStart(2,'0')}:${String(secs).padStart(2,'0')}`
+    : `${String(mins).padStart(2,'0')}:${String(secs).padStart(2,'0')}`;
   const elapsed = _timerDurationMinutes * 60000 - remaining;
   const ann = document.getElementById('timer-announcement');
   if (!_timerHalfAnnounced && elapsed >= _timerDurationMinutes * 30000) {
