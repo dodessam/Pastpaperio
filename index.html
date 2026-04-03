@@ -1041,6 +1041,10 @@ function loginCardClick(uid) {
   if (currentUser) {
     if (uid === currentUser.id) {
       // Own card → go back to app
+      if (viewingUser) {
+        // If viewing a friend, reset to own data first
+        returnFromGuest();
+      }
       document.getElementById('login-screen').classList.add('hidden');
       document.getElementById('app').classList.remove('hidden');
     } else {
