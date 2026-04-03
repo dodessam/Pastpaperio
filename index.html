@@ -86,9 +86,15 @@ label{font-size:13px;color:var(--muted2);font-weight:500;margin-bottom:4px;displ
 .login-title{font-family:'Syne',sans-serif;font-size:38px;font-weight:800;line-height:1.1;margin-bottom:8px}
 .login-title span{color:var(--de)}
 .login-sub{color:var(--muted2);margin-bottom:48px;font-size:15px}
-.user-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:32px}
+.user-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:20px}
 .user-card{background:var(--s1);border:1px solid var(--border);border-radius:var(--r-lg);padding:24px 16px;cursor:pointer;transition:all .25s;position:relative;overflow:hidden}
-.user-card::before{content:'';position:absolute;inset:0;opacity:0;transition:opacity .3s}
+.card-water{position:absolute;bottom:0;left:-15%;right:-15%;height:0%;transition:height 1.6s cubic-bezier(.4,0,.2,1);z-index:0;pointer-events:none;border-radius:50% 50% 0 0/20px 20px 0 0}
+.card-water::before{content:'';position:absolute;top:-18px;left:0;right:0;height:36px;background:inherit;border-radius:50% 50% 0 0/18px 18px 0 0;animation:ww1 2.6s ease-in-out infinite}
+.card-water::after{content:'';position:absolute;top:-12px;left:0;right:0;height:24px;background:inherit;border-radius:50% 50% 0 0/12px 12px 0 0;animation:ww2 3.3s ease-in-out infinite reverse;opacity:.6}
+@keyframes ww1{0%,100%{transform:translateX(0) scaleX(1)}50%{transform:translateX(-6%) scaleX(1.12)}}
+@keyframes ww2{0%,100%{transform:translateX(0) scaleX(1)}50%{transform:translateX(5%) scaleX(1.08)}}
+.card-water-pct{position:absolute;bottom:6px;right:8px;font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;opacity:.8;z-index:2;pointer-events:none;line-height:1}
+.user-card::before{content:'';position:absolute;inset:0;opacity:0;transition:opacity .3s;z-index:1}
 .user-card[data-uid=daniel_essam]::before{background:var(--de-dim)}
 .user-card[data-uid=bavly_khalil]::before{background:var(--bk-dim)}
 .user-card[data-uid=daniel_youssef]::before{background:var(--dy-dim)}
@@ -103,10 +109,35 @@ label{font-size:13px;color:var(--muted2);font-weight:500;margin-bottom:4px;displ
 .user-card[data-uid=steven_henry]:hover{border-color:var(--sh);box-shadow:0 0 30px var(--sh-glow)}
 .user-card[data-uid=philo_malak]:hover{border-color:var(--pm);box-shadow:0 0 30px var(--pm-glow)}
 .user-card:hover{transform:translateY(-3px)}
-.user-avatar{width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-size:18px;font-weight:800;margin:0 auto 12px;position:relative;z-index:1}
-.user-card h3{font-family:'Syne',sans-serif;font-size:15px;font-weight:700;position:relative;z-index:1}
-.user-card p{font-size:12px;color:var(--muted2);margin-top:4px;position:relative;z-index:1}
-.login-notice{background:rgba(255,184,48,.08);border:1px solid rgba(255,184,48,.2);border-radius:var(--r);padding:12px 16px;font-size:13px;color:var(--muted2);text-align:left}
+.user-card--active{border-color:var(--de)!important;box-shadow:0 0 0 2px rgba(77,166,255,.15)!important}
+.user-card[data-uid=daniel_essam].user-card--active{border-color:var(--de)!important;box-shadow:0 0 20px var(--de-glow)!important}
+.user-card[data-uid=bavly_khalil].user-card--active{border-color:var(--bk)!important;box-shadow:0 0 20px var(--bk-glow)!important}
+.user-card[data-uid=daniel_youssef].user-card--active{border-color:var(--dy)!important;box-shadow:0 0 20px var(--dy-glow)!important}
+.user-card[data-uid=elo_ashraf].user-card--active{border-color:var(--ea)!important;box-shadow:0 0 20px var(--ea-glow)!important}
+.user-card[data-uid=steven_henry].user-card--active{border-color:var(--sh)!important;box-shadow:0 0 20px var(--sh-glow)!important}
+.user-card[data-uid=philo_malak].user-card--active{border-color:var(--pm)!important;box-shadow:0 0 20px var(--pm-glow)!important}
+.user-card--active{box-shadow:0 0 0 2px var(--border2) inset;}
+.user-avatar{width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-size:18px;font-weight:800;margin:0 auto 12px;position:relative;z-index:2}
+.user-card h3{font-family:'Syne',sans-serif;font-size:15px;font-weight:700;position:relative;z-index:2}
+.user-card p{font-size:12px;color:var(--muted2);margin-top:4px;position:relative;z-index:2}
+/* Session bar on login screen */
+.login-session-bar{display:none;align-items:center;justify-content:space-between;gap:12px;background:var(--s1);border:1px solid var(--border);border-radius:var(--r-lg);padding:11px 16px;margin-bottom:18px;max-width:560px;width:100%}
+.login-session-bar.visible{display:flex}
+.login-session-who{display:flex;align-items:center;gap:10px}
+.login-session-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.login-session-name{font-size:13px;font-weight:500;color:var(--muted2)}
+.login-session-name strong{color:var(--text);font-weight:700}
+.login-session-logout{background:transparent;border:1px solid var(--border2);color:var(--muted2);font-size:12px;font-weight:600;cursor:pointer;padding:5px 12px;border-radius:var(--r);font-family:'DM Sans',sans-serif;transition:all .2s;flex-shrink:0;white-space:nowrap}
+.login-session-logout:hover{border-color:var(--danger);color:var(--danger)}
+/* Guest mode banner */
+.guest-banner{display:none;background:rgba(255,184,48,.07);border:1px solid rgba(255,184,48,.2);border-radius:var(--r);padding:10px 16px;margin-bottom:20px;font-size:13px;color:var(--muted2);align-items:center;justify-content:space-between;gap:10px}
+.guest-banner.visible{display:flex}
+.guest-banner strong{color:var(--warning)}
+.guest-back-btn{background:transparent;border:1px solid var(--border2);color:var(--muted2);font-size:12px;font-weight:600;cursor:pointer;padding:5px 12px;border-radius:var(--r);font-family:'DM Sans',sans-serif;transition:all .2s;flex-shrink:0;white-space:nowrap}
+.guest-back-btn:hover{border-color:var(--user-color,var(--de));color:var(--user-color,var(--de))}
+/* Hide log/timer in guest mode */
+#app.guest-mode .bottom-nav-item[data-tab=log],
+#app.guest-mode .bottom-nav-item[data-tab=timer]{opacity:.28;pointer-events:none}
 .login-notice strong{color:var(--warning)}
 .login-notice code{font-family:'JetBrains Mono',monospace;font-size:11px;background:rgba(255,255,255,.05);padding:1px 5px;border-radius:4px;color:var(--text)}
 .demo-btn{margin-top:12px;width:100%}
@@ -361,37 +392,49 @@ tbody tr:last-child td{border:none}
   <div class="login-bg"></div>
   <div class="login-box">
     <h1 class="login-title">Together<br><span>Hnng7</span></h1>
-    <div class="user-cards">
-      <div class="user-card" data-uid="daniel_essam" onclick="promptPin(&#39;daniel_essam&#39;)">
+    <div class="user-cards" id="user-cards">
+      <div class="user-card" data-uid="daniel_essam" onclick="loginCardClick('daniel_essam')">
+        <div class="card-water" id="water-daniel_essam"></div>
         <div class="user-avatar" style="background:rgba(77,166,255,.2);color:#4da6ff">DE</div>
         <h3>Daniel Essam</h3>
-        <p>Bio · Physics · CS · M1</p>
+        <p id="stat-daniel_essam">—</p>
       </div>
-      <div class="user-card" data-uid="bavly_khalil" onclick="promptPin(&#39;bavly_khalil&#39;)">
+      <div class="user-card" data-uid="bavly_khalil" onclick="loginCardClick('bavly_khalil')">
+        <div class="card-water" id="water-bavly_khalil"></div>
         <div class="user-avatar" style="background:rgba(0,211,141,.2);color:#00d38d">BK</div>
         <h3>Bavly Khalil</h3>
-        <p>Bio · Physics</p>
+        <p id="stat-bavly_khalil">—</p>
       </div>
-      <div class="user-card" data-uid="daniel_youssef" onclick="promptPin(&#39;daniel_youssef&#39;)">
+      <div class="user-card" data-uid="daniel_youssef" onclick="loginCardClick('daniel_youssef')">
+        <div class="card-water" id="water-daniel_youssef"></div>
         <div class="user-avatar" style="background:rgba(255,184,48,.2);color:#ffb830">DY</div>
         <h3>Daniel Youssef</h3>
-        <p>Maths · ICT</p>
+        <p id="stat-daniel_youssef">—</p>
       </div>
-      <div class="user-card" data-uid="elo_ashraf" onclick="promptPin(&#39;elo_ashraf&#39;)">
+      <div class="user-card" data-uid="elo_ashraf" onclick="loginCardClick('elo_ashraf')">
+        <div class="card-water" id="water-elo_ashraf"></div>
         <div class="user-avatar" style="background:rgba(192,132,252,.2);color:#c084fc">EA</div>
         <h3>Elo Ashraf</h3>
-        <p>Business · Psych · Physics</p>
+        <p id="stat-elo_ashraf">—</p>
       </div>
-      <div class="user-card" data-uid="steven_henry" onclick="promptPin(&#39;steven_henry&#39;)">
+      <div class="user-card" data-uid="steven_henry" onclick="loginCardClick('steven_henry')">
+        <div class="card-water" id="water-steven_henry"></div>
         <div class="user-avatar" style="background:rgba(249,115,22,.2);color:#f97316">SH</div>
         <h3>Steven Henry</h3>
-        <p>Physics OL · CS · Business</p>
+        <p id="stat-steven_henry">—</p>
       </div>
-      <div class="user-card" data-uid="philo_malak" onclick="promptPin(&#39;philo_malak&#39;)">
+      <div class="user-card" data-uid="philo_malak" onclick="loginCardClick('philo_malak')">
+        <div class="card-water" id="water-philo_malak"></div>
         <div class="user-avatar" style="background:rgba(34,211,238,.2);color:#22d3ee">PM</div>
         <h3>Philo Malak</h3>
-        <p>Chemistry · Maths · Physics</p>
+        <p id="stat-philo_malak">—</p>
       </div>
+    </div>
+    <div id="login-logout-row" class="hidden" style="margin-top:16px">
+      <button class="btn btn-danger" style="width:100%;justify-content:center" onclick="logout()">
+        <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+        Sign out
+      </button>
     </div>
   </div>
   <div class="login-overview" id="login-overview">
@@ -411,50 +454,11 @@ tbody tr:last-child td{border:none}
           </div>
         </div>
         <div class="login-chart-body login-chart-body--tall">
-          <canvas id="login-chart-allpapers" style="display: block; box-sizing: border-box; height: 280px; width: 1054px;" width="1318" height="350"></canvas>
+          <canvas id="login-chart-allpapers"></canvas>
         </div>
       </div>
     </div>
-    <div class="login-overview-grid" id="login-user-charts"><div class="login-chart-card">
-      <div class="login-chart-header">
-        <div class="login-chart-user">
-          <div class="login-chart-avatar" style="background:rgba(77,166,255,0.2);color:#4da6ff">DE</div>
-          <div>
-            <div class="login-chart-name" style="color:#4da6ff">Daniel Essam</div>
-            <div class="login-chart-sub">2 attempts</div>
-          </div>
-        </div>
-        <span class="login-chart-avg">80%</span>
-      </div>
-      <div class="login-chart-body">
-        <canvas id="login_chart_daniel_essam" style="display: block; box-sizing: border-box; height: 190px; width: 317px;" width="396" height="237"></canvas>
-      </div></div><div class="login-chart-card">
-      <div class="login-chart-header">
-        <div class="login-chart-user">
-          <div class="login-chart-avatar" style="background:rgba(0,211,141,0.2);color:#00d38d">BK</div>
-          <div>
-            <div class="login-chart-name" style="color:#00d38d">Bavly Khalil</div>
-            <div class="login-chart-sub">4 attempts</div>
-          </div>
-        </div>
-        <span class="login-chart-avg">78%</span>
-      </div>
-      <div class="login-chart-body">
-        <canvas id="login_chart_bavly_khalil" style="display: block; box-sizing: border-box; height: 190px; width: 317px;" width="396" height="237"></canvas>
-      </div></div><div class="login-chart-card">
-      <div class="login-chart-header">
-        <div class="login-chart-user">
-          <div class="login-chart-avatar" style="background:rgba(255,184,48,0.2);color:#ffb830">DY</div>
-          <div>
-            <div class="login-chart-name" style="color:#ffb830">Daniel Youssef</div>
-            <div class="login-chart-sub">1 attempt</div>
-          </div>
-        </div>
-        <span class="login-chart-avg">93%</span>
-      </div>
-      <div class="login-chart-body">
-        <canvas id="login_chart_daniel_youssef" style="display: block; box-sizing: border-box; height: 190px; width: 317px;" width="396" height="237"></canvas>
-      </div></div></div>
+    <div class="login-overview-grid" id="login-user-charts"></div>
   </div>
 </div>
 
@@ -474,6 +478,10 @@ tbody tr:last-child td{border:none}
   </nav>
 
   <main>
+    <div class="guest-banner" id="guest-banner">
+      <span>👁 Viewing <strong id="guest-banner-name">—</strong>'s dashboard — read only</span>
+      <button class="guest-back-btn" onclick="returnFromGuest()">← Back to mine</button>
+    </div>
     <section id="tab-dashboard" class="tab active">
       <div class="stats-row">
         <div class="stat-card">
@@ -693,7 +701,7 @@ tbody tr:last-child td{border:none}
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="6" height="18" rx="1"></rect><rect x="9" y="3" width="6" height="18" rx="1"></rect><rect x="16" y="3" width="6" height="18" rx="1"></rect></svg>
       <span>Board</span>
     </button>
-    <button class="bottom-nav-item bottom-nav-switch" onclick="logout()">
+    <button class="bottom-nav-item bottom-nav-switch" onclick="showLoginScreen()">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
       <span id="bottom-nav-initials">—</span>
     </button>
@@ -778,8 +786,8 @@ const USERS = {
   elo_ashraf: {
     id:'elo_ashraf', name:'Elo Ashraf', initials:'EA', color:'#c084fc',
     papers:[
-      { key:'biz_1',    subject:'Business',    paper:'1',  board:'Edexcel',   variant:false, duration:null },
-      { key:'biz_2',    subject:'Business',    paper:'2',  board:'Edexcel',   variant:false, duration:null },
+      { key:'biz_1',    subject:'Business',    paper:'1',  board:'Cambridge', variant:true,  duration:null },
+      { key:'biz_2',    subject:'Business',    paper:'2',  board:'Cambridge', variant:true,  duration:null },
       { key:'psych_1',  subject:'Psychology',  paper:'1',  board:'Edexcel',   variant:false, duration:null },
       { key:'psych_2',  subject:'Psychology',  paper:'2',  board:'Edexcel',   variant:false, duration:null },
       { key:'phys_4',   subject:'Physics',     paper:'4',  board:'Cambridge', variant:true,  duration:75 },
@@ -794,8 +802,8 @@ const USERS = {
       { key:'phys_ol_2p', subject:'Physics OL', paper:'2P', board:'Edexcel', variant:false, duration:null },
       { key:'cs_1',       subject:'Computer Science', paper:'1', board:'Cambridge', variant:true,  duration:null },
       { key:'cs_2',       subject:'Computer Science', paper:'2', board:'Cambridge', variant:true,  duration:null },
-      { key:'biz_1',      subject:'Business',  paper:'1',  board:'Edexcel',   variant:false, duration:null },
-      { key:'biz_2',      subject:'Business',  paper:'2',  board:'Edexcel',   variant:false, duration:null },
+      { key:'biz_1',      subject:'Business',  paper:'1',  board:'Cambridge', variant:true,  duration:null },
+      { key:'biz_2',      subject:'Business',  paper:'2',  board:'Cambridge', variant:true,  duration:null },
     ]
   },
   philo_malak: {
@@ -818,8 +826,14 @@ const SHARED_PAPERS = [
   { label:'Physics Paper 4', subject:'Physics', paper:'4', users:['daniel_essam','bavly_khalil','elo_ashraf','philo_malak'] },
   { label:'Physics Paper 6', subject:'Physics', paper:'6', users:['daniel_essam','bavly_khalil','elo_ashraf','philo_malak'] },
   { label:'Physics Paper 2', subject:'Physics', paper:'2', users:['daniel_essam','bavly_khalil','elo_ashraf','philo_malak'] },
+  { label:'Maths P3', subject:'Maths', paper:'P3', users:['daniel_youssef','philo_malak'] },
+  { label:'Maths P4', subject:'Maths', paper:'P4', users:['daniel_youssef','philo_malak'] },
+  { label:'Maths S1', subject:'Maths', paper:'S1', users:['daniel_youssef','philo_malak'] },
+  { label:'Business Paper 1', subject:'Business', paper:'1', board:'Cambridge', users:['elo_ashraf','steven_henry'] },
+  { label:'Business Paper 2', subject:'Business', paper:'2', board:'Cambridge', users:['elo_ashraf','steven_henry'] },
 ];
 let currentUser = null;
+let viewingUser = null; // read-only view of a friend
 let db = null;
 let allGrades = [];
 let charts = {};
@@ -859,6 +873,7 @@ function init() {
 }
 
 async function tryAutoLogin() {
+  renderLoginWaterFills(); // always load water fills on startup
   if (!db) return;
   try {
     const saved = JSON.parse(localStorage.getItem('tgrthr_session') || 'null');
@@ -866,7 +881,7 @@ async function tryAutoLogin() {
     if (!USERS[saved.uid]) return;
     const doc = await db.collection('users').doc(saved.uid).get();
     if (doc.exists && doc.data().sessionToken === saved.token) {
-      login(saved.uid);
+      login(saved.uid, true);
     } else {
       localStorage.removeItem('tgrthr_session');
     }
@@ -875,10 +890,18 @@ async function tryAutoLogin() {
   }
 }
 
-function login(uid) {
+function login(uid, skipAnimation = false) {
   currentUser = USERS[uid];
-  document.getElementById('login-screen').classList.add('hidden');
-  document.getElementById('login-overview').classList.add('hidden');
+  viewingUser = null;
+
+  // Hide guest banner
+  document.getElementById('guest-banner').classList.remove('visible');
+
+  if (!skipAnimation) {
+    document.getElementById('login-screen').classList.add('hidden');
+  } else {
+    document.getElementById('login-screen').style.display = 'none';
+  }
   document.getElementById('app').classList.remove('hidden');
   document.getElementById('app').setAttribute('data-user', uid);
   document.getElementById('user-avatar-nav').textContent = currentUser.initials;
@@ -886,6 +909,9 @@ function login(uid) {
   document.getElementById('user-name-nav').textContent = currentUser.name.split(' ')[0];
   const bni = document.getElementById('bottom-nav-initials');
   if (bni) bni.textContent = currentUser.initials;
+
+  // Show all nav tabs for own account
+  setNavReadOnly(false);
 
   // Save session token
   if (db) {
@@ -907,15 +933,108 @@ function login(uid) {
   });
 }
 
+function viewFriend(uid) {
+  viewingUser = USERS[uid];
+  document.getElementById('login-screen').classList.add('hidden');
+  document.getElementById('app').classList.remove('hidden');
+  document.getElementById('app').setAttribute('data-user', uid);
+  document.getElementById('user-avatar-nav').textContent = viewingUser.initials;
+  document.getElementById('user-avatar-nav').style.background = viewingUser.color;
+  document.getElementById('user-name-nav').textContent = viewingUser.name.split(' ')[0];
+  const bni = document.getElementById('bottom-nav-initials');
+  if (bni) bni.textContent = currentUser.initials;
+
+  // Show guest banner
+  const banner = document.getElementById('guest-banner');
+  document.getElementById('guest-banner-name').textContent = viewingUser.name.split(' ')[0];
+  banner.classList.add('visible');
+
+  setNavReadOnly(true);
+  switchTab('dashboard');
+
+  // Re-render as the friend using already-loaded allGrades
+  const savedUser = currentUser;
+  currentUser = viewingUser;
+  initHistoryFilter();
+  renderDashboard();
+  renderHistory();
+  currentUser = savedUser;
+}
+
+function returnFromGuest() {
+  viewingUser = null;
+  document.getElementById('guest-banner').classList.remove('visible');
+  document.getElementById('app').setAttribute('data-user', currentUser.id);
+  document.getElementById('user-avatar-nav').textContent = currentUser.initials;
+  document.getElementById('user-avatar-nav').style.background = currentUser.color;
+  document.getElementById('user-name-nav').textContent = currentUser.name.split(' ')[0];
+  const bni = document.getElementById('bottom-nav-initials');
+  if (bni) bni.textContent = currentUser.initials;
+  setNavReadOnly(false);
+  initHistoryFilter();
+  renderDashboard();
+  renderHistory();
+  switchTab('dashboard');
+}
+
+function setNavReadOnly(readOnly) {
+  const logBtn = document.querySelector('.bottom-nav-item[data-tab="log"]');
+  const timerBtn = document.querySelector('.bottom-nav-item[data-tab="timer"]');
+  if (logBtn) logBtn.style.display = readOnly ? 'none' : '';
+  if (timerBtn) timerBtn.style.display = readOnly ? 'none' : '';
+}
+
+function showLoginScreen() {
+  document.getElementById('login-screen').style.display = '';
+  document.getElementById('login-screen').classList.remove('hidden');
+  document.getElementById('app').classList.add('hidden');
+  updateLoginScreenForLoggedInUser();
+  renderLoginWaterFills();
+}
+
+function updateLoginScreenForLoggedInUser() {
+  const logoutRow = document.getElementById('login-logout-row');
+  if (currentUser) {
+    logoutRow.classList.remove('hidden');
+    document.querySelectorAll('.user-card').forEach(c => {
+      c.classList.toggle('user-card--active', c.dataset.uid === currentUser.id);
+    });
+  } else {
+    logoutRow.classList.add('hidden');
+    document.querySelectorAll('.user-card').forEach(c => c.classList.remove('user-card--active'));
+  }
+}
+
+function loginCardClick(uid) {
+  if (currentUser) {
+    if (uid === currentUser.id) {
+      // Own card → go back to app
+      document.getElementById('login-screen').classList.add('hidden');
+      document.getElementById('app').classList.remove('hidden');
+    } else {
+      // Friend's card → view their dashboard read-only
+      viewFriend(uid);
+    }
+  } else {
+    // Not logged in → PIN flow
+    promptPin(uid);
+  }
+}
+
 function logout() {
   currentUser = null;
+  viewingUser = null;
   allGrades = [];
   localStorage.removeItem('tgrthr_session');
   Object.values(charts).forEach(c => { try { c.destroy(); } catch(e){} });
   charts = {};
   document.getElementById('app').classList.add('hidden');
+  document.getElementById('login-screen').style.display = '';
   document.getElementById('login-screen').classList.remove('hidden');
-  document.getElementById('login-overview').classList.remove('hidden');
+  document.getElementById('login-logout-row').classList.add('hidden');
+  document.querySelectorAll('.user-card').forEach(c => c.classList.remove('user-card--active'));
+  setNavReadOnly(false);
+  renderLoginWaterFills();
   renderLoginOverview();
 }
 
@@ -974,15 +1093,28 @@ function switchTab(tabId) {
   if (tabId === 'papers') renderPapersBoard();
 }
 
+function getActiveUser() {
+  return viewingUser || currentUser;
+}
+
 function renderDashboard() {
   if (!currentUser) return;
+  // Show/hide guest banner
+  const banner = document.getElementById('guest-banner');
+  if (viewingUser) {
+    document.getElementById('guest-banner-name').textContent = viewingUser.name.split(' ')[0];
+    banner.classList.add('visible');
+  } else {
+    banner.classList.remove('visible');
+  }
   renderStats();
   renderMyCharts();
   renderCompareCharts();
 }
 
 function renderStats() {
-  const mine = allGrades.filter(g => g.userId === currentUser.id);
+  const user = getActiveUser();
+  const mine = allGrades.filter(g => g.userId === user.id);
   const total = mine.length;
   const avg = total > 0 ? Math.round(mine.reduce((s,g) => s+g.percentage, 0)/total) : null;
 
@@ -1006,12 +1138,13 @@ function renderStats() {
 }
 
 function renderMyCharts() {
+  const user = getActiveUser();
   const container = document.getElementById('my-charts');
   container.innerHTML = '';
 
-  currentUser.papers.forEach(paper => {
+  user.papers.forEach(paper => {
     const paperGrades = allGrades
-      .filter(g => g.userId === currentUser.id && g.subject === paper.subject && g.paper === paper.paper)
+      .filter(g => g.userId === user.id && g.subject === paper.subject && g.paper === paper.paper)
       .sort((a,b) => new Date(a.date)-new Date(b.date));
 
     const label = getPaperLabel(paper);
@@ -1037,16 +1170,17 @@ function renderMyCharts() {
 
     if (paperGrades.length > 0) {
       createLineChart(canvasId, [{
-        label: currentUser.name,
+        label: user.name,
         data: paperGrades.map(g => ({ x: fmtDate(g.date), y: g.percentage, rawScore: g.score, max: g.maxScore, time: g.timeTaken })),
-        color: currentUser.color
+        color: user.color
       }]);
     }
   });
 }
 
 function renderCompareCharts() {
-  const relevant = SHARED_PAPERS.filter(sp => sp.users.includes(currentUser.id));
+  const user = getActiveUser();
+  const relevant = SHARED_PAPERS.filter(sp => sp.users.includes(user.id));
   const section = document.getElementById('compare-section');
   const container = document.getElementById('compare-charts');
 
@@ -1302,11 +1436,12 @@ function initHistoryFilter() {
 
 function renderHistory() {
   if (!currentUser) return;
+  const user = getActiveUser();
   const filter = document.getElementById('history-filter').value;
   const userFilter = document.getElementById('history-user-filter').value;
 
   let grades = [...allGrades];
-  if (userFilter === 'me') grades = grades.filter(g => g.userId === currentUser.id);
+  if (userFilter === 'me') grades = grades.filter(g => g.userId === user.id);
   if (filter !== 'all') grades = grades.filter(g => g.subject === filter);
   grades.sort((a,b) => new Date(b.date)-new Date(a.date));
 
@@ -1343,6 +1478,7 @@ function renderHistory() {
 
 function renderPapersBoard() {
   if (!currentUser) return;
+  const user = getActiveUser();
   const container = document.getElementById('papers-kanban');
   container.innerHTML = '';
 
@@ -1357,7 +1493,7 @@ function renderPapersBoard() {
     'January': 'Jan'
   };
 
-  currentUser.papers.forEach(paper => {
+  user.papers.forEach(paper => {
     // Sessions by board
     const sessions = paper.board === 'Cambridge'
       ? ['May/June', 'October/November', 'February/March']
@@ -1365,9 +1501,9 @@ function renderPapersBoard() {
 
     const variants = paper.variant ? ['1', '2', '3'] : [null];
 
-    // Get grades for this paper for current user
+    // Get grades for this paper for the active user
     const paperGrades = allGrades.filter(g =>
-      g.userId === currentUser.id &&
+      g.userId === user.id &&
       g.subject === paper.subject &&
       g.paper === paper.paper
     );
@@ -1498,7 +1634,6 @@ function showToast(msg, type='success') {
 let loginCharts = {};
 
 async function renderLoginOverview() {
-  // Load grades from Firebase or show empty state
   let grades = [];
   try {
     if (db) {
@@ -1508,146 +1643,66 @@ async function renderLoginOverview() {
         return { ...data, date: data.date?.toDate ? data.date.toDate() : new Date(data.date) };
       });
     }
-  } catch(e) { /* silent — no data */ }
+  } catch(e) { /* silent */ }
 
-  // Destroy old charts
   Object.values(loginCharts).forEach(c => { try { c.destroy(); } catch(e){} });
   loginCharts = {};
 
   const userOrder = ['daniel_essam','bavly_khalil','daniel_youssef','elo_ashraf','steven_henry','philo_malak'];
   const container = document.getElementById('login-user-charts');
-  container.innerHTML = '';
+  if (container) container.innerHTML = '';
 
+  // Update each user card's stat line
   userOrder.forEach(uid => {
     const user = USERS[uid];
     const userGrades = grades.filter(g => g.userId === uid);
-    const overallAvg = userGrades.length > 0
-      ? Math.round(userGrades.reduce((s,g) => s + (g.percentage||0), 0) / userGrades.length)
-      : null;
-
-    const card = document.createElement('div');
-    card.className = 'login-chart-card';
-
-    // Build per-paper averages for bar chart
-    const paperAvgs = {};
-    user.papers.forEach(p => {
-      const pg = userGrades.filter(g => g.subject === p.subject && g.paper === p.paper);
-      const lbl = p.board === 'Cambridge' ? `${p.subject} P${p.paper}` : `${p.subject} ${p.paper}`;
-      paperAvgs[lbl] = pg.length > 0 ? Math.round(pg.reduce((s,g) => s+(g.percentage||0),0)/pg.length) : null;
-    });
-
-    const canvasId = `login_chart_${uid}`;
-    card.innerHTML = `
-      <div class="login-chart-header">
-        <div class="login-chart-user">
-          <div class="login-chart-avatar" style="background:${hexAlpha(user.color,.2)};color:${user.color}">${user.initials}</div>
-          <div>
-            <div class="login-chart-name" style="color:${user.color}">${user.name}</div>
-            <div class="login-chart-sub">${userGrades.length} attempt${userGrades.length!==1?'s':''}</div>
-          </div>
-        </div>
-        <span class="login-chart-avg">${overallAvg !== null ? overallAvg+'%' : '—'}</span>
-      </div>
-      <div class="login-chart-body">
-        ${userGrades.length === 0
-          ? '<div class="no-data">No attempts logged yet</div>'
-          : `<canvas id="${canvasId}"></canvas>`}
-      </div>`;
-    container.appendChild(card);
-
-    if (userGrades.length > 0) {
-      requestAnimationFrame(() => {
-        const canvas = document.getElementById(canvasId);
-        if (!canvas) return;
-        const ctx = canvas.getContext('2d');
-        const labels = Object.keys(paperAvgs);
-        const values = labels.map(l => paperAvgs[l] ?? 0);
-        const colors = values.map(v => v >= 70 ? user.color : v >= 50 ? '#ffb830' : '#ff4565');
-
-        loginCharts[canvasId] = new Chart(ctx, {
-          type: 'bar',
-          data: {
-            labels,
-            datasets: [{
-              label: user.name,
-              data: values,
-              backgroundColor: colors.map(c => hexAlpha(c, 0.3)),
-              borderColor: colors,
-              borderWidth: 2,
-              borderRadius: 6,
-              borderSkipped: false
-            }]
-          },
-          options: {
-            responsive: true, maintainAspectRatio: false, animation: { duration: 700 },
-            plugins: {
-              legend: { display: false },
-              tooltip: {
-                backgroundColor:'#0e1320', borderColor:'#1e3050', borderWidth:1,
-                titleColor:'#d0def0', bodyColor:'#8baabf',
-                callbacks: { label: ctx => ` Avg: ${ctx.raw}%` }
-              }
-            },
-            scales: {
-              x: { ticks: { color:'#5a7898', font:{ family:'DM Sans', size:10 }, maxRotation:30 }, grid: { color:'#1e3050' } },
-              y: { min:0, max:100, ticks: { color:'#5a7898', font:{ family:'DM Sans', size:11 }, callback: v => v+'%' }, grid: { color:'#1e3050' } }
-            }
-          }
-        });
-      });
-    }
+    const count = userGrades.length;
+    const avg = count > 0 ? Math.round(userGrades.reduce((s,g) => s+(g.percentage||0),0)/count) : null;
+    const el = document.getElementById('stat-' + uid);
+    if (el) el.textContent = count > 0 ? `${count} paper${count!==1?'s':''} · ${avg}% avg` : 'No papers yet';
   });
 
-  // ── All-papers combined grouped bar chart ──
+  // All-papers combined chart
   const allPaperKeys = [];
   const seen = new Set();
   userOrder.forEach(uid => {
     USERS[uid].papers.forEach(p => {
-      const lbl = p.board === 'Cambridge' ? `${p.subject} P${p.paper}` : `${p.subject} ${p.paper}`;
-      if (!seen.has(lbl)) { seen.add(lbl); allPaperKeys.push({ lbl, subject:p.subject, paper:p.paper }); }
+      const lbl = p.board==='Cambridge' ? `${p.subject} P${p.paper}` : `${p.subject} ${p.paper}`;
+      if (!seen.has(lbl)) { seen.add(lbl); allPaperKeys.push({lbl, subject:p.subject, paper:p.paper}); }
     });
   });
 
   const combinedDatasets = userOrder.map(uid => {
     const user = USERS[uid];
-    const userGrades = grades.filter(g => g.userId === uid);
+    const userGrades = grades.filter(g => g.userId===uid);
     return {
       label: user.name.split(' ')[0],
       data: allPaperKeys.map(pk => {
-        const pg = userGrades.filter(g => g.subject === pk.subject && g.paper === pk.paper);
-        return pg.length > 0 ? Math.round(pg.reduce((s,g) => s+(g.percentage||0),0)/pg.length) : null;
+        const pg = userGrades.filter(g=>g.subject===pk.subject&&g.paper===pk.paper);
+        return pg.length>0 ? Math.round(pg.reduce((s,g)=>s+(g.percentage||0),0)/pg.length) : null;
       }),
-      backgroundColor: hexAlpha(user.color, 0.28),
+      backgroundColor: hexAlpha(user.color,.28),
       borderColor: user.color,
-      borderWidth: 2,
-      borderRadius: 5,
-      borderSkipped: false
+      borderWidth:2, borderRadius:5, borderSkipped:false
     };
   });
 
-  const hasAnyData = combinedDatasets.some(ds => ds.data.some(v => v !== null));
+  const hasAnyData = combinedDatasets.some(ds=>ds.data.some(v=>v!==null));
   const allCanvas = document.getElementById('login-chart-allpapers');
   if (allCanvas && hasAnyData) {
-    combinedDatasets.forEach(ds => { ds.data = ds.data.map(v => v ?? 0); });
+    combinedDatasets.forEach(ds=>{ ds.data=ds.data.map(v=>v??0); });
     loginCharts['allpapers'] = new Chart(allCanvas.getContext('2d'), {
-      type: 'bar',
-      data: {
-        labels: allPaperKeys.map(pk => pk.lbl),
-        datasets: combinedDatasets
-      },
-      options: {
-        responsive: true, maintainAspectRatio: false, animation: { duration: 800 },
-        plugins: {
-          legend: { display:true, labels:{ color:'#8baabf', font:{ family:'DM Sans', size:12 }, boxWidth:10, boxHeight:10, useBorderRadius:true, borderRadius:4 } },
-          tooltip: {
-            backgroundColor:'#0e1320', borderColor:'#1e3050', borderWidth:1,
-            titleColor:'#d0def0', bodyColor:'#8baabf',
-            callbacks: { label: ctx => ` ${ctx.dataset.label}: ${ctx.raw}%` }
-          }
+      type:'bar',
+      data:{ labels:allPaperKeys.map(pk=>pk.lbl), datasets:combinedDatasets },
+      options:{
+        responsive:true, maintainAspectRatio:false, animation:{duration:800},
+        plugins:{
+          legend:{display:true, labels:{color:'#8baabf',font:{family:'DM Sans',size:12},boxWidth:10,boxHeight:10,useBorderRadius:true,borderRadius:4}},
+          tooltip:{ backgroundColor:'#0e1320', borderColor:'#1e3050', borderWidth:1, titleColor:'#d0def0', bodyColor:'#8baabf', callbacks:{label:ctx=>` ${ctx.dataset.label}: ${ctx.raw}%`} }
         },
-        scales: {
-          x: { ticks: { color:'#5a7898', font:{ family:'DM Sans', size:10 }, maxRotation:35 }, grid: { color:'#1e3050' } },
-          y: { min:0, max:100, ticks: { color:'#5a7898', font:{ family:'DM Sans', size:11 }, callback: v => v+'%' }, grid: { color:'#1e3050' } }
+        scales:{
+          x:{ ticks:{color:'#5a7898',font:{family:'DM Sans',size:10},maxRotation:35}, grid:{color:'#1e3050'} },
+          y:{ min:0, max:100, ticks:{color:'#5a7898',font:{family:'DM Sans',size:11},callback:v=>v+'%'}, grid:{color:'#1e3050'} }
         }
       }
     });
@@ -1655,6 +1710,49 @@ async function renderLoginOverview() {
     const body = allCanvas.closest('.login-chart-body');
     if (body) body.innerHTML = '<div class="no-data">No data yet — start logging!</div>';
   }
+}
+
+async function renderLoginWaterFills() {
+  let grades = [];
+  try {
+    if (db) {
+      const snap = await db.collection('grades').orderBy('date','asc').get();
+      grades = snap.docs.map(d => {
+        const data = d.data();
+        const date = data.date?.toDate ? data.date.toDate() : new Date(data.date);
+        return { ...data, date };
+      });
+    }
+  } catch(e) { /* silent */ }
+
+  Object.keys(USERS).forEach(uid => {
+    const user = USERS[uid];
+    const userGrades = grades.filter(g => g.userId === uid);
+
+    // Count unique paper+session+year+variant combos solved
+    const solved = new Set();
+    userGrades.forEach(g => solved.add(`${g.subject}|${g.paper}|${g.year}|${g.session}|${g.variant||''}`));
+
+    // Total possible slots (rough estimate based on papers × sessions × years since cutoff)
+    const yearsSince = new Date().getFullYear() - 2025 + 1;
+    let totalSlots = 0;
+    user.papers.forEach(p => {
+      const sessions = p.board === 'Cambridge' ? 3 : 3;
+      const variants = p.variant ? 3 : 1;
+      totalSlots += sessions * variants * yearsSince;
+    });
+
+    const pct = totalSlots > 0 ? Math.min(100, Math.round((solved.size / totalSlots) * 100)) : 0;
+
+    const waterEl = document.getElementById('water-' + uid);
+    if (!waterEl) return;
+    if (pct <= 0) return; // don't show water for 0%
+    waterEl.style.background = hexAlpha(user.color, 0.18);
+    // Animate after a small stagger
+    setTimeout(() => {
+      waterEl.style.height = pct + '%';
+    }, 200 + Object.keys(USERS).indexOf(uid) * 80);
+  });
 }
 
 let _timerScheduledInterval = null;
@@ -1869,6 +1967,7 @@ function pinCancel() {
 
 init();
 renderLoginOverview();
+
 </script>
 
 
