@@ -384,6 +384,17 @@ tbody tr:last-child td{border:none}
 .papers-legend{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
 .papers-legend-item{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--muted2)}
 .papers-legend-dot{width:8px;height:8px;border-radius:2px}
+/* Edit grade modal */
+#edit-overlay{position:fixed;inset:0;z-index:200;display:flex;align-items:center;justify-content:center;background:rgba(7,9,15,.85);backdrop-filter:blur(14px);padding:24px}
+#edit-overlay.hidden{display:none!important}
+.edit-modal{background:var(--s1);border:1px solid var(--border2);border-radius:var(--r-lg);padding:28px;max-width:420px;width:100%;box-shadow:0 24px 60px rgba(0,0,0,.5)}
+.edit-modal-title{font-family:'Syne',sans-serif;font-size:16px;font-weight:800;margin-bottom:20px;display:flex;align-items:center;justify-content:space-between}
+.edit-close{background:none;border:none;color:var(--muted2);font-size:20px;cursor:pointer;padding:0;line-height:1}
+.edit-close:hover{color:var(--text)}
+.edit-actions{display:flex;gap:10px;margin-top:20px}
+.btn-sm{padding:8px 14px;font-size:13px}
+.history-own-row:hover td{background:var(--s2);box-shadow:inset 3px 0 0 var(--user-color,var(--de))}
+.history-edit-btn{display:none}
 </style>
 </head>
 <body>
@@ -707,6 +718,35 @@ tbody tr:last-child td{border:none}
     </button>
   </nav>
 </div>
+<div id="edit-overlay" class="hidden">
+  <div class="edit-modal">
+    <div class="edit-modal-title">
+      Edit Grade
+      <button class="edit-close" onclick="closeEditModal()">✕</button>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Your Score</label>
+        <input type="number" id="edit-score" min="0" oninput="updateEditPct()">
+      </div>
+      <div class="form-group">
+        <label>Out of (Max)</label>
+        <input type="number" id="edit-max" min="1" oninput="updateEditPct()">
+      </div>
+    </div>
+    <div id="edit-pct-display" class="score-display" style="margin-top:-8px;margin-bottom:16px">—</div>
+    <div class="form-group">
+      <label>Notes (optional)</label>
+      <input type="text" id="edit-notes" placeholder="e.g. Struggled with Q5">
+    </div>
+    <div class="edit-actions">
+      <button class="btn btn-primary btn-sm" onclick="saveEditedGrade()" id="edit-save-btn">Save Changes</button>
+      <button class="btn btn-ghost btn-sm" onclick="closeEditModal()">Cancel</button>
+      <button class="btn btn-danger btn-sm" style="margin-left:auto" onclick="deleteGrade()">Delete</button>
+    </div>
+  </div>
+</div>
+
 <div id="pin-overlay" class="hidden">
   <div class="pin-box">
     <div class="pin-avatar" id="pin-avatar"></div>
@@ -873,7 +913,8 @@ function init() {
 }
 
 async function tryAutoLogin() {
-  renderLoginWaterFills(); // always load water fills on startup
+  renderLoginWaterFills();
+  renderLoginOverview(); // load graphs in background always
   if (!db) return;
   try {
     const saved = JSON.parse(localStorage.getItem('tgrthr_session') || 'null');
@@ -944,21 +985,12 @@ function viewFriend(uid) {
   const bni = document.getElementById('bottom-nav-initials');
   if (bni) bni.textContent = currentUser.initials;
 
-  // Show guest banner
-  const banner = document.getElementById('guest-banner');
   document.getElementById('guest-banner-name').textContent = viewingUser.name.split(' ')[0];
-  banner.classList.add('visible');
+  document.getElementById('guest-banner').classList.add('visible');
 
   setNavReadOnly(true);
-  switchTab('dashboard');
-
-  // Re-render as the friend using already-loaded allGrades
-  const savedUser = currentUser;
-  currentUser = viewingUser;
   initHistoryFilter();
-  renderDashboard();
-  renderHistory();
-  currentUser = savedUser;
+  switchTab('dashboard');
 }
 
 function returnFromGuest() {
@@ -1425,9 +1457,10 @@ async function submitGrade(event) {
 }
 
 function initHistoryFilter() {
+  const user = getActiveUser();
   const sel = document.getElementById('history-filter');
   sel.innerHTML = '<option value="all">All Papers</option>';
-  const subjects = [...new Set(currentUser.papers.map(p => p.subject))];
+  const subjects = [...new Set(user.papers.map(p => p.subject))];
   subjects.forEach(s => {
     const opt = document.createElement('option');
     opt.value = s; opt.textContent = s; sel.appendChild(opt);
@@ -1463,7 +1496,9 @@ function renderHistory() {
     const paperDisp = g.board === 'Cambridge'
       ? `${g.subject} P${g.paper}${variantSuffix}`
       : `${g.subject} ${g.paper}`;
-    return `<tr>
+    const isOwn = g.userId === currentUser.id;
+    const rowClick = isOwn ? `onclick="openEditModal('${g.id}')" style="cursor:pointer" title="Click to edit"` : '';
+    return `<tr ${rowClick} class="${isOwn ? 'history-own-row' : ''}">
       <td style="white-space:nowrap">${fmtDateShort(g.date)}</td>
       <td>${nameTag}<span class="paper-tag-sm">${paperDisp}</span><span class="board-tag-sm">${g.board}</span></td>
       <td style="white-space:nowrap;font-size:12px;color:var(--text)">${g.year || '—'}</td>
@@ -1525,7 +1560,7 @@ function renderPapersBoard() {
           if (matches.length > 0) { totalSolved++; yearHasSolved = true; }
           const avgPct = matches.length > 0
             ? Math.round(matches.reduce((s,g) => s+g.percentage, 0) / matches.length) : null;
-          const cls = avgPct !== null ? (avgPct >= 70 ? 'solved' : avgPct >= 50 ? 'solved-ok' : 'solved-low') : 'unsolved';
+          const cls = avgPct !== null ? (avgPct >= 80 ? 'solved' : avgPct >= 60 ? 'solved-ok' : 'solved-low') : 'unsolved';
           return `<div class="kchip ${cls}">
             <span class="kchip-session">${short}</span>
             <div class="kchip-right">
@@ -1535,7 +1570,9 @@ function renderPapersBoard() {
             </div>
           </div>`;
         } else {
-          const chips = variants.map(v => {
+          // Cambridge Feb/March only has variant 2
+          const sessionVariants = (paper.board === 'Cambridge' && session === 'February/March') ? ['2'] : variants;
+          const chips = sessionVariants.map(v => {
             totalCards++;
             const matches = sessGrades.filter(g => {
               const gv = g.variant === '41' ? 'SP' : (g.variant || '');
@@ -1544,7 +1581,7 @@ function renderPapersBoard() {
             if (matches.length > 0) { totalSolved++; yearHasSolved = true; }
             const avgPct = matches.length > 0
               ? Math.round(matches.reduce((s,g) => s+g.percentage, 0) / matches.length) : null;
-            const cls = avgPct !== null ? (avgPct >= 70 ? 'solved' : avgPct >= 50 ? 'solved-ok' : 'solved-low') : 'unsolved';
+            const cls = avgPct !== null ? (avgPct >= 80 ? 'solved' : avgPct >= 60 ? 'solved-ok' : 'solved-low') : 'unsolved';
             const lbl = v === 'SP' ? 'SP' : `V${v}`;
             return `<div class="kv-chip ${cls}" title="${session} ${year} ${lbl}${avgPct !== null ? ' · '+avgPct+'%' : ''}">
               <span class="kv-label">${lbl}</span>
@@ -1963,6 +2000,68 @@ function pinCancel() {
   document.getElementById('pin-overlay').classList.add('hidden');
   _pinUid = null;
   _pinEntered = '';
+}
+
+let _editingGradeId = null;
+
+function openEditModal(gradeId) {
+  const g = allGrades.find(g => g.id === gradeId);
+  if (!g) return;
+  _editingGradeId = gradeId;
+  document.getElementById('edit-score').value = g.score;
+  document.getElementById('edit-max').value = g.maxScore;
+  document.getElementById('edit-notes').value = g.notes || '';
+  updateEditPct();
+  document.getElementById('edit-overlay').classList.remove('hidden');
+}
+
+function closeEditModal() {
+  document.getElementById('edit-overlay').classList.add('hidden');
+  _editingGradeId = null;
+}
+
+function updateEditPct() {
+  const score = parseFloat(document.getElementById('edit-score').value);
+  const max = parseFloat(document.getElementById('edit-max').value);
+  const el = document.getElementById('edit-pct-display');
+  if (!isNaN(score) && !isNaN(max) && max > 0) {
+    const pct = Math.round((score/max)*100);
+    const col = pct >= 70 ? '#00d38d' : pct >= 50 ? '#ffb830' : '#ff4565';
+    el.innerHTML = `<span style="color:${col};font-size:18px;font-weight:700">${pct}%</span> <span style="color:#5a7898">${score} / ${max}</span>`;
+  } else { el.textContent = '—'; }
+}
+
+async function saveEditedGrade() {
+  if (!_editingGradeId) return;
+  const score = parseFloat(document.getElementById('edit-score').value);
+  const maxScore = parseFloat(document.getElementById('edit-max').value);
+  const notes = document.getElementById('edit-notes').value;
+  if (isNaN(score) || isNaN(maxScore) || maxScore <= 0) { showToast('Invalid score', 'error'); return; }
+  const percentage = Math.round((score / maxScore) * 100);
+  const btn = document.getElementById('edit-save-btn');
+  btn.disabled = true; btn.textContent = 'Saving…';
+  try {
+    if (db) await db.collection('grades').doc(_editingGradeId).update({ score, maxScore, percentage, notes });
+    const idx = allGrades.findIndex(g => g.id === _editingGradeId);
+    if (idx !== -1) Object.assign(allGrades[idx], { score, maxScore, percentage, notes });
+    showToast('Grade updated!');
+    closeEditModal();
+    renderDashboard();
+    renderHistory();
+  } catch(e) { showToast('Failed to save', 'error'); }
+  btn.disabled = false; btn.textContent = 'Save Changes';
+}
+
+async function deleteGrade() {
+  if (!_editingGradeId || !confirm('Delete this grade entry?')) return;
+  try {
+    if (db) await db.collection('grades').doc(_editingGradeId).delete();
+    allGrades = allGrades.filter(g => g.id !== _editingGradeId);
+    showToast('Grade deleted');
+    closeEditModal();
+    renderDashboard();
+    renderHistory();
+  } catch(e) { showToast('Failed to delete', 'error'); }
 }
 
 init();
