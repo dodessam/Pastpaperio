@@ -9,6 +9,7 @@
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Syne:wght@700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
 <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-check-compat.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
 <style>
 :root {
@@ -787,6 +788,8 @@ const FIREBASE_CONFIG = {
   appId:             "1:291141137214:web:d1dce73090dfc53f2d326f"
 };
 
+const APP_CHECK_RECAPTCHA_SITE_KEY = "6LcXJKcsAAAAAEAsusaNju92hUum8kwcbKvYBXEk";
+
 // PINs removed from USERS configuration
 const USERS = {
   daniel_essam: {
@@ -884,8 +887,9 @@ function init() {
   if (FIREBASE_CONFIG.apiKey !== 'YOUR_API_KEY') {
     try {
       firebase.initializeApp(FIREBASE_CONFIG);
+      firebase.appCheck().activate(APP_CHECK_RECAPTCHA_SITE_KEY, true);
       db = firebase.firestore();
-      console.log('Firebase connected');
+      console.log('Firebase connected with App Check');
     } catch(e) {
       console.warn('Firebase init failed:', e.message);
     }
