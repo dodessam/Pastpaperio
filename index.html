@@ -274,6 +274,69 @@ tbody tr:last-child td{border:none}
 .pin-err{font-size:13px;color:var(--danger);font-weight:600;min-height:18px;margin-bottom:4px;transition:opacity .2s}
 .pin-back{background:transparent;border:none;color:var(--muted2);font-size:13px;cursor:pointer;padding:6px 12px;border-radius:var(--r);font-family:'DM Sans',sans-serif;transition:color .2s}
 .pin-back:hover{color:var(--text)}
+.domain-lock{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:24px;
+  background: radial-gradient(1200px 600px at 10% -10%, rgba(255,255,255,0.08), transparent 45%), radial-gradient(900px 500px at 110% 120%, rgba(255,255,255,0.06), transparent 45%), var(--bg);
+}
+.domain-lock-card{
+  width:min(100%, 520px);
+  background:var(--s1);
+  border:1px solid var(--border);
+  border-radius:var(--r-lg);
+  padding:28px;
+  box-shadow:0 24px 60px rgba(0,0,0,.35);
+}
+.domain-lock-card h1{
+  font-size:28px;
+  line-height:1.1;
+  margin-bottom:10px;
+}
+.domain-lock-card p{
+  color:var(--muted2);
+  line-height:1.6;
+  margin-bottom:12px;
+}
+.domain-lock-actions{
+  display:flex;
+  gap:10px;
+  margin-top:18px;
+  width:100%;
+}
+.domain-lock-link{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:100%;
+  min-height:42px;
+  padding:0 16px;
+  border-radius:var(--r);
+  text-decoration:none;
+  font-size:14px;
+  font-weight:700;
+  font-family:'DM Sans',sans-serif;
+  background:var(--de);
+  color:#000;
+  transition:filter .2s, transform .2s;
+}
+.domain-lock-link:hover{
+  filter:brightness(1.08);
+  transform:translateY(-1px);
+}
+.domain-lock-meta{
+  margin-top:18px;
+  padding:12px 14px;
+  border-radius:var(--r);
+  background:var(--s2);
+  border:1px solid var(--border);
+  font-family:'JetBrains Mono',monospace;
+  font-size:12px;
+  color:var(--text);
+  word-break:break-word;
+}
 @keyframes pinShake{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-8px)}40%,80%{transform:translateX(8px)}}
 .pin-dots.shake{animation:pinShake .4s ease}
 #app[data-user=daniel_essam]{--user-color:var(--de);--user-dim:var(--de-dim);--user-glow:var(--de-glow)}
@@ -778,6 +841,28 @@ tbody tr:last-child td{border:none}
 <div id="toast"></div>
 
 <script>
+const ALLOWED_HOSTNAMES = ['dodessam.github.io'];
+
+function isAllowedHostname() {
+  const hostname = window.location.hostname.toLowerCase();
+  return ALLOWED_HOSTNAMES.includes(hostname);
+}
+
+function renderDomainLockScreen() {
+  const hostname = window.location.hostname || '(no hostname)';
+  document.body.innerHTML = `
+    <main class="domain-lock">
+      <section class="domain-lock-card">
+        <h1>This app only runs on dodessam.github.io</h1>
+        <div class="domain-lock-meta">Current host: ${hostname}</div>
+        <div class="domain-lock-actions">
+          <a class="domain-lock-link" href="https://dodessam.github.io/Pastpaperio">Direct me there</a>
+        </div>
+      </section>
+    </main>
+  `;
+}
+
 const FIREBASE_CONFIG = {
   apiKey:            "AIzaSyCf3Z8aNY9P-5kI_aL9I2o9ulAW LExYjwg",
   authDomain:        "pastpaperio.firebaseapp.com",
@@ -881,6 +966,11 @@ let memIdCtr = 1;
 let isDemo = false;
 
 function init() {
+  if (!isAllowedHostname()) {
+    renderDomainLockScreen();
+    return;
+  }
+
   if (FIREBASE_CONFIG.apiKey !== 'YOUR_API_KEY') {
     try {
       firebase.initializeApp(FIREBASE_CONFIG);
@@ -2133,8 +2223,12 @@ async function deleteGrade() {
   } catch(e) { showToast('Failed to delete', 'error'); }
 }
 
-init();
-renderLoginOverview();
+if (isAllowedHostname()) {
+  init();
+  renderLoginOverview();
+} else {
+  renderDomainLockScreen();
+}
 
 </script>
 
