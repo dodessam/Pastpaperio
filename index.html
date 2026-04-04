@@ -911,14 +911,21 @@ function init() {
   tryAutoLogin();
 }
 
+const SESSION_TTL_MS = 7 * 24 * 60 * 60 * 1000; // 7 days
+
 async function tryAutoLogin() {
   renderLoginWaterFills();
-  renderLoginOverview(); // load graphs in background always
+  renderLoginOverview();
   if (!db) return;
   try {
     const saved = JSON.parse(localStorage.getItem('tgrthr_session') || 'null');
     if (!saved || !saved.uid || !saved.token) return;
     if (!USERS[saved.uid]) return;
+    // Reject sessions older than 7 days
+    if (!saved.loginAt || Date.now() - saved.loginAt > SESSION_TTL_MS) {
+      localStorage.removeItem('tgrthr_session');
+      return;
+    }
     const doc = await db.collection('users').doc(saved.uid).get();
     if (doc.exists && doc.data().sessionToken === saved.token) {
       login(saved.uid, true);
@@ -956,7 +963,7 @@ function login(uid, skipAnimation = false) {
   // Save session token
   if (db) {
     const token = crypto.randomUUID();
-    localStorage.setItem('tgrthr_session', JSON.stringify({ uid, token }));
+    localStorage.setItem('tgrthr_session', JSON.stringify({ uid, token, loginAt: Date.now() }));
     db.collection('users').doc(uid).set({ sessionToken: token }, { merge: true }).catch(() => {});
   }
 
@@ -1916,6 +1923,29 @@ function timerReset() {
 let _pinUid = null;
 let _pinEntered = '';
 
+// ── Brute-force lockout ───────────────────────────────────────────────────────
+const PIN_MAX_ATTEMPTS = 5;
+const PIN_LOCKOUT_MS   = 30_000; // 30 seconds
+
+function _getPinLockout(uid) {
+  try {
+    const raw = sessionStorage.getItem('pin_lockout_' + uid);
+    return raw ? JSON.parse(raw) : { attempts: 0, lockedUntil: 0 };
+  } catch { return { attempts: 0, lockedUntil: 0 }; }
+}
+function _setPinLockout(uid, data) {
+  sessionStorage.setItem('pin_lockout_' + uid, JSON.stringify(data));
+}
+function _clearPinLockout(uid) {
+  sessionStorage.removeItem('pin_lockout_' + uid);
+}
+
+// ── SHA-256 hash (PINs are stored hashed in Firestore) ───────────────────────
+async function hashPin(pin) {
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(pin));
+  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
 function promptPin(uid) {
   const u = USERS[uid];
   _pinUid = uid;
@@ -1923,7 +1953,7 @@ function promptPin(uid) {
   const pinBox = document.querySelector('.pin-box');
   pinBox.style.setProperty('--pin-color', u.color);
   pinBox.style.setProperty('--pin-glow', u.color + '40');
-  
+
   const av = document.getElementById('pin-avatar');
   av.textContent = u.initials;
   av.style.background = u.color + '33';
@@ -1931,6 +1961,14 @@ function promptPin(uid) {
   document.getElementById('pin-name').textContent = u.name;
   document.getElementById('pin-err').textContent = '';
   pinRenderDots();
+
+  // Show remaining lockout time if still locked
+  const lock = _getPinLockout(uid);
+  if (lock.lockedUntil > Date.now()) {
+    const secsLeft = Math.ceil((lock.lockedUntil - Date.now()) / 1000);
+    document.getElementById('pin-err').textContent = `Too many attempts — wait ${secsLeft}s`;
+  }
+
   document.getElementById('pin-overlay').classList.remove('hidden');
   document.addEventListener('keydown', _pinKeyHandler);
 }
@@ -1942,6 +1980,12 @@ function _pinKeyHandler(e) {
 }
 
 function pinKey(digit) {
+  const lock = _getPinLockout(_pinUid);
+  if (lock.lockedUntil > Date.now()) {
+    const secsLeft = Math.ceil((lock.lockedUntil - Date.now()) / 1000);
+    document.getElementById('pin-err').textContent = `Too many attempts — wait ${secsLeft}s`;
+    return;
+  }
   if (_pinEntered.length >= 4) return;
   _pinEntered += digit;
   pinRenderDots();
@@ -1966,30 +2010,52 @@ function pinRenderDots(state) {
   }
 }
 
-// Rewritten PIN check to fetch from Firestore
 async function pinCheck() {
-  let isValid = false;
+  const uid = _pinUid;
+  const lock = _getPinLockout(uid);
+  if (lock.lockedUntil > Date.now()) {
+    const secsLeft = Math.ceil((lock.lockedUntil - Date.now()) / 1000);
+    document.getElementById('pin-err').textContent = `Too many attempts — wait ${secsLeft}s`;
+    _pinEntered = '';
+    pinRenderDots();
+    return;
+  }
 
+  let isValid = false;
   if (db) {
     try {
-      const docRef = await db.collection('users').doc(_pinUid).get();
-      if (docRef.exists && docRef.data().pin === _pinEntered) {
+      const hashed = await hashPin(_pinEntered);
+      const docRef = await db.collection('users').doc(uid).get();
+      if (docRef.exists && docRef.data().pin === hashed) {
         isValid = true;
       }
     } catch (e) {
-      console.error("Error verifying PIN in Firestore:", e);
+      console.error('Error verifying PIN in Firestore:', e);
     }
   }
 
   if (isValid) {
+    _clearPinLockout(uid);
     document.removeEventListener('keydown', _pinKeyHandler);
     document.getElementById('pin-overlay').classList.add('hidden');
-    login(_pinUid);
+    login(uid);
   } else {
+    const attempts = (lock.attempts || 0) + 1;
+    const lockedUntil = attempts >= PIN_MAX_ATTEMPTS ? Date.now() + PIN_LOCKOUT_MS : 0;
+    _setPinLockout(uid, { attempts, lockedUntil });
+
     pinRenderDots('error');
     const dots = document.getElementById('pin-dots');
     dots.classList.add('shake');
-    document.getElementById('pin-err').textContent = 'Incorrect PIN. Try again.';
+
+    if (lockedUntil) {
+      document.getElementById('pin-err').textContent = 'Too many attempts — locked for 30s';
+    } else {
+      const remaining = PIN_MAX_ATTEMPTS - attempts;
+      document.getElementById('pin-err').textContent =
+        `Incorrect PIN. ${remaining} attempt${remaining !== 1 ? 's' : ''} left.`;
+    }
+
     setTimeout(() => {
       dots.classList.remove('shake');
       _pinEntered = '';
